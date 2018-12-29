@@ -42,3 +42,4 @@ body { margin: 0; background: #222; color: #fafafa; font-family: 'Montserrat', s
 .lightbox__input:focus { outline: none; box-shadow: none; }
 .lightbox__actions { text-align: right; }
 .lightbox__actions--centered { text-align: center; }
+.lightbox__error { color: red; }

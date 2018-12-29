@@ -3,7 +3,7 @@ html
         link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700")
         link(rel="stylesheet" href="/css/main.css")
     body
-        .home.dog-app
+        .home.dog-app(data-lightbox=showLightbox)
             header.app-header
                 .logo
                     img.logo__icon(src="/img/home-icon.png")
@@ -33,17 +33,23 @@ html
                     form.lightbox__form(action="/applications" method="POST")
                         .lightbox__form-control
                             label.lightbox__label What's your name?
-                            input.lightbox__input(placeholder="John Doe" type="text" name="name")
+                            input.lightbox__input(placeholder="John Doe" type="text" name="name" value=validated ? validated.name : '')
+                            if (errors && errors.name)
+                                p.lightbox__error #{ errors.name.msg }
                         .lightbox__form-control
                             label.lightbox__label What's your phone number?
-                            input.lightbox__input(placeholder="+ 48 555 000 000" type="text" name="phone")
+                            input.lightbox__input(placeholder="+ 48 555 000 000" type="text" name="phone" value=validated ? validated.phone : '')
+                            if (errors && errors.phone)
+                                p.lightbox__error #{ errors.phone.msg }
                         .lightbox__form-control
                             label.lightbox__label Leave a message
-                            textarea.lightbox__input(placeholder="Please feel free to ask us anything" rows="3" name="message")
+                            textarea.lightbox__input(placeholder="Please feel free to ask us anything" rows="3" name="message" value=validated ? validated.message: '')
+                            if (errors && errors.message)
+                                p.lightbox__error #{ errors.message.msg }
                         .lightbox__actions
                             button.btn.btn--primary Adopt a dog
 
-            if (formMessage.length)
+            if (formMessage && formMessage.length)
                 .lightbox(v-show="showFeedback")
                     .lightbox__content
                         h2.lightbox__header #{ formMessage }

@@ -8,5 +8,9 @@ new Vue({
         closeFeedbackLightbox() {
             this.showFeedback = false;
         }
+    },
+    mounted() {
+        const container = document.querySelector('.dog-app');
+        this.formLightbox = container.getAttribute('data-lightbox') === 'true';
     }
 });
