@@ -6,6 +6,7 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const routes = require('./routes/index');
 const errorsHandler = require('./middlewares/errors');
+const fileUpload = require('express-fileupload');
 
 const app = express();
 
@@ -23,6 +24,8 @@ app.use(session({
     cookie: {}
 }));
 app.use(flash());
+
+app.use(fileUpload());
 
 app.use('/', routes);
 

@@ -7,6 +7,8 @@ const errorsHandler = require('../middlewares/errors');
 
 router.get('/', PagesController.home);
 router.get('/contact', PagesController.contact);
+router.get('/upload', PagesController.upload);
+
 
 router.post('/applications',
     ApplicationsController.validate,
@@ -14,5 +16,7 @@ router.post('/applications',
     ApplicationsController.normalizeData,
     errorsHandler.catchAsync(ApplicationsController.store)
 );
+
+router.post('/uploading', ApplicationsController.uploading);
 
 module.exports = router;
