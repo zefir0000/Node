@@ -6,6 +6,7 @@ const ApplicationsController = require('../controllers/ApplicationsController');
 const errorsHandler = require('../middlewares/errors');
 
 router.get('/', PagesController.home);
+router.get('/contact', PagesController.contact);
 
 router.post('/applications',
     ApplicationsController.validate,
