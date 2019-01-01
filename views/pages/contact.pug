@@ -1,0 +1,35 @@
+html
+    head
+        link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700")
+        link(rel="stylesheet" href="/css/main.css")
+    body
+        .home.dog-app(data-lightbox=showLightbox)
+            header.app-header
+                .logo
+                    img.logo__icon(src="/img/home-icon.png")
+                    span.logo__text home page
+                nav.app-nav
+                    ul.app-nav__list
+                        li.app-nav__list-item
+                            a.app-nav__link(href="/") home
+                        li.app-nav__list-item
+                            a.app-nav__link(href="/upload")  upload file xml
+                        li.app-nav__list-item
+                            a.app-nav__link(href="#")  exchange your credit
+                        li.app-nav__list-item
+                            a.app-nav__link(href="#")  how it works?
+                        li.app-nav__list-item
+                            a.app-nav__link.app-nav__link--is-active(href="#")  contact
+            .wrapper
+                section.slogan
+                    h1.slogan__header
+                        | Contact with us
+                    p.slogan__text
+                        | If you want contact please sent me email.
+            
+                footer.app-footer
+                    | Design by Slawomir :)
+    
+
+        script(src="https://cdn.jsdelivr.net/npm/vue" type="text/javascript")
+        script(src="/js/app.js")
