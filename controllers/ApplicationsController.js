@@ -55,13 +55,15 @@ exports.upload = (req, res, next) => {
 
             // convert xml to json
             var xml = require('fs').readFileSync(uploadPath, 'utf8');           
-            var result1 = convertXmlToJson.xml2json(xml, {compact: true, spaces: 4});
+            var json = convertXmlToJson.xml2json(xml, {compact: true, spaces: 0});
 
+            var string = JSON.stringify(JSON.parse(json)).replace(/"g:/g, '"');
+            obj = JSON.parse(string);
+        
             //console.log('result 1:', '\n', result1, '\n');
-            let rss = result1.rss
-            console.log('moj element','\n',result1.rss);
-
-    
+        
+            console.log('moj element','\n',obj.rss._attributes);
+            console.log('glebiej', obj.rss.channel.item[0].id)
 
             // upload info about file to DB
             UploadFile.uploadFileXML({
@@ -69,6 +71,7 @@ exports.upload = (req, res, next) => {
                 'mimetype': req.files.sampleFile.mimetype
             });
         });
+
     req.flash('form', sampleFile.name + ', file uploaded!');
     res.redirect('upload/');
 };
