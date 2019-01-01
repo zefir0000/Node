@@ -14,6 +14,7 @@
     "bookshelf": "^0.12.1",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.3",
+    "dropzone": "^5.5.1",
     "express": "^4.16.2",
     "express-fileupload": "^1.1.1-alpha.1",
     "express-session": "^1.15.6",
@@ -21,6 +22,7 @@
     "global": "^4.3.2",
     "knex": "^0.14.4",
     "mysql2": "^1.5.2",
-    "pug": "^2.0.0-rc.4"
+    "pug": "^2.0.0-rc.4",
+    "xml-js": "^1.6.8"
   }
 }
