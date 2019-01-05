@@ -1,8 +1,7 @@
 const Application = require('../models/application');
 const { check, validationResult } = require('express-validator/check');
 const UploadFile = require('../models/uploadfile')
-const ProductSimple = require('../models/productSimple')
-const convertXmlToJson = require('xml-js');
+const UploadProducts = require('./UploadToDB')
 
 
 exports.store = async (req, res, next) => {
@@ -44,7 +43,6 @@ exports.normalizeData = (req, res, next) => {
 };
 
 exports.upload = (req, res, next) => {
-    console.log('req.files >>>', req.files);
 
         let sampleFile = req.files.sampleFile;
         let uploadPath = 'uploading/' + new Date + "-" + sampleFile.name;
@@ -52,18 +50,8 @@ exports.upload = (req, res, next) => {
         sampleFile.mv(uploadPath, function(err) {
             if (err)
             return next();
-
-            // convert xml to json
-            var xml = require('fs').readFileSync(uploadPath, 'utf8');           
-            var json = convertXmlToJson.xml2json(xml, {compact: true, spaces: 0});
-
-            var string = JSON.stringify(JSON.parse(json)).replace(/"g:/g, '"');
-            obj = JSON.parse(string);
-        
-            //console.log('result 1:', '\n', result1, '\n');
-        
-            console.log('moj element','\n',obj.rss._attributes);
-            console.log('glebiej', obj.rss.channel.item[0].id)
+            // upload products to DB
+            UploadProducts.uploadProducts(uploadPath);
 
             // upload info about file to DB
             UploadFile.uploadFileXML({
@@ -76,22 +64,18 @@ exports.upload = (req, res, next) => {
     res.redirect('upload/');
 };
 
-exports.existFile = (req, res, next) => {
+exports.validationUploadFile = (req, res, next) => {
 
     if (Object.keys(req.files).length == 0) {
         res.status(400);
         req.flash('form', 'File not exist');
         return res.redirect('upload/');
     }
-    next();
-};
-exports.validationTypeFile = (req, res, next) => {
+    
     if (req.files.sampleFile.mimetype !== 'text/xml') {
         res.status(400);
         req.flash('form', req.files.sampleFile.name + ' is not xml file');
         return res.redirect('upload/');
     }
     next();
-
-
-}
+};

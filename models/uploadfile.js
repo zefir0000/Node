@@ -10,4 +10,5 @@ module.exports.uploadFileXML = (uploadFile) => {
         name: uploadFile.name,
         mimetype: uploadFile.mimetype,
 })};
+
         

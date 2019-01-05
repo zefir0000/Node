@@ -1,17 +1,19 @@
-baza danych plikow xml +update time
-poprawic szablon
+baza danych plikow xml +create/update time (user upload)
+baza danych (if catch wzgledem waluty)
+
 baza danych uzytkownikow
-validacja danych
+//validacja danych
 obsluga bledow !!
-multiple plikow lub zip
-flash odnosnie pozytywnego lub nieprawidlowego upload plikow
-import xml to json
-import dancyh o produkcie do DB
-query na bazie
-podmiana plikow na bazie
-wyjebac homepage z ikonka 
-zmalezc wyszukiwarke wraz z jej implementacja
-ograniczyc pliki do xml
-poprawne nazwy plikow zapisanych w bazie
+//flash odnosnie pozytywnego lub nieprawidlowego upload plikow z wypisanie update title with price lub added product
+//query na bazie poprawic uzupelnic wybor waluty z enuma, mozliwosc sortowania (cena, releaseDate, name)
+podpowiedzi w wyszukiwarce 
+
+zwrocic poprawnie dane wraz z wyswietleniem jej na stronie
+wyswietlanie obrazkow z linkow (cashowac?) zmiana rozmiaru za pomoca api vs css
+
+logowanie sellerow
+panel admin dla sellerow 
+
+pug vs html (compiler??)
 
 

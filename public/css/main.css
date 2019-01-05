@@ -1,5 +1,5 @@
 body { margin: 0; background: #222; color: #fafafa; font-family: 'Montserrat', sans-serif; }
-.wrapper { display: flex; align-items: center; height: 100vh; padding: 0 75px;  }
+.wrapper { display: ruby-base; align-items: baseline; height: 100vh; padding: 0 75px}
 .home { background: url('../img/home/bg.jpg'); background-size: cover; }
 
 /* logo */
@@ -17,15 +17,17 @@ body { margin: 0; background: #222; color: #fafafa; font-family: 'Montserrat', s
 .app-nav__link--is-active, .app-nav__link:hover { border-bottom: 1px solid #fff; }
 
 /* slogan */
-.slogan { max-width: 65%; }
+.slogan { padding-top: 100px; max-width: 65%; }
 .slogan__header { margin: 0 0 20px; font-weight: normal; font-family: 'Bodoni 72', sans-serif; font-size: 52px; }
 .slogan__text { font-size: 16px; color: #d0c4bc; font-weight: 100; line-height: 24px; max-width: 500px; }
 
 .actions { margin-top: 50px; }
+.actions_inline { display:inline; padding-left: 30px; }
+
 .btn { transition: .2s all ease-in-out; text-transform: uppercase; border-radius: 35px; line-height: 50px; border: none; padding: 0 30px; background: none; cursor: pointer; }
 .btn:focus { transform: scale(1.1); outline: none; box-shadow: none; }
 .btn--shadow { border: 1px solid #d0c4bc; color: #d0c4bc; }
-.btn--primary { color: #fff; background: #c19656; margin-right: 20px; }
+.btn--primary { align-self:baseline;  color: #fff; background: #c19656; margin-right: 20px; }
 
 .app-footer { position: absolute; bottom: 15px; right: 15px; opacity: .5; }
 
@@ -43,3 +45,12 @@ body { margin: 0; background: #222; color: #fafafa; font-family: 'Montserrat', s
 .lightbox__actions { text-align: right; }
 .lightbox__actions--centered { text-align: center; }
 .lightbox__error { color: red; }
+
+/*search*/
+.search { text-align: center; }
+.search__form { position: center; width: 100%; margin-top: 50px}
+.search__header { padding-top: 100px; font-weight: normal; font-family: 'Bodoni 72', sans-serif; font-size: 52px; }
+.search__label { text-transform: none; width: 100%; margin-bottom: 15px; display: block; }
+.search__input { transition: .2s all ease-in-out; width: 50%; border: 3px solid grey; padding: 10px; font-size: 16px; font-weight: 500; text-transform: none; font-family: 'Montserrat', sans-serif; }
+
+.title { position: fixed; text-align: left; display: block; font-size: 12px; color: ghostwhite; padding-right: 15px}
