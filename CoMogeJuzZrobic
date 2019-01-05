@@ -14,6 +14,7 @@ wyswietlanie obrazkow z linkow (cashowac?) zmiana rozmiaru za pomoca api vs css
 logowanie sellerow
 panel admin dla sellerow 
 
-pug vs html (compiler??)
+pug vs html (compiler??) // dodac obsluge html
 
-
+podstrona produktu > generowana automatycznie > mozliwosc ocen i komentarzy 
+podstrona sklepu > mozliwosc ocen i komentarzy > 

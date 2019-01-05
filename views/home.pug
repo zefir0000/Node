@@ -20,11 +20,11 @@ html
             .wrapper
                 section.slogan
                     h1.slogan__header
-                        | Promote your movie
+                        | login 
                     p.slogan__text
-                        | Do you know that your video without views is not visible to others? you can change it with us!
+                        | join
                     .actions
-                        button.btn.btn--primary(@click="formLightbox = true") Assign your movie
+                        button.btn.btn--primary(@click="formLightbox = true") login
                         button.btn.btn--shadow Donate us
                 footer.app-footer
                     | Design by Slawomir :)
@@ -43,8 +43,13 @@ html
                             if (errors && errors.phone)
                                 p.lightbox__error #{ errors.phone.msg }
                         .lightbox__form-control
-                            label.lightbox__label Leave link to your video
-                            textarea.lightbox__input(placeholder="https://www.youtube.com/watch?v=Ir3_-Pv-6mU&t=13s" rows="1" name="message" value=validated ? validated.message: '')
+                            label.lightbox__label password
+                            textarea.lightbox__input(placeholder="Password" rows="1" name="message" value=validated ? validated.message: '')
+                            if (errors && errors.message)
+                                p.lightbox__error #{ errors.message.msg }
+                                .lightbox__form-control
+                            label.lightbox__label Accept our pledge
+                            textarea.lightbox__input(checkbox name="cyrograf" )
                             if (errors && errors.message)
                                 p.lightbox__error #{ errors.message.msg }
                         .lightbox__actions

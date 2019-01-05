@@ -17,8 +17,8 @@ exports.store = async (req, res, next) => {
 
 exports.validate = [
     check('name').trim().isLength({ min: 1 }).withMessage('Name is required.'),
-    check('phone').isLength({ min: 1 }).withMessage('Phone is required.'),
-    check('message').isLength({ min: 1 }).withMessage('Message is required')
+    check('phone').isLength({ min: 1 }).withMessage('E-mail is required.'),
+    check('message').isLength({ min: 1 }).withMessage('Password is required')
 ];
 
 exports.checkValidation = (req, res, next) => {

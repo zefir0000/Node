@@ -26,6 +26,8 @@ html
                             button.btn.btn--primary(@click="return q.value") search
                         
                     table.title 
+                        
+                    if (!!!(SQLProducts = '[]'))
                         tr
                             th #{ SQLProducts[0].title }
                             th #{ SQLProducts[0].price } GBP
