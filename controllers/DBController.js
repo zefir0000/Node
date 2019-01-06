@@ -1,21 +1,16 @@
-const options = {
-    client: 'mysql2',
-    connection: {
-        host: 'localhost',
-        user: 'root',
-        password: 'pass',
-        database: 'ProductCatalog'
-    }};
-const knex = require('knex')(options);
+const dbConfig = require('../config/dbConfig')
+const knex = require('knex')(dbConfig);
 
 exports.getProducts = (req, res) => {
-    knex.from('ProductBaseGBP').column(['title', 'price'])
-    .whereRaw('availability = in stock AND title LIKE ' +`'%${req.name}%'`).select().timeout(10000, { cancel: true })
+    var name = require('url').parse(req.url,true).query.name;
+    knex.from('ProductBaseGBP')
+    .where('title', 'like', name + '%')
+    .andWhereRaw(`availability = "in stock"`)
     .then(function(SQLProducts){
         res.statusCode = 200;
         console.log(SQLProducts);
         res.render('pages/search', {
             SQLProducts
+        });
     });
-});
 };

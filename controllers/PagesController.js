@@ -5,7 +5,6 @@ exports.home = (req, res) => {
 };
 
 exports.contact = (req, res) => {
-    console.log(req.url);
     res.render('pages/contact', {
         formMessage: req.flash('form')
     });

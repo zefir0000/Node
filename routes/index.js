@@ -5,6 +5,7 @@ const PagesController = require('../controllers/PagesController');
 const ApplicationsController = require('../controllers/ApplicationsController');
 const DBController = require('../controllers/DBController');
 const errorsHandler = require('../middlewares/errors');
+const productsController = require('../controllers/productsController');
 
 router.get('/', PagesController.home);
 router.get('/contact', PagesController.contact);
@@ -24,5 +25,6 @@ router.post('/applications',
     ApplicationsController.normalizeData,
     errorsHandler.catchAsync(ApplicationsController.store)
 );
+router.get('/products', productsController.search);
 
 module.exports = router;

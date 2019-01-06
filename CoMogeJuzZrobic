@@ -16,4 +16,11 @@ panel admin dla sellerow
 
 pug vs html (compiler??)
 
+    nowe podejscie
+        config poprawic
+        tylko rest api returned json
+            get product
+            post file
+            
+
 

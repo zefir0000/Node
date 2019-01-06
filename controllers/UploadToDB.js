@@ -1,15 +1,7 @@
 const ProductBase = require('../models/productBase')
 const convertXmlToJson = require('xml-js');
 const { check, validationResult } = require('express-validator/check');
-const options = {
-    client: 'mysql2',
-    connection: {
-        host: 'localhost',
-        user: 'root',
-        password: 'pass',
-        database: 'ProductCatalog'
-    }};
-const knex = require('knex')(options);
+const knex = require('knex')('../config/knexfile');
 
 function getId(id) {
     return knex('ProductBaseGBP')
