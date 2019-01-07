@@ -8,11 +8,13 @@ module.exports = {
         var name = require('url').parse(url,true).query.name;
 
         return knex.from('ProductBaseGBP')
-        .where('title', 'like', name + '%')
-        .andWhereRaw(`availability = "in stock"`)
-        .then(function(SQLProducts){
+            .where('title', 'like', name + '%')
+            .andWhereRaw(`availability = "in stock"`)
+            .then(function(SQLProducts){
 
-            return SQLProducts
-        });
+                return SQLProducts
+            });
     }
 }
+
+

@@ -9,6 +9,12 @@ module.exports.uploadFileXML = (uploadFile) => {
 
         name: uploadFile.name,
         mimetype: uploadFile.mimetype,
-})};
+    }).save(null, { method: 'insert'}).then(function(){
+        console.log('Upload file ', uploadFile.name);        
+    })
+    .catch((err) => { 
+        console.log('Upload file: ', uploadFile.name, ' somthing went wrong!: ', err )
+    });
+};
 
         

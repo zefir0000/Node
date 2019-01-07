@@ -1,11 +1,13 @@
-const ProductBase = require('../models/productBase')
+const ProductFromFile = require('../models/productFromFile')
 const convertXmlToJson = require('xml-js');
 const { check, validationResult } = require('express-validator/check');
-const knex = require('knex')('../config/knexfile');
+const dbConfig = require('../config/dbConfig')
+const knex = require('knex')(dbConfig);
 
-function getId(id) {
+function getProductId(productId) {
+
     return knex('ProductBaseGBP')
-            .where('id', id).timeout(1000, { cancel:true });
+            .where('productId', productId).timeout(1000, { cancel:true });
         };
 
 
@@ -25,23 +27,36 @@ exports.uploadProducts = async (uploadPath) => {
 
     if (currency == 'GBP') {
         do {
-            let productBase = items[--quantityItems];
-            let priceWithCurrency = productBase.price._text;
+            let item = items[--quantityItems];
+            let priceWithCurrency = item.price._text;
             let price = (priceWithCurrency).substring(0,priceWithCurrency.length - 4);
+            let currency = (priceWithCurrency).slice(- 3);
+            let availabilityDate = (item.availability_date._text).substring(0,10); // get only date rrrr-mm-dd
 
-            getId(productBase.id._text).then(function(product) {
-                ProductBase.uploadProductFromXml({
-                    'id': productBase.id._text,        
-                    'title': productBase.title._text,
-                    'link': productBase.link._text,
-                    'image': productBase.image_link._text,
+            getProductId(item.id._text).then(function(productExist) {
+                ProductFromFile.uploadProductFromXml({
+
+                    'productId': item.id._text,       
+                    'title': item.title._text,
+                    'description': item.description._text,
+                    'link': item.link._text,
+                    'imageLink': item.image_link._text,
                     'price': price,
-                    'availability': productBase.availability._text,
-                    'shop': shop
-                 }, !(JSON.stringify(product) == "[]")).catch();
+                    'currency': currency,
+                    'availability': item.availability._text,
+                    'availabilityDate': availabilityDate,
+                    'googleProductCategory': item.google_product_category._text,
+                    'brand': item.brand._text,
+                    'condition': item.condition._text,
+                    'identifierExist': item.identifier_exists._text,
+                    'gtin': item.gtin._text,
+                    'mpn': item.mpn._text,
+                    'shop': shop,
+                 }, productExist);
     });
-    } while (quantityItems > 0);
+        } while (quantityItems > 0);
     };
 }
 
 
+// (err) => { console.log('Error: ', err); }  !(JSON.stringify(productExist) == "[]")

@@ -60,11 +60,12 @@ exports.upload = (req, res, next) => {
             });
         });
 
-    req.flash('form', sampleFile.name + ', file uploaded!');
+    req.flash('form', sampleFile.name, ', file uploaded!');
     res.redirect('upload/');
 };
 
 exports.validationUploadFile = (req, res, next) => {
+
 
     if (Object.keys(req.files).length == 0) {
         res.status(400);
