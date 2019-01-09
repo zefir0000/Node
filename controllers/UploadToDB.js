@@ -1,13 +1,15 @@
-const ProductFromFile = require('../models/productFromFile')
+const uploadProductFromShop = require('../models/productFromShop')
 const convertXmlToJson = require('xml-js');
 const { check, validationResult } = require('express-validator/check');
 const dbConfig = require('../config/dbConfig')
 const knex = require('knex')(dbConfig);
 
-function getProductId(productId) {
+function getProductId(productId, shop) {
 
-    return knex('ProductBaseGBP')
-            .where('productId', productId).timeout(1000, { cancel:true });
+    return knex('ProductsFromShopsEUR')
+            .where('productId', productId)
+            .where('shop', shop)
+            .timeout(1000, { cancel:true });
         };
 
 
@@ -25,16 +27,16 @@ exports.uploadProducts = async (uploadPath) => {
     var items = products.item;
     var quantityItems = items.length;
 
-    if (currency == 'GBP') {
+    if (currency == 'EUR') {
         do {
             let item = items[--quantityItems];
             let priceWithCurrency = item.price._text;
             let price = (priceWithCurrency).substring(0,priceWithCurrency.length - 4);
             let currency = (priceWithCurrency).slice(- 3);
-            let availabilityDate = (item.availability_date._text).substring(0,10); // get only date rrrr-mm-dd
+            //let availabilityDate = (item.availability_date._text).substring(0,10); // get only date rrrr-mm-dd
 
-            getProductId(item.id._text).then(function(productExist) {
-                ProductFromFile.uploadProductFromXml({
+            getProductId(item.id._text, item.shop).then(function(productExist) {
+                uploadProductFromShop.uploadProductFromShop({
 
                     'productId': item.id._text,       
                     'title': item.title._text,
@@ -44,18 +46,49 @@ exports.uploadProducts = async (uploadPath) => {
                     'price': price,
                     'currency': currency,
                     'availability': item.availability._text,
-                    'availabilityDate': availabilityDate,
-                    'googleProductCategory': item.google_product_category._text,
                     'brand': item.brand._text,
-                    'condition': item.condition._text,
-                    'identifierExist': item.identifier_exists._text,
-                    'gtin': item.gtin._text,
-                    'mpn': item.mpn._text,
                     'shop': shop,
                  }, productExist);
     });
         } while (quantityItems > 0);
     };
+}
+
+exports.uploadProductsFromG2ToDB = async (products) => {
+
+    // upload info about products to DB
+    var shop = "Market G2";
+    var currency = "EUR";
+    var quantityItems = products.length;
+
+    
+        do {
+            let item = products[--quantityItems];
+            let link = 'https://www.g2a.com/' + item.slug;
+            let availability
+            if (item.qty > 0) 
+            {
+                availability = "in stock";
+            } else { availability = "out of stock" }; // do poprawy na bool
+
+            getProductId(item.id, item.shop).then(function(productExist) {
+                uploadProductFromShop.uploadProductFromShop({
+
+                    'productId': item.id,
+                    'title': item.name,
+                    'description': item.description,
+                    'link': link,
+                    'imageLink': item.thumbnail,
+                    'price': item.retail_min_price,
+                    'currency': currency,
+                    'availability': availability,
+                    'brand': item.platform,
+                    'shop': shop,
+                 }, productExist); // do poprawy na bool
+                 
+        });
+        } while (quantityItems > 0);
+    
 }
 
 

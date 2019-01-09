@@ -1,30 +1,23 @@
 const bookshelf = require('../config/bookshelf');
 
 const ProductsFromFile = bookshelf.Model.extend({
-    tableName: 'ProductBaseGBP'
+    tableName: 'ProductsFromShopsEUR'
 });
 
-module.exports.uploadProductFromXml = (product, productExist) => {
+module.exports.uploadProductFromShop = (product, productExist) => {
     if(JSON.stringify(productExist) == "[]") {
         
         var createDate = new Date(Date.now()).toLocaleString();
         return new ProductsFromFile({
             productId: product.productId,        
             title: product.title,
-            description: product.description,
             link: product.link,
             imageLink: product.imageLink,
             price: product.price,
             currency: product.currency,
             availability: product.availability,
-            availabilityDate: product.availabilityDate,
             shop: product.shop,
-            googleProductCategory: product.googleProductCategory,
             brand: product.brand,
-            condition: product.condition,
-            identifierExist: product.identifierExist,
-            gtin: product.gtin,
-            mpn: product.mpn,
             createdDate: createDate
             
             }).save(null, { method: 'insert'}).then(function(){
@@ -41,20 +34,13 @@ module.exports.uploadProductFromXml = (product, productExist) => {
             id: productExist[0].id,
             productId: product.productId,        
             title: product.title,
-            description: product.description,
             link: product.link,
             imageLink: product.imageLink,
             price: product.price,
             currency: product.currency,
             availability: product.availability,
-            availabilityDate: product.availabilityDate,
             shop: product.shop,
-            googleProductCategory: product.googleProductCategory,
             brand: product.brand,
-            condition: product.condition,
-            identifierExist: product.identifierExist,
-            gtin: product.gtin,
-            mpn: product.mpn,
             createdDate: productExist[0].createdDate,
             updatedDate: updateDate
 

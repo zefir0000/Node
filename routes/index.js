@@ -18,6 +18,7 @@ router.get('/upload', PagesController.upload)
         ApplicationsController.validationUploadFile,
         ApplicationsController.upload
 );
+router.get('/updateMarket', ApplicationsController.uploadProductsFromG2)
 
 router.post('/applications',
     ApplicationsController.validate,

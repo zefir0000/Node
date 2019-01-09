@@ -63,8 +63,6 @@ get FullProd /{productId}
         title: productBase.title,
         linksYoutube: productBase.link,
         images: productBase.imagemy, 
-        price: productBase.price, best + shop
-        availability: productBase.availability, from all shop
         linksArticle
         wymaganiaSprzetowe (moze ze steama jak prodKatalog)
         shopids[]

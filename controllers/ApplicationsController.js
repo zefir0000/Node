@@ -1,46 +1,18 @@
-const Application = require('../models/application');
 const { check, validationResult } = require('express-validator/check');
-const UploadFile = require('../models/uploadfile')
-const UploadProducts = require('./UploadToDB')
+const UploadFile = require('../models/uploadfile');
+const UploadToDB = require('./UploadToDB');
+const Request = require('request');
 
-
-exports.store = async (req, res, next) => {
-    await Application.create({
-        'name': req.body.name,
-        'phone': req.body.phone,
-        'message': req.body.message
-    });
-
-    req.flash('form', req.body.first_name + ', you are a true hero!');
-    res.redirect('/');
-};
-
-exports.validate = [
-    check('name').trim().isLength({ min: 1 }).withMessage('Name is required.'),
-    check('phone').isLength({ min: 1 }).withMessage('Phone is required.'),
-    check('message').isLength({ min: 1 }).withMessage('Message is required')
-];
-
-exports.checkValidation = (req, res, next) => {
-    const errors = validationResult(req);
-    if ( ! errors.isEmpty()) {
-        return res.render('home', {
-            validated: req.body,
-            errors: errors.mapped(),
-            showLightbox: 'true'
-        });
+function getProductsFromG2(error, response, body) {
+    if (!error && response.statusCode == 200) {
+      const info = JSON.parse(body);
+      console.log('info', info);
+      console.log('body', body)
+      console.log(info.stargazers_count + " Stars");
+      console.log(info.forks_count + " Forks");
     }
-    next();
-};
-
-exports.normalizeData = (req, res, next) => {
-    const nameArr = req.body.name.split(' ');
-
-    req.body.first_name = nameArr.shift();
-    req.body.last_name = nameArr.join();
-
-    next();
-};
+  }
+  
 
 exports.upload = (req, res, next) => {
 
@@ -51,10 +23,11 @@ exports.upload = (req, res, next) => {
             if (err)
             return next();
             // upload products to DB
-            UploadProducts.uploadProducts(uploadPath);
+            UploadToDB.uploadProducts(uploadPath);
 
             // upload info about file to DB
-            UploadFile.uploadFileXML({
+            UploadFile.uploadFile
+({
                 'name': req.files.sampleFile.name,
                 'mimetype': req.files.sampleFile.mimetype
             });
@@ -79,4 +52,53 @@ exports.validationUploadFile = (req, res, next) => {
         return res.redirect('upload/');
     }
     next();
+};
+
+
+
+exports.uploadProductsFromG2 = (req, res, next) => {
+    var fullPayload;
+    var page = 1;
+    do {
+
+    var options = {
+        url: 'https://api.g2a-test.com/v1/products?page=', page,
+        headers: {
+          'Autorization': 'YVIiPPKwAkqzMLtF, 9cef38b30909ad6be27ed2a3a65cf3f01a72193aa457e65b3d4e420e065ab395'
+        }
+      };
+
+        var payload = JSON.parser(Request(options, getProductsFromG2)).docs;
+        console.log('payload: ', payload);
+        fullPayload = fullPayload + payload;
+        page = page + 1;
+    } while ((payload != "[]"));
+
+
+    let sampleFileName = "marketG2"
+    let uploadPath = 'uploading/' + new Date + "-" + sampleFileName;
+    fs.writeFile("/uploading/", fullPayload, function(err) {
+        if(err) {
+            return console.log(err);
+        }
+
+            console.log("The file was saved!");
+        }); 
+
+    sampleFile.mv(uploadPath, function(err) {
+        if (err)
+        return next();
+        // upload products to DB
+        UploadToDB.uploadProductsFromG2ToDB(fullPayload);
+
+        // upload info about file to DB
+        UploadFile.uploadFile({
+            'name': sampleFileName,
+            'mimetype': 'JSON'
+        });
+    });
+
+req.flash('form','ProductsForm ', sampleFileName, ', file uploaded!');
+res.redirect('upload/');
+    
 };

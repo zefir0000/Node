@@ -25,6 +25,14 @@ html
                         | schamat pliku xml dla naszego serwisu dostepny jest pod linkiem ;)
                     .actions
                         button.btn.btn--primary(@click="formLightbox = true") upload xml files
+
+                    h1.slogan__header
+                        | Upload Product form market
+                    p.slogan__text
+                        | Automatycznie pobiera produkty zapisujac je w bazie oraz w pliku.
+                    form.actions(action="/updateMarket" method="GET" )
+                        button.btn.btn--primary Upload products
+                    
                 footer.app-footer
                     | Design by Slawomir :)
             .lightbox(v-show="formLightbox == true" style="display: none;")
