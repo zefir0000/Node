@@ -18,14 +18,14 @@ router.get('/upload', PagesController.upload)
         ApplicationsController.validationUploadFile,
         ApplicationsController.upload
 );
-router.get('/updateMarket', ApplicationsController.uploadProductsFromG2)
+router.get('/updateMarket', ApplicationsController.uploadProductsFromG2A)
 
-router.post('/applications',
+/*router.post('/applications',
     ApplicationsController.validate,
     ApplicationsController.checkValidation,
     ApplicationsController.normalizeData,
     errorsHandler.catchAsync(ApplicationsController.store)
-);
+);*/
 router.get('/products', productsController.search);
 
 module.exports = router;

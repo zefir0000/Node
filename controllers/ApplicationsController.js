@@ -1,18 +1,9 @@
 const { check, validationResult } = require('express-validator/check');
 const UploadFile = require('../models/uploadfile');
 const UploadToDB = require('./UploadToDB');
-const Request = require('request');
+const axios = require('axios');
+const fs = require('fs');
 
-function getProductsFromG2(error, response, body) {
-    if (!error && response.statusCode == 200) {
-      const info = JSON.parse(body);
-      console.log('info', info);
-      console.log('body', body)
-      console.log(info.stargazers_count + " Stars");
-      console.log(info.forks_count + " Forks");
-    }
-  }
-  
 
 exports.upload = (req, res, next) => {
 
@@ -26,8 +17,7 @@ exports.upload = (req, res, next) => {
             UploadToDB.uploadProducts(uploadPath);
 
             // upload info about file to DB
-            UploadFile.uploadFile
-({
+            UploadFile.uploadFile({
                 'name': req.files.sampleFile.name,
                 'mimetype': req.files.sampleFile.mimetype
             });
@@ -38,7 +28,6 @@ exports.upload = (req, res, next) => {
 };
 
 exports.validationUploadFile = (req, res, next) => {
-
 
     if (Object.keys(req.files).length == 0) {
         res.status(400);
@@ -55,50 +44,31 @@ exports.validationUploadFile = (req, res, next) => {
 };
 
 
+exports.uploadProductsFromG2A = (req, res, next) => {
 
-exports.uploadProductsFromG2 = (req, res, next) => {
-    var fullPayload;
-    var page = 1;
-    do {
-
-    var options = {
-        url: 'https://api.g2a-test.com/v1/products?page=', page,
+    const g2aProducts = axios.create({
         headers: {
-          'Autorization': 'YVIiPPKwAkqzMLtF, 9cef38b30909ad6be27ed2a3a65cf3f01a72193aa457e65b3d4e420e065ab395'
+            'Authorization': 'qdaiciDiyMaTjxMt, 74026b3dc2c6db6a30a73e71cdb138b1e1b5eb7a97ced46689e2d28db1050875'
         }
-      };
+    })
+    var quantityPages = 6;
 
-        var payload = JSON.parser(Request(options, getProductsFromG2)).docs;
-        console.log('payload: ', payload);
-        fullPayload = fullPayload + payload;
-        page = page + 1;
-    } while ((payload != "[]"));
+    do {
+          g2aProducts.get('https://sandboxapi.g2a.com/v1/products?page=' + quantityPages)
+            .then(response => {
 
+            var products = response.data.docs;
 
-    let sampleFileName = "marketG2"
-    let uploadPath = 'uploading/' + new Date + "-" + sampleFileName;
-    fs.writeFile("/uploading/", fullPayload, function(err) {
-        if(err) {
-            return console.log(err);
-        }
+            UploadToDB.uploadProductsFromG2AToDB(products)
+          
+            console.log(products[0].id)
+            });
 
-            console.log("The file was saved!");
-        }); 
+        quantityPages--;
 
-    sampleFile.mv(uploadPath, function(err) {
-        if (err)
-        return next();
-        // upload products to DB
-        UploadToDB.uploadProductsFromG2ToDB(fullPayload);
+    } while (quantityPages > 0)
 
-        // upload info about file to DB
-        UploadFile.uploadFile({
-            'name': sampleFileName,
-            'mimetype': 'JSON'
-        });
-    });
-
-req.flash('form','ProductsForm ', sampleFileName, ', file uploaded!');
+req.flash('form','Product uploading!');
 res.redirect('upload/');
     
 };

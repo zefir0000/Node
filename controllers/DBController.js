@@ -3,7 +3,7 @@ const knex = require('knex')(dbConfig);
 
 exports.getProducts = (req, res) => {
     var name = require('url').parse(req.url,true).query.name;
-    knex.from('ProductsFromShopsEUR')
+    knex.from('ProductsFromShopsUSD')
     .where('title', 'like', name + '%')
     .andWhereRaw(`availability = "in stock"`)
     .then(function(SQLProducts){

@@ -4,7 +4,7 @@ const UploadFile = bookshelf.Model.extend({
     tableName: 'uploadFile'
 });
 
-module.exports.uploadFileXML = (uploadFile) => {
+module.exports.uploadFile = (uploadFile) => {
     return new UploadFile({
 
         name: uploadFile.name,

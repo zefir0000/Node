@@ -1,7 +1,7 @@
 const bookshelf = require('../config/bookshelf');
 
 const ProductsFromFile = bookshelf.Model.extend({
-    tableName: 'ProductsFromShopsEUR'
+    tableName: 'ProductsFromShopsUSD'
 });
 
 module.exports.uploadProductFromShop = (product, productExist) => {

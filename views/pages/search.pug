@@ -25,7 +25,7 @@ html
                         .actions_inline
                             button.btn.btn--primary(@click="return q.value") search
                         
-                    table.title 
+                    table.title(v-show="formTitle == true")
                         tr
                             th #{ SQLProducts[0].title }
                             th #{ SQLProducts[0].price } GBP

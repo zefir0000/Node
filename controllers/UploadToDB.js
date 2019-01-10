@@ -6,7 +6,7 @@ const knex = require('knex')(dbConfig);
 
 function getProductId(productId, shop) {
 
-    return knex('ProductsFromShopsEUR')
+    return knex('ProductsFromShopsUSD')
             .where('productId', productId)
             .where('shop', shop)
             .timeout(1000, { cancel:true });
@@ -27,7 +27,7 @@ exports.uploadProducts = async (uploadPath) => {
     var items = products.item;
     var quantityItems = items.length;
 
-    if (currency == 'EUR') {
+    if (currency == 'USD') {
         do {
             let item = items[--quantityItems];
             let priceWithCurrency = item.price._text;
@@ -35,7 +35,8 @@ exports.uploadProducts = async (uploadPath) => {
             let currency = (priceWithCurrency).slice(- 3);
             //let availabilityDate = (item.availability_date._text).substring(0,10); // get only date rrrr-mm-dd
 
-            getProductId(item.id._text, item.shop).then(function(productExist) {
+
+            getProductId(item.id._text, shop).then(function(productExist) {
                 uploadProductFromShop.uploadProductFromShop({
 
                     'productId': item.id._text,       
@@ -54,24 +55,25 @@ exports.uploadProducts = async (uploadPath) => {
     };
 }
 
-exports.uploadProductsFromG2ToDB = async (products) => {
+exports.uploadProductsFromG2AToDB = async (products) => {
 
     // upload info about products to DB
-    var shop = "Market G2";
-    var currency = "EUR";
+    var shop = "Market G2A";
+    var currency = "USD";
     var quantityItems = products.length;
-
     
         do {
             let item = products[--quantityItems];
-            let link = 'https://www.g2a.com/' + item.slug;
+            let link = 'https://www.g2a.com' + item.slug;
             let availability
             if (item.qty > 0) 
             {
                 availability = "in stock";
             } else { availability = "out of stock" }; // do poprawy na bool
+           
+            let prodId = item.id;
+            getProductId(prodId, shop).then(function(productExist) {
 
-            getProductId(item.id, item.shop).then(function(productExist) {
                 uploadProductFromShop.uploadProductFromShop({
 
                     'productId': item.id,

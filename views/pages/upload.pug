@@ -22,16 +22,15 @@ html
                     h1.slogan__header
                         | Upload XML file
                     p.slogan__text
+                        br
                         | schamat pliku xml dla naszego serwisu dostepny jest pod linkiem ;)
                     .actions
                         button.btn.btn--primary(@click="formLightbox = true") upload xml files
 
-                    h1.slogan__header
-                        | Upload Product form market
                     p.slogan__text
-                        | Automatycznie pobiera produkty zapisujac je w bazie oraz w pliku.
+                        | Update products from G2A.COm
                     form.actions(action="/updateMarket" method="GET" )
-                        button.btn.btn--primary Upload products
+                        button.btn.btn--primary Upload from G2A
                     
                 footer.app-footer
                     | Design by Slawomir :)
