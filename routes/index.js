@@ -25,6 +25,6 @@ router.post('/applications',
     ApplicationsController.normalizeData,
     errorsHandler.catchAsync(ApplicationsController.store)
 );
-router.get('/products', productsController.search);
+router.get('/products', DBController.getJson);
 
 module.exports = router;
