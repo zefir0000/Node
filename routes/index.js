@@ -12,6 +12,9 @@ router.get('/contact', PagesController.contact);
 router.get('/search', PagesController.search);
 
 router.get('/getProducts', DBController.getProducts)
+router.get('/getProd', DBController.getProd)
+
+
 
 router.get('/upload', PagesController.upload)
       .post('/upload', 

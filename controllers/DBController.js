@@ -6,11 +6,27 @@ exports.getProducts = (req, res) => {
     knex.from('ProductsFromShopsUSD')
     .where('title', 'like', name + '%')
     .andWhereRaw(`availability = "in stock"`)
+    .orderBy('title')
     .then(function(SQLProducts){
         res.statusCode = 200;
         console.log(SQLProducts);
         res.render('pages/search', {
             SQLProducts
         });
+    });
+};
+
+exports.getProd = (req, res) => {
+    var name = require('url').parse(req.url,true).query.name;
+    knex.from('ProductsFromShopsUSD')
+    .where('title', 'like', name + '%')
+    .andWhereRaw(`availability = "in stock"`)
+    .orderBy('title')
+    .limit(20)
+    .then(function(SQLProducts){
+        res.statusCode = 200;
+        console.log(SQLProducts);
+        res.json(SQLProducts)
+            
     });
 };
