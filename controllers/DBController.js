@@ -30,3 +30,17 @@ exports.getProd = (req, res) => {
             
     });
 };
+
+exports.getProductById = (req, res) => {
+    var id = require('url').parse(req.url,true).query.id;
+    console.log("path",id);
+    knex.from('ProductsFromShopsUSD')
+    .where('id', id)
+    .then(function(SQLProducts){
+        res.statusCode = 200;
+        console.log(SQLProducts);
+        res.json(SQLProducts)
+    });
+};
+
+

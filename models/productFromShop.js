@@ -18,6 +18,7 @@ module.exports.uploadProductFromShop = (product, productExist) => {
             availability: product.availability,
             shop: product.shop,
             brand: product.brand,
+            description: product.description,
             createdDate: createDate
             
             }).save(null, { method: 'insert'}).then(function(){
@@ -41,6 +42,7 @@ module.exports.uploadProductFromShop = (product, productExist) => {
             availability: product.availability,
             shop: product.shop,
             brand: product.brand,
+            description: product.description,
             createdDate: productExist[0].createdDate,
             updatedDate: updateDate
 

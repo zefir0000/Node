@@ -48,6 +48,7 @@ exports.uploadProducts = async (uploadPath) => {
                     'currency': currency,
                     'availability': item.availability._text,
                     'brand': item.brand._text,
+                    'description': item.description._text,
                     'shop': shop,
                  }, productExist);
     });
@@ -84,6 +85,7 @@ exports.uploadProductsFromG2AToDB = async (products) => {
                     'price': item.retail_min_price,
                     'currency': currency,
                     'availability': availability,
+                    'description': item.description,
                     'brand': item.platform,
                     'shop': shop,
                  }, productExist); // do poprawy na bool
@@ -92,6 +94,3 @@ exports.uploadProductsFromG2AToDB = async (products) => {
         } while (quantityItems > 0);
     
 }
-
-
-// (err) => { console.log('Error: ', err); }  !(JSON.stringify(productExist) == "[]")
