@@ -59,7 +59,7 @@ exports.uploadProducts = async (uploadPath) => {
 exports.uploadProductsFromG2AToDB = async (products) => {
 
     // upload info about products to DB
-    var shop = "Market G2A";
+    var shop = "G2A";
     var currency = "USD";
     var quantityItems = products.length;
     
@@ -73,7 +73,7 @@ exports.uploadProductsFromG2AToDB = async (products) => {
             } else { availability = "out of stock" }; // do poprawy na bool
            
             let prodId = item.id;
-            getProductId(prodId, shop).then(function(productExist) {
+            getProductId(prodId, shop).then(function(productExist) { // do poprawy exist bo cos nie bangla 
 
                 uploadProductFromShop.uploadProductFromShop({
 
@@ -81,14 +81,14 @@ exports.uploadProductsFromG2AToDB = async (products) => {
                     'title': item.name,
                     'description': item.description,
                     'link': link,
-                    'imageLink': item.thumbnail,
+                    'imageLink': item.smallImage,
                     'price': item.retail_min_price,
                     'currency': currency,
                     'availability': availability,
                     'description': item.description,
                     'brand': item.platform,
                     'shop': shop,
-                 }, productExist); // do poprawy na bool
+                 }, productExist); 
                  
         });
         } while (quantityItems > 0);

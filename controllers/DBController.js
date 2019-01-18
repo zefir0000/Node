@@ -21,7 +21,7 @@ exports.getProd = (req, res) => {
     knex.from('ProductsFromShopsUSD')
     .where('title', 'like', name + '%')
     .andWhereRaw(`availability = "in stock"`)
-    .orderBy('title')
+    .orderBy('price')
     .limit(20)
     .then(function(SQLProducts){
         res.statusCode = 200;
