@@ -15,6 +15,7 @@ router.get('/getProducts', DBController.getProducts)
 router.get('/getProd', DBController.getProd)
 router.get('/getProductById', DBController.getProductById)
 
+router.get('/getProductBase', DBController.getProductBase)
 
 
 
@@ -31,6 +32,6 @@ router.get('/updateMarket', ApplicationsController.uploadProductsFromG2A)
     ApplicationsController.normalizeData,
     errorsHandler.catchAsync(ApplicationsController.store)
 );*/
-router.get('/products', productsController.search);
+//router.get('/products', productsController.search);
 
 module.exports = router;

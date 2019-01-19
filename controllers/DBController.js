@@ -43,4 +43,21 @@ exports.getProductById = (req, res) => {
     });
 };
 
-
+exports.getProductBase = (req, res) => {
+    var id = require('url').parse(req.url,true).query.id;
+    console.log("path",id);
+    knex.min('ProductVariant.price as price')
+    .select('ProductVariant.title', 'ProductBase.productBaseId', 'ProductVariant.availability', 'ProductBase.image', 'ProductBase.platform')
+    .from('ProductVariant')
+    .rightJoin('ProductBase', function() {
+        this.on('ProductVariant.productBaseId', '=', 'ProductBase.productBaseId')
+    })
+    .where('ProductBase.title', 'like', 'rage' + '%')
+    .groupBy('ProductVariant.title', 'ProductBase.productBaseId', 'ProductVariant.availability')
+    .orderBy([{ column: 'ProductVariant.availability', order: 'desc' }, { column: 'price', order: 'asc' }])    
+    .then(function(SQLProducts){
+        res.statusCode = 200;
+        console.log(SQLProducts);
+        res.json(SQLProducts)
+    });
+};

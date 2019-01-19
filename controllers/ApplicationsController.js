@@ -1,6 +1,8 @@
 const { check, validationResult } = require('express-validator/check');
 const UploadFile = require('../models/uploadfile');
 const UploadToDB = require('./UploadToDB');
+const ProductController = require('./ProductController');
+
 const axios = require('axios');
 const fs = require('fs');
 
@@ -14,7 +16,7 @@ exports.upload = (req, res, next) => {
             if (err)
             return next();
             // upload products to DB
-            UploadToDB.uploadProducts(uploadPath);
+            ProductController.uploadProducts(uploadPath);
 
             // upload info about file to DB
             UploadFile.uploadFile({

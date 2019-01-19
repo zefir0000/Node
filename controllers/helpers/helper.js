@@ -1,5 +1,4 @@
 const axios = require('axios');
-const fs = require('fs');
 
 exports.getProductsFromG2A = () => {
     const g2aProducts = axios.create({
@@ -14,32 +13,14 @@ exports.getProductsFromG2A = () => {
 
        (async () => {
         await getItems();
-        console.log('helper',items.data.docs[0].id);
-        console.log('helper response',items.data.docs[0].id);
         return items;
       })();
-
-
-      console.log("asd", asd);
-
-
-
-// do { rejected!!!!
-//     function getitems {
-
-//         while(quantity >0){
-
-//         function getid(){
-
-//             if(){
-
-//             function add {
-//                 model
-//             }
-//             else {
-//             function update {
-//                 model
-//             }
-//         }
-//     }
 }
+
+function getProductId(productId, shop) {
+
+        return knex('ProductsFromShopsUSD')
+                .where('productId', productId)
+                .where('shop', shop)
+                .timeout(1000, { cancel:true });
+            };
