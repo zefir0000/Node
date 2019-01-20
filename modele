@@ -1,0 +1,116 @@
+products shop
+   
+    post
+        productId
+
+        idshop: productBase.id,        
+        title: productBase.title,
+        link: productBase.link,
+        image: productBase.image,
+        price: productBase.price,
+        availability: productBase.availability,
+        shop: productBase.shop
+
+    put /productId moje ??
+
+        idshop: productBase.id,        
+        title: productBase.title,
+        link: productBase.link,
+        image: productBase.image,
+        price: productBase.price,
+        availability: productBase.availability,
+
+    delete /{productId} 
+
+shop 
+    post
+        shopId
+        name(login)
+        email
+        link
+        description
+        rating
+        zaufany
+        images(logo)
+        support
+        delivery time
+        delivery method
+    put
+        name(login)
+        email
+        link
+        description
+        images(logo)
+        support
+        delivery time
+        delivery method
+
+    delete shops/{shopId}
+
+
+productCatalog
+
+get simpleProd query?{productId}
+        productId
+        priceBest
+        imagelink
+        title
+
+get FullProd /{productId}
+
+    post
+        productId     
+        title: productBase.title,
+        linksYoutube: productBase.link,
+        images: productBase.imagemy, 
+        linksArticle
+        wymaganiaSprzetowe (moze ze steama jak prodKatalog)
+        shopids[]
+    put /id
+
+komentarze do produktow
+    post
+        productId
+        commentId
+        commentParentId
+        ocena 
+        comment 
+        userid
+
+    put /{productId}/comment/{commentId}
+        comment
+        ocena
+        commentParentId
+    
+    delete /{productId}/comments/{commentId}
+
+komentarze do sklepow
+    post
+        shopId
+        commentShopId
+        commentShopParentId
+        ocena 
+        comment 
+        userid
+
+    put /{shopId}/commentsShop/{commentShopId}
+        comment
+        ocena
+        commentParentId
+    
+    delete /{shopId}/comments/{commentShopId}
+
+user 
+    post
+        userid
+        name(login)
+        email
+        pass
+        active
+
+
+
+
+
+
+

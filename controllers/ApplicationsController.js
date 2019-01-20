@@ -1,46 +1,11 @@
-const Application = require('../models/application');
 const { check, validationResult } = require('express-validator/check');
-const UploadFile = require('../models/uploadfile')
-const UploadProducts = require('./UploadToDB')
+const UploadFile = require('../models/uploadfile');
+const UploadToDB = require('./UploadToDB');
+const ProductController = require('./ProductController');
 
+const axios = require('axios');
+const fs = require('fs');
 
-exports.store = async (req, res, next) => {
-    await Application.create({
-        'name': req.body.name,
-        'phone': req.body.phone,
-        'message': req.body.message
-    });
-
-    req.flash('form', req.body.first_name + ', you are a true hero!');
-    res.redirect('/');
-};
-
-exports.validate = [
-    check('name').trim().isLength({ min: 1 }).withMessage('Name is required.'),
-    check('phone').isLength({ min: 1 }).withMessage('Phone is required.'),
-    check('message').isLength({ min: 1 }).withMessage('Message is required')
-];
-
-exports.checkValidation = (req, res, next) => {
-    const errors = validationResult(req);
-    if ( ! errors.isEmpty()) {
-        return res.render('home', {
-            validated: req.body,
-            errors: errors.mapped(),
-            showLightbox: 'true'
-        });
-    }
-    next();
-};
-
-exports.normalizeData = (req, res, next) => {
-    const nameArr = req.body.name.split(' ');
-
-    req.body.first_name = nameArr.shift();
-    req.body.last_name = nameArr.join();
-
-    next();
-};
 
 exports.upload = (req, res, next) => {
 
@@ -51,16 +16,16 @@ exports.upload = (req, res, next) => {
             if (err)
             return next();
             // upload products to DB
-            UploadProducts.uploadProducts(uploadPath);
+            ProductController.uploadProducts(uploadPath);
 
             // upload info about file to DB
-            UploadFile.uploadFileXML({
+            UploadFile.uploadFile({
                 'name': req.files.sampleFile.name,
                 'mimetype': req.files.sampleFile.mimetype
             });
         });
 
-    req.flash('form', sampleFile.name + ', file uploaded!');
+    req.flash('form', sampleFile.name, ', file uploaded!');
     res.redirect('upload/');
 };
 
@@ -78,4 +43,33 @@ exports.validationUploadFile = (req, res, next) => {
         return res.redirect('upload/');
     }
     next();
+};
+
+
+exports.uploadProductsFromG2A = (req, res, next) => {
+
+    const g2aProducts = axios.create({
+        headers: {
+            'Authorization': 'qdaiciDiyMaTjxMt, 74026b3dc2c6db6a30a73e71cdb138b1e1b5eb7a97ced46689e2d28db1050875'
+        }
+    })
+    var quantityPages = 6;
+
+    do {
+          g2aProducts.get('https://sandboxapi.g2a.com/v1/products?page=' + quantityPages)
+            .then(response => {
+
+            var products = response.data.docs;
+
+            UploadToDB.uploadProductsFromG2AToDB(products)
+          
+            });
+
+        quantityPages--;
+
+    } while (quantityPages > 0)
+
+req.flash('form','Product uploading!');
+res.redirect('upload/');
+    
 };

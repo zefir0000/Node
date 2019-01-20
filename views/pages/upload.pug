@@ -12,7 +12,7 @@ html
                         li.app-nav__list-item
                             a.app-nav__link.app-nav__link--is-active(href="/upload")  upload file xml
                         li.app-nav__list-item
-                            a.app-nav__link(href="/search")  search game
+                            a.app-nav__link(href="/getProducts?name=")  search game
                         li.app-nav__list-item
                             a.app-nav__link(href="#")  how it works?
                         li.app-nav__list-item
@@ -22,9 +22,16 @@ html
                     h1.slogan__header
                         | Upload XML file
                     p.slogan__text
+                        br
                         | schamat pliku xml dla naszego serwisu dostepny jest pod linkiem ;)
                     .actions
                         button.btn.btn--primary(@click="formLightbox = true") upload xml files
+
+                    p.slogan__text
+                        | Update products from G2A.COm
+                    form.actions(action="/updateMarket" method="GET" )
+                        button.btn.btn--primary Upload from G2A
+                    
                 footer.app-footer
                     | Design by Slawomir :)
             .lightbox(v-show="formLightbox == true" style="display: none;")

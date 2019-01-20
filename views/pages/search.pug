@@ -25,40 +25,44 @@ html
                         .actions_inline
                             button.btn.btn--primary(@click="return q.value") search
                         
-                    table.title 
+                    table.title
                         tr
                             th #{ SQLProducts[0].title }
-                            th #{ SQLProducts[0].price } GBP
+                            th #{ SQLProducts[0].price } USD
+                            th #{ SQLProducts[0].shop }
                         tr 
                             th #{ SQLProducts[1].title }
-                            th #{ SQLProducts[1].price } GBP
+                            th #{ SQLProducts[1].price } USD
+                            th #{ SQLProducts[1].shop }
                         tr 
-                            th #{ SQLProducts[2].title }
-                            th #{ SQLProducts[2].price } GBP
+                            th #{ SQLProducts[2].title } 
+                            th #{ SQLProducts[2].price } USD
+                            th #{ SQLProducts[2].shop }
                         tr 
                             th #{ SQLProducts[3].title }
-                            th #{ SQLProducts[3].price } GBP
-                        tr 
-                            th #{ SQLProducts[4].title }
-                            th #{ SQLProducts[4].price } GBP
-                        tr 
-                            th #{ SQLProducts[5].title }
-                            th #{ SQLProducts[5].price } GBP
-                        tr 
-                            th #{ SQLProducts[6].title }
-                            th #{ SQLProducts[6].price } GBP
-                        tr 
-                            th #{ SQLProducts[7].title }
-                            th #{ SQLProducts[7].price } GBP
-                        tr 
-                            th #{ SQLProducts[8].title }
-                            th #{ SQLProducts[8].price } GBP
-                        tr 
-                            th #{ SQLProducts[9].title }
-                            th #{ SQLProducts[9].price } GBP
-                        tr 
-                            th #{ SQLProducts[10].title }
-                            th #{ SQLProducts[10].price } GBP
+                            th #{ SQLProducts[3].price } USD
+                            th #{ SQLProducts[3].shop }
+                        //- tr 
+                        //-     th #{ SQLProducts[4].title }
+                        //-     th #{ SQLProducts[4].price } USD
+                        //- tr 
+                        //-     th #{ SQLProducts[5].title }
+                        //-     th #{ SQLProducts[5].price } USD
+                        //- tr 
+                        //-     th #{ SQLProducts[6].title }
+                        //-     th #{ SQLProducts[6].price } USD
+                        //- tr 
+                        //-     th #{ SQLProducts[7].title }
+                        //-     th #{ SQLProducts[7].price } USD
+                        //- tr 
+                        //-     th #{ SQLProducts[8].title }
+                        //-     th #{ SQLProducts[8].price } USD
+                        //- tr 
+                        //-     th #{ SQLProducts[9].title }
+                        //-     th #{ SQLProducts[9].price } USD
+                        //- tr 
+                        //-     th #{ SQLProducts[10].title }
+                        //-     th #{ SQLProducts[10].price } USD
                  
                 footer.app-footer
                     | Design by Slawomir :)
