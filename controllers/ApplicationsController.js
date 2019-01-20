@@ -63,7 +63,6 @@ exports.uploadProductsFromG2A = (req, res, next) => {
 
             UploadToDB.uploadProductsFromG2AToDB(products)
           
-            console.log(products[0].id)
             });
 
         quantityPages--;

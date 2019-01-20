@@ -15,6 +15,9 @@ router.get('/getProducts', DBController.getProducts)
 router.get('/getProd', DBController.getProd)
 router.get('/getProductById', DBController.getProductById)
 
+router.get('/getProductById', DBController.getProductById)
+
+router.get('/getProductBaseRelated', DBController.getProductVariantByBaseId)
 router.get('/getProductBase', DBController.getProductBase)
 
 
