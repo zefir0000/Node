@@ -58,18 +58,31 @@ exports.uploadProductsFromG2A = (req, res, next) => {
     do {
           g2aProducts.get('https://sandboxapi.g2a.com/v1/products?page=' + quantityPages)
             .then(response => {
-
             var products = response.data.docs;
-
             UploadToDB.uploadProductsFromG2AToDB(products)
-          
             });
 
         quantityPages--;
-
     } while (quantityPages > 0)
 
 req.flash('form','Product uploading!');
 res.redirect('upload/');
     
+};
+
+exports.trustpilot = (req, res, next) => {
+
+    axios.get('https://trustpilot.com/review/eneba.com')
+            .then(response => {
+
+            var products = response.data;
+            var begin = products.indexOf('<script type="application/ld+json" data-business-unit-json-ld>')
+            var string = (products.substring(begin + 62));
+            var end = string.indexOf('</script>');
+            var final = string.substring(0,end);
+            
+                console.log(end)
+                console.log(final)
+          
+            });
 };

@@ -15,11 +15,11 @@ router.get('/getProducts', DBController.getProducts)
 router.get('/getProd', DBController.getProd)
 router.get('/getProductById', DBController.getProductById)
 
-router.get('/getProductById', DBController.getProductById)
-
+// Products
 router.get('/getProductBaseRelated', DBController.getProductVariantByBaseId)
 router.get('/getProductBase', DBController.getProductBase)
-
+// Market
+router.get('/market', DBController.market)
 
 
 router.get('/upload', PagesController.upload)
@@ -28,6 +28,9 @@ router.get('/upload', PagesController.upload)
         ApplicationsController.upload
 );
 router.get('/updateMarket', ApplicationsController.uploadProductsFromG2A)
+
+router.get('/trustpilot', ApplicationsController.trustpilot)
+
 
 /*router.post('/applications',
     ApplicationsController.validate,
