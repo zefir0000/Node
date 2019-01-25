@@ -1,6 +1,28 @@
 trustpilot zaimplementowac raiting dla marketow
     podal mi link do developa
 
-matchowanie produktow ze soba nie powielanie produktow (najnizsza cena wygrywa)
-dorobic produkty bazowe z variantami dla sklepow
 jeden opis ze zdjeciami i filmami parametrami etc
+ w panelu administracyjnym
+CRUD dla marketów 
+    name 
+    image
+    description
+    trustpilot url
+    support
+    dane firmy
+
+CRUD dla ProductBase
+    to co jest w db
+    moze jeszcze film (wlasnyYT) po konsultacji
+
+zabezpieczenie panelu administratora
+posprzatanie panelu administracyjnego (kod, view)
+obsluga html
+
+na froncie 
+    wyswietlanie marketow
+    wyswietlanie truspilot w marketach
+
+
+
+
