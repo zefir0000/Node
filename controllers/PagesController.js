@@ -21,3 +21,10 @@ exports.search = (req, res) => {
         formMessage: req.flash('form')
     });
 };
+
+exports.market = (req, res) => {
+    res.render('pages/market', {
+        formMessage: req.flash('form')
+    });
+};
+

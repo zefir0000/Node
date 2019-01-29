@@ -1,6 +1,7 @@
 const dbConfig = require('../config/dbConfig')
 const knex = require('knex')(dbConfig);
 const marketModel = require('../models/market/market')
+const { check, validationResult } = require('express-validator/check');
 
 
 exports.getMarket = (req, res) => { 
@@ -13,15 +14,21 @@ exports.getMarket = (req, res) => {
     });
 };
 
-exports.createMarket = (req, res) => { 
+exports.createMarket = (req, res, next) => { 
     marketModel.createMarket({
         'name': req.body.name,
         'support': req.body.support,
         'logo': req.body.logo,
-        'link': req.body.link, 
+        'link': req.body.linkMarket, 
         'description': req.body.description,
-        'rating': req.body.rating,
-     }).catch((err) => { console.log(err); err.status(400); return err });
+        'raiting': req.body.raiting,
+        'adress': req.body.adress,
+     }).catch((err) => { console.log(err); 
+        res.flash('form','Something went wrong with ' + req.body.name + ' ' + err);
+        return err });
+     
+req.flash('form','Added market! ' + req.body.name);
+res.redirect('getMarket?name=');
 };
 
 exports.updateMarket = (req, res) => { 
@@ -33,7 +40,7 @@ exports.updateMarket = (req, res) => {
         'link': req.body.link, 
         'description': req.body.description,
         'rating': req.body.rating,
-     }).catch((err) => { console.log(err); err.status(400); return err });
+     }).catch((err) => { console.log(err); return err });
 };
 
 exports.deleteMarket = (req, res) => { 

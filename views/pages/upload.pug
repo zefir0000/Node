@@ -12,11 +12,11 @@ html
                         li.app-nav__list-item
                             a.app-nav__link.app-nav__link--is-active(href="/upload")  upload file xml
                         li.app-nav__list-item
-                            a.app-nav__link(href="/getProducts?name=")  search game
+                            a.app-nav__link(href="/getProducts?name=")  Search Game
                         li.app-nav__list-item
-                            a.app-nav__link(href="#")  how it works?
+                            a.app-nav__link(href="/getMarket?name=")  markets
                         li.app-nav__list-item
-                            a.app-nav__link(href="/contact")  contact
+                            a.app-nav__link(href="#")  contact
             .wrapper
                 section.slogan
                     h1.slogan__header
@@ -33,7 +33,6 @@ html
                         button.btn.btn--primary Upload from G2A
                     
                 footer.app-footer
-                    | Design by Slawomir :)
             .lightbox(v-show="formLightbox == true" style="display: none;")
                 .lightbox__content
                     h2.lightbox__header Upload your xml files
