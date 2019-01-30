@@ -39,4 +39,18 @@ exports.market = (req, res) => {
         })
     });
 };
+exports.editMarket = (req, res) => {
+    var marketId = (req.url.substring(req.url.indexOf('editMarket/') + 11));
+    knex.from('Market')
+    .where('marketId', marketId)
+    .then(function(market) {
+        res.statusCode = 200;
+        console.log(market, ' market where jest adres')
+        res.render('market/editMarket', { 
+            
+            market, 
+            formMessage: req.flash('form')
+        })
+    });
+};
 

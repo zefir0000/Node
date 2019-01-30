@@ -25,7 +25,8 @@ router.get('/getProductBase', DBController.getProductBase)
 router.get('/market', PagesController.market)
       .post('/marketAdd', 
         errorsHandler.catchAsync(MarketController.createMarket))
-      .put('/market/:marketId', MarketController.updateMarket)  
+      .get('/editMarket/:marketId', PagesController.editMarket)
+      .post('/editMarket/:marketId', MarketController.updateMarket)  
       .post('/delMarket/:marketId', MarketController.deleteMarket)  
     
 // File
