@@ -1,3 +1,6 @@
+const dbConfig = require('../config/dbConfig')
+const knex = require('knex')(dbConfig);
+
 exports.home = (req, res) => {
     res.render('home', {
         formMessage: req.flash('form')
@@ -23,8 +26,17 @@ exports.search = (req, res) => {
 };
 
 exports.market = (req, res) => {
-    res.render('pages/market', {
-        formMessage: req.flash('form')
+    var name = require('url').parse(req.url,true).query.name;
+    if(!name) {name = ""}
+
+    knex.from('Market')
+    .where('name', 'like', '%' + name + '%')
+    .then(function(markets) {
+        res.statusCode = 200;
+        res.render('pages/market', { 
+            markets, 
+            formMessage: req.flash('form')
+        })
     });
 };
 

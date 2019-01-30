@@ -5,15 +5,13 @@ const PagesController = require('../controllers/PagesController');
 const ApplicationsController = require('../controllers/ApplicationsController');
 const DBController = require('../controllers/DBController');
 const MarketController = require('../controllers/MarketController');
-const AdminMarketController = require('../controllers/admin/AdminMarketCotroller');
-
-
 const errorsHandler = require('../middlewares/errors');
+
+
 // Pages
 router.get('/', PagesController.home);
 router.get('/contact', PagesController.contact);
 router.get('/search', PagesController.search);
-router.get('/market', PagesController.market);
 
 // zaorac
 router.get('/getProducts', DBController.getProducts)
@@ -24,10 +22,11 @@ router.get('/getProductById', DBController.getProductById)
 router.get('/getProductBaseRelated', DBController.getProductVariantByBaseId)
 router.get('/getProductBase', DBController.getProductBase)
 // Market
-router.get('/getMarket', AdminMarketController.getMarket)
-      .post('/market', MarketController.createMarket)
+router.get('/market', PagesController.market)
+      .post('/marketAdd', 
+        errorsHandler.catchAsync(MarketController.createMarket))
       .put('/market/:marketId', MarketController.updateMarket)  
-      .delete('/market/:marketId', MarketController.deleteMarket)  
+      .post('/delMarket/:marketId', MarketController.deleteMarket)  
     
 // File
 router.get('/upload', PagesController.upload)

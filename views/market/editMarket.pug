@@ -18,7 +18,7 @@ html
                         li.app-nav__list-item
                             a.app-nav__link(href="/contact")  contact
 
-            .lightbox(v-show="formLightbox == true" style="display: none;")
+            .lightbox
                 .lightbox__content
                     button.btn(@click="formLightbox = false") X
                     h1.lightbox__header Add Market
@@ -59,43 +59,42 @@ html
 
             .wrapper
 
-                section.search
+                //- section.search
 
-                        h1.search__header
-                        button.btn.btn--primary(@click="formLightbox = true") Add market
-                        form.search__form(action='/market' method="GET" role="search" type="search")
-                            input.search__input(placeholder="Find market" type="text" name="name")
-                            .actions_inline
-                                button.btn.btn--primary(@click="return q.value") search
+                //-         h1.search__header
+                //-         button.btn.btn--primary(@click="formLightbox = true") Add market
+                //-         form.search__form(action='/market' method="GET" role="search" type="search")
+                //-             input.search__input(placeholder="Find market" type="text" name="name")
+                //-             .actions_inline
+                //-                 button.btn.btn--primary(@click="return q.value") search
 
                     
-                table.table__style
-                            thead
-                                tr
-                                    th.name_column Name
-                                    th.link_column Home Page link
-                                    th.logo_column Logo
-                                    th.trustpilot_column TrustPilot
-                                    th.description_column description
-                                    th.support_column support contact
-                                    th.adress_column adress
-                                    th.action_column action
+                //- table.table__style
+                //-             thead
+                //-                 tr
+                //-                     th.name_column Name
+                //-                     th.link_column Home Page link
+                //-                     th.logo_column Logo
+                //-                     th.trustpilot_column TrustPilot
+                //-                     th.description_column description
+                //-                     th.support_column support contact
+                //-                     th.adress_column adress
+                //-                     th.action_column action
 
                                     
-                            for market in markets
-                              table.table__style
-                                tr 
-                                    th.name_column= market.name
-                                    th.link_column= market.link
-                                    th.logo_column= market.logo
-                                    th.trustpilot_column= market.raiting
-                                    th.description_column= market.description
-                                    th.support_column= market.support
-                                    th.adress_column= market.adress
-                                    th.action_column
-                                        form(action='/delMarket/'+ market.marketId method="POST" )
-                                            .actions
-                                                button.btn.btn--primary(@click="") del
+                //-             for market in markets
+                //-               table.table__style
+                //-                 tr 
+                //-                     th.name_column= market.name
+                //-                     th.link_column= market.link
+                //-                     th.logo_column= market.logo
+                //-                     th.trustpilot_column= market.raiting
+                //-                     th.description_column= market.description
+                //-                     th.support_column= market.support
+                //-                     th.adress_column= market.adress
+                //-                     th.action_column
+                //-                         .actions
+                //-                             button.btn.btn--primary(@click="editLightbox = true") edit
                  
                 footer.app-footer
 
