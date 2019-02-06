@@ -58,8 +58,8 @@ body { margin: 0; background: #222; color: #fafafa; font-family: 'Montserrat', s
 
 .table__style {
     width: 100%;
-        border: 2px solid #1C6EA4;
-        text-align: left;
+        border: 2px solid rgb(71, 71, 71);
+        text-align: center;
         border-collapse: collapse;
       }
       table.table__style td, table.table__style th {
@@ -69,14 +69,7 @@ body { margin: 0; background: #222; color: #fafafa; font-family: 'Montserrat', s
       table.table__style tbody td {
         font-size: 13px;
       }
-      table.table__style tr:nth-child(even) {
-        background: #D0E4F5;
-      }
       table.table__style thead {
-        background: #1C6EA4;
-        background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
-        background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
-        background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
         border-bottom: 2px solid #444444;
       }
       table.table__style thead th {
@@ -94,13 +87,6 @@ body { margin: 0; background: #222; color: #fafafa; font-family: 'Montserrat', s
       }
       table.table__style tfoot .links {
         text-align: right;
-      }
-      table.table__style tfoot .links a{
-        display: inline-block;
-        background: #1C6EA4;
-        color: #FFFFFF;
-        padding: 2px 8px;
-        border-radius: 5px;
       }
 .title_column { width: 500px }
 .price_column { width: 100px }
