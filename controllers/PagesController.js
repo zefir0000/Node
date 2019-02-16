@@ -19,17 +19,12 @@ exports.upload = (req, res) => {
     });
 };
 
-exports.search = (req, res) => {
-    res.render('pages/search', {
-        formMessage: req.flash('form')
-    });
-};
 // productBase Admin
 exports.productBase = (req, res) => {
     var title = require('url').parse(req.url,true).query.name;
     if(!title) { title = "" }
 
-    knex.from('ProductBase')
+        knex.from('ProductBase')
     .limit(100)
     .where('title', 'like', '%' + title + '%')
     .then(function(productsBase) {
@@ -53,11 +48,22 @@ exports.editProductBase = (req, res) => {
         })
     });
 };
-// market Admin
 exports.market = (req, res) => {
     var name = require('url').parse(req.url,true).query.name;
     if(!name) {name = ""}
 
+    knex.from('Market')
+    .where('name', 'like', '%' + name + '%')
+    .then(function(markets) {
+        res.statusCode = 200;
+        res.json(markets)
+    });
+};
+
+// market Admin
+exports.getMarket = (req, res) => {
+    var name = require('url').parse(req.url,true).query.name;
+    if(!name) {name = ""}
     knex.from('Market')
     .where('name', 'like', '%' + name + '%')
     .then(function(markets) {
@@ -108,6 +114,17 @@ exports.editNews = (req, res) => {
             news, 
             formMessage: req.flash('form')
         })
+    });
+};
+// mems Admin
+exports.mems = (req, res) => {
+    knex.from('Mems')
+    .then(function(mems) {
+        res.statusCode = 200;
+        res.render('pages/mem', { 
+            mems,
+            formMessage: req.flash('form')
+        }) 
     });
 };
 

@@ -8,14 +8,15 @@ html
                 nav.app-nav
                     ul.app-nav__list
                         li.app-nav__list-item
-                            a.app-nav__link(href="/productBase") product base
+                            a.app-nav__link.app-nav__link--is-active(href="/productBase") product base
                         li.app-nav__list-item
                             a.app-nav__link(href="/upload")  upload file xml
                         li.app-nav__list-item
-                            a.app-nav__link.app-nav__link--is-active(href="/getProducts?name=")  Search Game
+                            a.app-nav__link(href="/news")  news
                         li.app-nav__list-item
-                            a.app-nav__link(href="/market")  markets
-                        
+                            a.app-nav__link(href="/getMarket")  markets
+                        li.app-nav__list-item
+                            a.app-nav__link(href="/mems")  mems
                         li.app-nav__list-item
                             a.app-nav__link(href="#")  contact
 
@@ -50,7 +51,7 @@ html
                 section.search
                     h1.search__header
                     button.btn.btn--primary(@click="formLightbox = true") Add produc Base
-                    form.search__form(action='/getProductsBase' method="GET" role="search" type="search")
+                    form.search__form(action='/productBase' method="GET" role="search" type="search")
                         input.search__input(placeholder="What games you want buy" type="text" name="name")
                         .actions_inline
                             button.btn.btn--primary(@click="return q.value") search
