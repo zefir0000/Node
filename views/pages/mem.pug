@@ -1,7 +1,7 @@
 html
     head
         link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700")
-        link(rel="stylesheet" href="/css/market.css")
+        link(rel="stylesheet" href="/css/mems.css")
     body
         .home.dog-app(data-lightbox=showLightbox)
             header.app-header
@@ -31,22 +31,26 @@ html
                             button.btn.btn--primary Accept
 
             .wrapper
-                section.slogan
+                center
+                    section.slogan
                         .actions
                             button.btn.btn--primary(@click="formLightbox = true") upload mem files
-                
-                table.table__style        
+                    
+                    table.table__style        
                             for mem in mems
-                              table.table__style
                                 tr 
                                     th.name_column= mem.patchFile
-                                    th.link_column= mem.createdDate
-                                    td 
-                                      img(src=mem.patchFile, height='250')
+                                tr
+                                    th 
+                                      img(src= mem.patchFile, height='250')
+                                tr
+                                    th.name_column= mem.createdDate
+                                tr
                                     th.action_column
                                         form(action='/delMem/'+ mem.memId method="POST" )
                                             .actions
                                                 button.btn.btn--primary(@click="") del
+
                 footer.app-footer
 
             if (formMessage && formMessage.length)

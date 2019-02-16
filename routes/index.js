@@ -56,10 +56,11 @@ router.get('/upload', PagesController.upload)
 
 // Mems
 router.get('/mems', PagesController.mems)
+      .get('/getMems',FrontCotroller.getMems)
       .post('/uploadMem', 
         UploadController.validationMemFile,
         errorsHandler.catchAsync(UploadController.uploadMems))
-
+      .post('/delMem/:memId', UploadController.deleteMem)  
 
 router.get('/trustpilot', UploadController.trustpilot)
 

@@ -1,6 +1,8 @@
 const { check, validationResult } = require('express-validator/check');
 const UploadFile = require('../models/uploadfile');
 const ProductController = require('./ProductController');
+const dbConfig = require('../config/dbConfig')
+const knex = require('knex')(dbConfig);
 const axios = require('axios');
 const fs = require('fs');
 
@@ -69,17 +71,14 @@ res.redirect('upload/');
 exports.trustpilot = (req, res, next) => { // zaimplementowac pobieranie po nazwie marketu 
 
     axios.get('https://trustpilot.com/review/g2a.com')
-            .then(response => {
+        .then(response => {
 
-            var products = response.data;
-            var begin = products.indexOf('<script type="application/ld+json" data-business-unit-json-ld>')
-            var string = (products.substring(begin + 62));
-            var end = string.indexOf('</script>');
-            var final = string.substring(0,end);
-            // return zwrotki wraz z jej wyslaniem do bazy danych wraz z id marketu
-                console.log(end)
-                console.log(final)
-          
+        var products = response.data;
+        var begin = products.indexOf('<script type="application/ld+json" data-business-unit-json-ld>')
+        var string = (products.substring(begin + 62));
+        var end = string.indexOf('</script>');
+        var final = string.substring(0,end);
+            // return zwrotki FINAL wraz z jej wyslaniem do bazy danych wraz z id marketu      
             });
 };
 
@@ -87,6 +86,7 @@ exports.uploadMems = (req, res, next) => {
 
     let sampleFile = req.files.sampleFile;
     let patch = 'uploadMems/' + new Date + "-" + sampleFile.name
+    
     let uploadPath = 'public/' + patch;
 
     sampleFile.mv(uploadPath, function(err) {
@@ -101,8 +101,8 @@ exports.uploadMems = (req, res, next) => {
         });
     });
 
-req.flash('form', sampleFile.name, ', mem uploaded!');
-res.redirect('mems');
+    req.flash('form', sampleFile.name, ', mem uploaded!');
+    res.redirect('mems');
 };
 
 exports.validationMemFile = (req, res, next) => {
@@ -110,13 +110,37 @@ exports.validationMemFile = (req, res, next) => {
 if (Object.keys(req.files).length == 0) {
     res.status(400);
     req.flash('form', 'File not exist');
-    return res.redirect('mems/');
+    return res.redirect('mems');
 }
 var mime = req.files.sampleFile.mimetype;
 if (!(mime === "image/jpeg" || mime === "image/png"|| mime === "image/gif"|| mime === "image/x-ms-bmp")) {
     res.status(400);
     req.flash('form', req.files.sampleFile.name + ' is not image file (jpg/jepg/bmp/png/gif)');
-    return res.redirect('mems/');
+    return res.redirect('mems');
 }
 next();
+};
+
+exports.deleteMem = (req, res) => {
+    knex.from('Mems')
+        .where('memId', req.params.memId)
+        .then(function (mems) {
+            path = 'public/' + mems[0].patchFile
+            console.log(path)
+            fs.unlink(Buffer.from(path), (err) => {
+                if (err) {
+                console.log('fail deleted ', mems[0].patchFile, err)
+            } else { console.log('successfully deleted ', mems[0].patchFile) }
+              });
+
+            res.statusCode = 204;
+            knex.from('Mems')
+                .where('memId', req.params.memId)
+                .del()
+                .then(function () {
+                    res.statusCode = 204;
+                    req.flash('Deleted Mem with id: ', req.params.memId, ' succeed!');
+                    res.redirect('../mems')
+                });
+        });
 };

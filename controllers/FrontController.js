@@ -1,6 +1,7 @@
 const dbConfig = require('../config/dbConfig')
 const knex = require('knex')(dbConfig);
 const newsModel = require('../models/news/news')
+const random = require('../helper/Random');
 const { check, validationResult } = require('express-validator/check');
 
 exports.getNews = (req, res) => {
@@ -75,6 +76,16 @@ exports.updateNews = async (req, res) => {
         req.flash('form', 'Something went wrong with: ' + news.sqlMessage);
         res.redirect('../news');
     }
+};
+
+exports.getMems = (req, res) => {
+    knex.from('Mems')
+        .then(function (mems) {
+            let lengthMem = mems.length
+            randomMem = random(0,lengthMem)
+            res.json(mems[randomMem])
+            res.statusCode = 200;
+        });
 };
 
 
