@@ -81,8 +81,9 @@ exports.updateNews = async (req, res) => {
 exports.getMems = (req, res) => {
     knex.from('Mems')
         .then(function (mems) {
-            let lengthMem = mems.length
+            let lengthMem = mems.length - 1
             randomMem = random(0,lengthMem)
+            console.log(mems[randomMem])
             res.json(mems[randomMem])
             res.statusCode = 200;
         });

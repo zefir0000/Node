@@ -85,10 +85,8 @@ exports.trustpilot = (req, res, next) => { // zaimplementowac pobieranie po nazw
 exports.uploadMems = (req, res, next) => {
 
     let sampleFile = req.files.sampleFile;
-    let patch = 'uploadMems/' + new Date + "-" + sampleFile.name
-    
+    let patch = ('uploadMems/' + sampleFile.name).replace(/ /g, "-")
     let uploadPath = 'public/' + patch;
-
     sampleFile.mv(uploadPath, function(err) {
         if (err)
         return next();
