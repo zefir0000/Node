@@ -20,13 +20,17 @@ exports.getProductVariantByBaseId = (req, res) => {
 exports.getProductBase = (req, res) => {
     var name = require('url').parse(req.url,true).query.name;
     var currency = require('url').parse(req.url,true).query.currency;
+    var title = name.replace(/ /g, "%")
+
+    console.log('name = ', name, 'curr = ', currency, 'title', title)
+
     knex.min('ProductVariant.price as price')
         .select('ProductVariant.title', 'ProductBase.productBaseId', 'ProductVariant.availability', 'ProductBase.image', 'ProductBase.platform', 'ProductVariant.currency')
         .from('ProductVariant')
         .rightJoin('ProductBase', function() {
             this.on('ProductVariant.productBaseId', '=', 'ProductBase.productBaseId')
         })
-        .where('ProductBase.title', 'like','%' + name + '%').andWhere('ProductVariant.currency', currency)
+        .where('ProductBase.title', 'like','%' + title + '%').andWhere('ProductVariant.currency', currency)
         .groupBy('ProductVariant.title', 'ProductBase.productBaseId', 'ProductVariant.availability')
         .orderBy([{ column: 'ProductVariant.availability', order: 'desc' }, { column: 'price', order: 'asc' }])    
         .limit(50)

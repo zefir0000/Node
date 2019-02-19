@@ -28,7 +28,7 @@ exports.getTopTen = (req, res) => {
     .rightJoin('ProductBase', function() {
         this.on('ProductVariant.productBaseId', '=', 'ProductBase.productBaseId')
     })
-    .where('ProductBase.title', 'like','%' + "rage" + '%').andWhere('ProductVariant.currency', "USD")
+    .where('ProductBase.topTen', 1).andWhere('ProductVariant.currency', "USD")
     .groupBy('ProductVariant.title', 'ProductBase.productBaseId', 'ProductVariant.availability')
     .orderBy([{ column: 'ProductVariant.availability', order: 'desc' }, { column: 'price', order: 'asc' }])    
     .limit(10)

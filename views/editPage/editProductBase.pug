@@ -10,7 +10,7 @@ html
                     form.lightbox__form(action="/productBase" method="GET")
                         button.btn(@click="") X
                     h1.lightbox__header Edit Product base
-                    form.lightbox__form(action="/productBase/"+ productBase[0].productBaseId method="POST")
+                    form.lightbox__form(action="/editproductBase/"+ productBase[0].productBaseId method="POST")
    
                         .lightbox__form-control
                             label.lightbox__label Product title
@@ -19,9 +19,9 @@ html
                                 p.lightbox__error #{ errors.title.msg }
                         .lightbox__form-control
                             label.lightbox__label Image
-                            input.lightbox__input(placeholder="www.image.image.jpg" type="text" name="imageLink" value=productBase[0].imageLink )
-                            if (errors && errors.imageLink)
-                                p.lightbox__error #{ errors.imageLink.msg }
+                            input.lightbox__input(placeholder="www.image.image.jpg" type="text" name="image" value=productBase[0].image )
+                            if (errors && errors.image)
+                                p.lightbox__error #{ errors.image.msg }
                         .lightbox__form-control
                             label.lightbox__label Description
                             input.lightbox__input(placeholder="product description" type="text" name="description" value=productBase[0].description)
@@ -29,6 +29,11 @@ html
                         .lightbox__form-control
                             label.lightbox__label platforma/brand
                             input.lightbox__input(placeholder="steam/origin" type="text" name="platform" value=productBase[0].platform)
+                        
+                        .lightbox__form-control
+                            p.lightbox__label=productBase[0].topTen
+                            label.lightbox__label TopTen productBase[0].topTen
+                            input.lightbox__input(type="checkbox" name="topTen" productBase[0].topTen ? value ="1" : checked)
                            
                         .lightbox__actions
                             button.btn.btn--primary Accept

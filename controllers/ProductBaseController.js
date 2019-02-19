@@ -18,7 +18,7 @@ exports.getProductBase = (req, res) => {
 exports.createProductBase = async (req, res, next) => {
     var productBase = await productBaseModel.createProductBase({
         'title': req.body.title,
-        'imageLink': req.body.imageLink,
+        'image': req.body.image,
         'description': req.body.description,
         'platform': req.body.platform,
     }).catch((err) => {
@@ -36,16 +36,20 @@ exports.createProductBase = async (req, res, next) => {
 };
 
 exports.updateProductBase = async (req, res) => {
-    var productBaseId = (req.url.substring(req.url.indexOf('editProductBase/') + 16));
+    
+    var productBaseId = (req.url.substring(req.url.indexOf('editProductBase/') + 18));
     var productBase = await productBaseModel.updateProductBase({
         'productBaseId': productBaseId,
         'title': req.body.title,
-        'imageLink': req.body.imageLink,
+        'image': req.body.image,
         'description': req.body.description,
         'platform': req.body.platform,
+        'topTen': req.body.topTen
+
     }).catch((err) => { console.log(err); return err });
 
     if (productBase.sqlMessage == undefined) {
+        console.log('step2')
         req.flash('form', 'Edited product base! ' + productBaseId + '');
         res.redirect('../productBase');
     } else {
