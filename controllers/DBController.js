@@ -22,8 +22,6 @@ exports.getProductBase = (req, res) => {
     var currency = require('url').parse(req.url,true).query.currency;
     var title = name.replace(/ /g, "%")
 
-    console.log('name = ', name, 'curr = ', currency, 'title', title)
-
     knex.min('ProductVariant.price as price')
         .select('ProductVariant.title', 'ProductBase.productBaseId', 'ProductVariant.availability', 'ProductBase.image', 'ProductBase.platform', 'ProductVariant.currency')
         .from('ProductVariant')
@@ -35,7 +33,6 @@ exports.getProductBase = (req, res) => {
         .orderBy([{ column: 'ProductVariant.availability', order: 'desc' }, { column: 'price', order: 'asc' }])    
         .limit(50)
         .then(function(SQLProducts){
-            console.log(SQLProducts)
             res.statusCode = 200;
             res.json(SQLProducts)
     });

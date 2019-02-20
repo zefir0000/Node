@@ -28,12 +28,13 @@ exports.getTopTen = (req, res) => {
     .rightJoin('ProductBase', function() {
         this.on('ProductVariant.productBaseId', '=', 'ProductBase.productBaseId')
     })
-    .where('ProductBase.topTen', 1).andWhere('ProductVariant.currency', "USD")
+    .whereNotNull('ProductBase.topTen').andWhere('ProductVariant.currency', "USD")
     .groupBy('ProductVariant.title', 'ProductBase.productBaseId', 'ProductVariant.availability')
     .orderBy([{ column: 'ProductVariant.availability', order: 'desc' }, { column: 'price', order: 'asc' }])    
     .limit(10)
     .then(function(SQLProducts){
         res.statusCode = 200;
+        console.log(SQLProducts)
         res.json(SQLProducts)
     });
 };
