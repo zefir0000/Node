@@ -38,3 +38,13 @@ module.exports.updateNews = (news) => {
         .save(null, { method: "update" }, { patch: true })
         .catch((err) => { console.log(err); return err });
 };
+
+module.exports.addLike = (news) => {
+    updateDate = new Date(Date.now()).toLocaleString();
+    return new News({
+        likes: news.likes,
+        updatedDate: updateDate
+    }).where('newsId', news.newsId)
+        .save(null, { method: "update" }, { patch: true })
+        .catch((err) => { console.log(err); return err });
+};

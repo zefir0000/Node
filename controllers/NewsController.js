@@ -70,3 +70,20 @@ exports.deleteNews = (req, res) => {
         });
 };
 
+exports.addlikeForNews = async (req, res) => {
+
+    var newsId = (req.url.substring(req.url.indexOf('addLikeNews/') + 12));
+
+    await knex.from('News')
+            .where('newsId', newsId)
+            .then(function (news) {
+                newsModel.addLike({ // sprawdzic czy nie da sie inkrementowac jednego fielda jednym zapytaniem (teraz sa uzyte 2)
+                    'newsId': newsId,
+                    'likes': news.likes++
+                
+                }).catch((err) => { console.log(err); return err });
+            });
+};
+
+
+
