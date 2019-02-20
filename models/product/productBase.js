@@ -23,7 +23,7 @@ module.exports.createProductBase = (product) => {
         });
 }
 module.exports.updateProductBase = (product) => {
-    console.log(product)
+    console.log('update', product)
     updateDate = new Date(Date.now()).toLocaleString();
 
     return new Product({
@@ -32,6 +32,19 @@ module.exports.updateProductBase = (product) => {
         platform: product.platform,
         topTen: product.topTen,
         description: product.description,
+        updatedDate: updateDate
+
+    }).where('productBaseId', product.productBaseId)
+        .save(null, { method: "update" }, { patch: true })
+        .catch((err) => { console.log(err); return err });
+};
+
+module.exports.delTopTenProductBase = (product) => {
+    console.log('update', product)
+    updateDate = new Date(Date.now()).toLocaleString();
+
+    return new Product({
+        topTen: product.topTen,
         updatedDate: updateDate
 
     }).where('productBaseId', product.productBaseId)

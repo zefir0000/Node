@@ -24,11 +24,10 @@ implementacja news
 implementacja banerow 
     system rotacji
 implementacja memow 
-    like unlike
 implementacja top 10
-    field w sql 
-    implementacja na backend
+    zaznaczenie ktore i na jakiej pozycji jest w top10
 
+zaznaczyc nieaktywne produkty na gridzie admina
 
 
 

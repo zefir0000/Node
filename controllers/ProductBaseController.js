@@ -34,22 +34,35 @@ exports.createProductBase = async (req, res, next) => {
         res.redirect('productBase');
     }
 };
-
 exports.updateProductBase = async (req, res) => {
-    
     var productBaseId = (req.url.substring(req.url.indexOf('editProductBase/') + 18));
+    var topTen = req.body.topTen;
+    
+    if (req.body.topTen === "null") { topTen = null} else {
+        await knex.from('ProductBase') 
+        .where('topTen', req.body.topTen)
+        .then(function (product) {
+            
+            if(product) {
+                productBaseModel.delTopTenProductBase({
+                    'productBaseId': product[0].productBaseId,
+                    'topTen': null,
+                }).catch((err) => { console.log(err); return err });
+            }
+        });
+    }
+    
     var productBase = await productBaseModel.updateProductBase({
         'productBaseId': productBaseId,
         'title': req.body.title,
         'image': req.body.image,
         'description': req.body.description,
         'platform': req.body.platform,
-        'topTen': req.body.topTen
+        'topTen': topTen
 
     }).catch((err) => { console.log(err); return err });
 
     if (productBase.sqlMessage == undefined) {
-        console.log('step2')
         req.flash('form', 'Edited product base! ' + productBaseId + '');
         res.redirect('../productBase');
     } else {

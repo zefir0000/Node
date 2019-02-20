@@ -30,7 +30,7 @@ exports.getTopTen = (req, res) => {
     })
     .whereNotNull('ProductBase.topTen').andWhere('ProductVariant.currency', "USD")
     .groupBy('ProductVariant.title', 'ProductBase.productBaseId', 'ProductVariant.availability')
-    .orderBy([{ column: 'ProductVariant.availability', order: 'desc' }, { column: 'price', order: 'asc' }])    
+    .orderBy([{ column: 'ProductVariant.availability', order: 'desc' }, { column: 'topTen', order: 'asc' }])    
     .limit(10)
     .then(function(SQLProducts){
         res.statusCode = 200;
