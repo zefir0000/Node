@@ -1,27 +1,34 @@
-trustpilot zaimplementowac raiting dla marketow
-    podal mi link do developa
-
-jeden opis ze zdjeciami i filmami parametrami etc
- w panelu administracyjnym
-CRUD dla marketów 
-    name 
-    image
-    description
-    trustpilot url
-    support
-    dane firmy
-
-CRUD dla ProductBase
-    to co jest w db
-    moze jeszcze film (wlasnyYT) po konsultacji
 
 zabezpieczenie panelu administratora
-posprzatanie panelu administracyjnego (kod, view)
 obsluga html
 
 na froncie 
     wyswietlanie marketow
     wyswietlanie truspilot w marketach
+
+-----------------------------------------------------------------------------
+
+podpowiedzi do wyszukiwarki
+memy z panelu ( mem = to fotka) - z panelu (grafiki) - uzytkownik mam mozliwosc mema ale po naszej akceptacji 
+glowna czesc news feed z mozliwoscia dodanie przez uzytkownika ( nasza akceptacja) narzedzie formoatowani texktu i grafikami
+news z "+", z sensownym mechanizmem. (jak na wykop)
+3 banery ktore sa w rotacji 
+prowonanie cenowe (cos jak top 10) zarzadzane rzez nas 
+
+----------------------------------------------------------------
+wyglad strony zapewne tabela lub ramki 
+implementacja news 
+    edytor textu
+     like unlike
+implementacja banerow 
+    system rotacji
+implementacja memow 
+    like unlike
+implementacja top 10
+    field w sql 
+    implementacja na backend
+
+
 
 
 

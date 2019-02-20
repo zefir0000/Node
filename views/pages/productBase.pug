@@ -1,0 +1,90 @@
+html
+    head
+        link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700")
+        link(rel="stylesheet" href="/css/main.css")
+    body
+        .home.dog-app(data-lightbox=showLightbox)
+            header.app-header
+                nav.app-nav
+                    ul.app-nav__list
+                        li.app-nav__list-item
+                            a.app-nav__link.app-nav__link--is-active(href="/productBase") product base
+                        li.app-nav__list-item
+                            a.app-nav__link(href="/upload")  upload file xml
+                        li.app-nav__list-item
+                            a.app-nav__link(href="/news")  news
+                        li.app-nav__list-item
+                            a.app-nav__link(href="/getMarket")  markets
+                        li.app-nav__list-item
+                            a.app-nav__link(href="/mems")  mems
+                        li.app-nav__list-item
+                            a.app-nav__link(href="#")  contact
+
+            .lightbox(v-show="formLightbox == true" style="display: none;")
+                .lightbox__content
+                    button.btn(@click="formLightbox = false") X
+                    h1.lightbox__header Add Market
+                    form.lightbox__form(action="/productBaseAdd" method="POST")
+   
+                        .lightbox__form-control
+                            label.lightbox__label Product Base Title
+                            input.lightbox__input(placeholder="Title" type="text" name="title" value=validated ? validated.title : '')
+                            if (errors && errors.title)
+                                p.lightbox__error #{ errors.title.msg }
+                        .lightbox__form-control
+                            label.lightbox__label Link to image
+                            input.lightbox__input(placeholder="www.image.image.jpg" type="text" name="imageLink" value=validated ? validated.imageLink : '')
+                            if (errors && errors.imageLink)
+                                p.lightbox__error #{ errors.imageLnik.msg }
+                        .lightbox__form-control
+                            label.lightbox__label Description
+                            input.lightbox__input(placeholder="Product description" type="text" name="description" )
+                           
+                        .lightbox__form-control
+                            label.lightbox__label Platform
+                            input.lightbox__input(placeholder="Steam/origin" type="text" name="platform" )
+                           
+                        .lightbox__actions
+                            button.btn.btn--primary Accept
+
+            .wrapper
+                section.search
+                    h1.search__header
+                    button.btn.btn--primary(@click="formLightbox = true") Add produc Base
+                    form.search__form(action='/productBase' method="GET" role="search" type="search")
+                        input.search__input(placeholder="What games you want buy" type="text" name="name")
+                        .actions_inline
+                            button.btn.btn--primary(@click="return q.value") search
+                table.table__style
+                            thead
+                                    
+                            for product in productsBase
+                              table.table__style
+                                tr
+                                tr
+                                td(colspan="2")= product.title 
+                                tr
+                                    td(rowspan="2")= product.description
+                                    td 
+                                      img(src=product.image, height='150')
+
+                                tr
+                                    td 
+                                        form(action='/delProductBase/'+ product.productBaseId method="POST" )
+                                            .actions
+                                                button.btn.btn--primary(@click="") del
+                                            form(action='/editProductBase/'+ product.productBaseId method="GET" )
+                                                .actions
+                                                    button.btn.btn--primary(@click="") edit
+                                  
+                footer.app-footer
+
+            if (formMessage && formMessage.length)
+                .lightbox(v-show="showFeedback")
+                    .lightbox__content
+                        h2.lightbox__header #{ formMessage }
+                        .lightbox__actions.lightbox__actions--centered
+                            button.btn.btn--primary(@click="closeFeedbackLightbox") Close
+
+        script(src="https://cdn.jsdelivr.net/npm/vue" type="text/javascript")
+        script(src="/js/app.js")

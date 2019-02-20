@@ -1,0 +1,86 @@
+html
+    head
+        link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700")
+        link(rel="stylesheet" href="/css/main.css")
+    body
+        .home.dog-app(data-lightbox=showLightbox)
+            header.app-header
+                nav.app-nav
+                    ul.app-nav__list
+                        li.app-nav__list-item
+                            a.app-nav__link(href="/productBase") product base
+                        li.app-nav__list-item
+                            a.app-nav__link(href="/upload")  upload file xml
+                        li.app-nav__list-item
+                            a.app-nav__link(href="/getMarket")  markets
+                        li.app-nav__list-item
+                            a.app-nav__link.app-nav__link--is-active(href="/news")  news
+                        li.app-nav__list-item
+                            a.app-nav__link(href="/mems")  mems
+                        li.app-nav__list-item
+                            a.app-nav__link(href="#")  contact
+
+            .lightbox(v-show="formLightbox == true" style="display: inline;")
+                .lightbox__content
+                    button.btn(@click="formLightbox = false") X
+                    h1.lightbox__header Add News
+                    form.lightbox__form(action="/newsAdd" method="POST")
+   
+                        .lightbox__form-control
+                            label.lightbox__label News title
+                            input.lightbox__input(placeholder="Title" type="text" name="title" value=validated ? validated.title : '')
+                            if (errors && errors.title)
+                                p.lightbox__error #{ errors.title.msg }
+                        .lightbox__form-control
+                            label.lightbox__label Link to image
+                            input.lightbox__input(placeholder="www.image.image.jpg" type="text" name="imageLink" value=validated ? validated.imageLink : '')
+                            if (errors && errors.imageLink)
+                                p.lightbox__error #{ errors.imageLnik.msg }
+                        .lightbox__form-control
+                            label.lightbox__label News
+                            input.lightbox__input(placeholder="News" rows="4" type="text" name="news" )
+                        
+                        .lightbox__actions
+                            button.btn.btn--primary Accept
+
+            .wrapper
+                section.search
+                    h1.search__header
+                    button.btn.btn--primary(@click="formLightbox = true") Add news
+                    form.search__form(action='/getNews' method="GET" role="search" type="search")
+                        input.search__input(placeholder="News title" type="text" name="name")
+                        .actions_inline
+                            button.btn.btn--primary(@click="return q.value") search
+                table.table__style
+                            thead
+                                    
+                            for news in newses
+                              table.table__style
+                                tr
+                                tr
+                                td(colspan="2")= news.title 
+                                    p=" like = " + news.likes + " unlikes = " + news.unlikes
+                                tr
+                                    td(rowspan="2")= news.news
+                                    td 
+                                      img(src=news.imageLink, height='200')
+                                tr
+                                    td 
+                                        form(action='/delNews/'+ news.newsId method="POST" )
+                                            .actions
+                                                button.btn.btn--primary(@click="") del
+                                        form(action='/editNews/'+ news.newsId method="GET" )
+                                            .actions
+                                                button.btn.btn--primary(@click="") edit
+                                  
+                footer.app-footer
+
+            if (formMessage && formMessage.length)
+                .lightbox(v-show="showFeedback")
+                    .lightbox__content
+                        h2.lightbox__header #{ formMessage }
+                        .lightbox__actions.lightbox__actions--centered
+                            button.btn.btn--primary(@click="closeFeedbackLightbox") Close
+
+        script(src="https://cdn.jsdelivr.net/npm/vue" type="text/javascript")
+        script(src="/js/app.js")

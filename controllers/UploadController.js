@@ -1,11 +1,8 @@
 const { check, validationResult } = require('express-validator/check');
 const UploadFile = require('../models/uploadfile');
-const UploadToDB = require('./UploadToDB');
 const ProductController = require('./ProductController');
-
 const axios = require('axios');
 const fs = require('fs');
-
 
 exports.upload = (req, res, next) => {
 
@@ -45,7 +42,6 @@ exports.validationUploadFile = (req, res, next) => {
     next();
 };
 
-
 exports.uploadProductsFromG2A = (req, res, next) => {
 
     const g2aProducts = axios.create({
@@ -70,9 +66,9 @@ res.redirect('upload/');
     
 };
 
-exports.trustpilot = (req, res, next) => {
+exports.trustpilot = (req, res, next) => { // zaimplementowac pobieranie po nazwie marketu 
 
-    axios.get('https://trustpilot.com/review/eneba.com')
+    axios.get('https://trustpilot.com/review/g2a.com')
             .then(response => {
 
             var products = response.data;
@@ -80,9 +76,47 @@ exports.trustpilot = (req, res, next) => {
             var string = (products.substring(begin + 62));
             var end = string.indexOf('</script>');
             var final = string.substring(0,end);
-            
+            // return zwrotki wraz z jej wyslaniem do bazy danych wraz z id marketu
                 console.log(end)
                 console.log(final)
           
             });
+};
+
+exports.uploadMems = (req, res, next) => {
+
+    let sampleFile = req.files.sampleFile;
+    let patch = 'uploadMems/' + new Date + "-" + sampleFile.name
+    let uploadPath = 'public/' + patch;
+
+    sampleFile.mv(uploadPath, function(err) {
+        if (err)
+        return next();
+
+        // upload info about file to DB
+        UploadFile.uploadMemFile({
+            'name': sampleFile.name,
+            'patchFile': patch,
+            'mimetype': sampleFile.mimetype
+        });
+    });
+
+req.flash('form', sampleFile.name, ', mem uploaded!');
+res.redirect('mems');
+};
+
+exports.validationMemFile = (req, res, next) => {
+
+if (Object.keys(req.files).length == 0) {
+    res.status(400);
+    req.flash('form', 'File not exist');
+    return res.redirect('mems/');
+}
+var mime = req.files.sampleFile.mimetype;
+if (!(mime === "image/jpeg" || mime === "image/png"|| mime === "image/gif"|| mime === "image/x-ms-bmp")) {
+    res.status(400);
+    req.flash('form', req.files.sampleFile.name + ' is not image file (jpg/jepg/bmp/png/gif)');
+    return res.redirect('mems/');
+}
+next();
 };

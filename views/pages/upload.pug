@@ -8,15 +8,17 @@ html
                 nav.app-nav
                     ul.app-nav__list
                         li.app-nav__list-item
-                            a.app-nav__link(href="/") product base
+                            a.app-nav__link(href="/productBase") product base
                         li.app-nav__list-item
                             a.app-nav__link.app-nav__link--is-active(href="/upload")  upload file xml
                         li.app-nav__list-item
-                            a.app-nav__link(href="/getProducts?name=")  search game
+                            a.app-nav__link(href="/getMarket")  markets
                         li.app-nav__list-item
-                            a.app-nav__link(href="#")  how it works?
+                            a.app-nav__link(href="/news")  news
                         li.app-nav__list-item
-                            a.app-nav__link(href="/contact")  contact
+                            a.app-nav__link(href="/mems")  mems
+                        li.app-nav__list-item
+                            a.app-nav__link(href="#")  contact
             .wrapper
                 section.slogan
                     h1.slogan__header
@@ -33,7 +35,6 @@ html
                         button.btn.btn--primary Upload from G2A
                     
                 footer.app-footer
-                    | Design by Slawomir :)
             .lightbox(v-show="formLightbox == true" style="display: none;")
                 .lightbox__content
                     h2.lightbox__header Upload your xml files
@@ -41,6 +42,20 @@ html
                         .lightbox__form-control
                             label.lightbox__label Files to Upload!
                             input.lightbox__input(type="file" name="sampleFile")
+                            .lightbox__form-control
+                            label.lightbox__label set top ten
+                            select(name='topTen')
+                                option null
+                                option 1
+                                option 2
+                                option 3
+                                option 4
+                                option 5
+                                option 6
+                                option 7
+                                option 8
+                                option 9
+                                option 10
                         .lightbox__actions
                             button.btn.btn--primary Accept
 

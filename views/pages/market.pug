@@ -1,0 +1,110 @@
+html
+    head
+        link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700")
+        link(rel="stylesheet" href="/css/market.css")
+    body
+        .home.dog-app(data-lightbox=showLightbox)
+            header.app-header
+                nav.app-nav
+                    ul.app-nav__list
+                        li.app-nav__list-item
+                            a.app-nav__link(href="/productBase") product base
+                        li.app-nav__list-item
+                            a.app-nav__link(href="/upload")  upload file xml
+                        li.app-nav__list-item
+                            a.app-nav__link.app-nav__link--is-active(href="/getMarket")  markets
+                        li.app-nav__list-item
+                            a.app-nav__link(href="/news")  news
+                        li.app-nav__list-item
+                            a.app-nav__link(href="/mems")  mems
+                        li.app-nav__list-item
+                            a.app-nav__link(href="/contact")  contact
+
+            .lightbox(v-show="formLightbox == true" style="display: none;")
+                .lightbox__content
+                    button.btn(@click="formLightbox = false") X
+                    h1.lightbox__header Add Market
+                    form.lightbox__form(action="/marketAdd" method="POST")
+   
+                        .lightbox__form-control
+                            label.lightbox__label Market name
+                            input.lightbox__input(placeholder="name" type="text" name="name" value=validated ? validated.name : '')
+                            if (errors && errors.name)
+                                p.lightbox__error #{ errors.name.msg }
+                        .lightbox__form-control
+                            label.lightbox__label Home Page link
+                            input.lightbox__input(placeholder="www.market.com" type="text" name="linkMarket" value=validated ? validated.linkMarket : '')
+                            if (errors && errors.linkMarket)
+                                p.lightbox__error #{ errors.linkMarket.msg }
+                        .lightbox__form-control
+                            label.lightbox__label Link to logo
+                            input.lightbox__input(placeholder="http://storage/logo.jpg" type="text" name="logo" )
+                           
+                        .lightbox__form-control
+                            label.lightbox__label TrustPilot link
+                            input.lightbox__input(placeholder="http://trustPilot.com/companyname" type="text" name="raiting" )
+                           
+                        .lightbox__form-control
+                            label.lightbox__label Description
+                            input.lightbox__input(placeholder="Write something about your company" type="text" name="description" )
+                           
+                        .lightbox__form-control
+                            label.lightbox__label Contact to support
+                            input.lightbox__input(placeholder="example@example.com" type="text" name="support" ) 
+                        .lightbox__form-control
+                            label.lightbox__label adress
+                            textarea.lightbox__input(placeholder="mala wieś 666" rows="1" name="adress" )
+                        .lightbox__actions
+                            button.btn.btn--primary Accept
+
+            .wrapper
+                section.search
+                        h1.search__header
+                        button.btn.btn--primary(@click="formLightbox = true") Add market
+                        form.search__form(action='/market' method="GET" role="search" type="search")
+                            input.search__input(placeholder="Find market" type="text" name="name")
+                            .actions_inline
+                                button.btn.btn--primary(@click="return q.value") search
+
+                table.table__style
+                            thead
+                                tr
+                                    th.name_column Name
+                                    th.link_column Home Page link
+                                    th.logo_column Logo
+                                    th.trustpilot_column TrustPilot
+                                    th.description_column description
+                                    th.support_column support contact
+                                    th.adress_column adress
+                                    th.action_column action
+
+                                    
+                            for market in markets
+                              table.table__style
+                                tr 
+                                    th.name_column= market.name
+                                    th.link_column= market.link
+                                    th.logo_column= market.logo
+                                    th.trustpilot_column= market.raiting
+                                    th.description_column= market.description
+                                    th.support_column= market.support
+                                    th.adress_column= market.adress
+                                    th.action_column
+                                        form(action='/delMarket/'+ market.marketId method="POST" )
+                                            .actions
+                                                button.btn.btn--primary(@click="") del
+                                        form(action='/editMarket/'+ market.marketId method="GET" )
+                                            .actions
+                                                button.btn.btn--primary(@click="") edit
+                 
+                footer.app-footer
+
+            if (formMessage && formMessage.length)
+                .lightbox(v-show="showFeedback")
+                    .lightbox__content
+                        h2.lightbox__header #{ formMessage }
+                        .lightbox__actions.lightbox__actions--centered
+                            button.btn.btn--primary(@click="closeFeedbackLightbox") Close
+
+        script(src="https://cdn.jsdelivr.net/npm/vue" type="text/javascript")
+        script(src="/js/app.js")
