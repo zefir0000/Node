@@ -48,6 +48,8 @@ exports.updateMarket = async (req, res) => {
         'link': req.body.linkMarket,
         'description': req.body.description,
         'rating': req.body.raiting,
+        'adress': req.body.adress,
+
     }).catch((err) => { console.log(err); return err });
 
     if (market.sqlMessage == undefined) {

@@ -27,7 +27,7 @@ module.exports.updateMarket = (market) => {
 
     return new Market({
         name: market.name,
-        suppordt: market.contact,
+        support: market.support,
         logo: market.logo,
         link: market.link,
         description: market.description,
