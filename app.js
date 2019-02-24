@@ -7,16 +7,14 @@ const session = require('express-session');
 const routes = require('./routes/index');
 const errorsHandler = require('./middlewares/errors');
 const fileUpload = require('express-fileupload');
-var cors = require('cors')
-
-
+const cors = require('cors')
 const app = express();
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(cors())
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -27,7 +25,6 @@ app.use(session({
     cookie: {}
 }));
 app.use(flash());
-
 app.use(fileUpload());
 
 app.use('/', routes);

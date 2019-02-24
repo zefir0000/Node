@@ -40,7 +40,7 @@ body { margin: 0; background: #222; color: #fafafa; font-family: 'Montserrat', s
 /* lightbox form */
 .lightbox__form-control { width: 100%; margin-bottom: 10px; }
 .lightbox__label { text-transform: uppercase; width: 100%; margin-bottom: 10px; display: block; font-size: 10px;}
-.lightbox__input { transition: .2s all ease-in-out; width: 100%; border: none; border-bottom: 1px solid #ddd; padding-bottom: 5px; font-size: 10px; font-weight: 500; text-transform: uppercase; font-family: 'Montserrat', sans-serif; }
+.lightbox__input { transition: .2s all ease-in-out; width: 100%; border: none; border-bottom: 1px solid #ddd; padding-bottom: 5px; font-size: 10px; font-weight: 500; font-family: 'Montserrat', sans-serif; }
 .lightbox__input:focus { outline: none; box-shadow: none; }
 .lightbox__actions__close { text-align: left;}
 .lightbox__actions { text-align: right; }
@@ -57,9 +57,9 @@ body { margin: 0; background: #222; color: #fafafa; font-family: 'Montserrat', s
 .title { position: fixed; text-align: left; display: block; font-size: 12px; color: ghostwhite; padding-right: 15px}
 
 .table__style {
-    width: 100%;
-        border: 2px solid rgb(71, 71, 71);
+    width: 30%;
         text-align: center;
+        word-wrap: break-word;
         border-collapse: collapse;
       }
       table.table__style td, table.table__style th {
@@ -67,28 +67,30 @@ body { margin: 0; background: #222; color: #fafafa; font-family: 'Montserrat', s
         padding: 3px 2px;
       }
       table.table__style tbody td {
-        font-size: 13px;
-      }
-      table.table__style thead {
-        border-bottom: 2px solid #444444;
-      }
-      table.table__style thead th {
-        font-size: 15px;
-        font-weight: bold;
-        color: #FFFFFF;
-        border-left: 2px solid #D0E4F5;
+        font-size: 10px;
       }
       table.table__style thead th:first-child {
         border-left: none;
       }
       
       table.table__style tfoot td {
-        font-size: 14px;
+        font-size: 12px;
       }
       table.table__style tfoot .links {
         text-align: right;
       }
-.title_column { width: 500px }
-.price_column { width: 100px }
-.market_column { width: 200px }
-.action_column { width: 100px }
+      table.table__style tfoot .links a{
+        display: inline-block;
+        background: #1C6EA4;
+        color: #FFFFFF;
+        padding: 2px 8px;
+        border-radius: 5px;
+      }
+      .name_column { width: 20%; font-size: 12px; }
+      .description_column { width: 14%; font-size: 12px; }
+      .trustpilot_column { width: 13%; font-size: 12px; }
+      .link_column { width: 13%; font-size: 12px; }
+      .adress_column { width: 9%; font-size: 12px; }
+      .logo_column { width: 10%; font-size: 12px; }
+      .support_column { width: 10%; font-size: 12px; }
+      .action_column { width: 10%; font-size: 12px; }
