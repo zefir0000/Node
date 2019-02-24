@@ -59,6 +59,38 @@ exports.updateNews = async (req, res) => {
     }
 };
 
+exports.addLike = async (req, res) => {
+    var newsId = (req.url.substring(req.url.indexOf('addLike/') + 8));
+    var news = await newsModel.addLike({
+        'newsId': newsId,
+        'likes': req.body.likes,
+
+    }).catch((err) => { console.log(err); return err });
+
+    if (news.sqlMessage == undefined) {
+      res.statusCode = 204
+    } else {
+       res.statusCode = 400
+       console.log(news.sqlMessage)
+    }
+};
+
+exports.addUnlike = async (req, res) => {
+    var newsId = (req.url.substring(req.url.indexOf('addUnlike/') + 10));
+    var news = await newsModel.addUnlike({
+        'newsId': newsId,
+        'unlikes': req.body.unlikes,
+
+    }).catch((err) => { console.log(err); return err });
+
+    if (news.sqlMessage == undefined) {
+      res.statusCode = 204
+    } else {
+       res.statusCode = 400
+       console.log(news.sqlMessage)
+    }
+};
+
 exports.deleteNews = (req, res) => {
     knex.from('News')
         .where('newsId', req.params.newsId)

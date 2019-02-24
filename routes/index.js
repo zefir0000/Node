@@ -21,6 +21,10 @@ router.get('/getNews', FrontCotroller.getNews) // front
 router.get('/getNewsById/:newsId', FrontCotroller.getNewsById) // front
 router.get('/getTopTen', FrontCotroller.getTopTen) // front
 
+router.post('/addLike/:newsId', NewsController.addLike) // front
+      .post('/addUnlike/:newsId', NewsController.addUnlike) // front
+
+
 // Products
 router.get('/getProductBaseRelated', DBController.getProductVariantByBaseId) // front
 router.get('/getProductBase', DBController.getProductBase) // front 
