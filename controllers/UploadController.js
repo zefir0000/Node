@@ -68,18 +68,21 @@ res.redirect('upload/');
     
 };
 
-exports.trustpilot = (req, res, next) => { // zaimplementowac pobieranie po nazwie marketu 
+exports.trustpilot = (req, res, next) => {
 
-    axios.get('https://trustpilot.com/review/g2a.com')
+    axios.get('https://trustpilot.com/review/eneba.com')
         .then(response => {
 
         var products = response.data;
         var begin = products.indexOf('<script type="application/ld+json" data-business-unit-json-ld>')
         var string = (products.substring(begin + 62));
         var end = string.indexOf('</script>');
-        var final = string.substring(0,end);
-            // return zwrotki FINAL wraz z jej wyslaniem do bazy danych wraz z id marketu      
-            });
+        var final = string.substring(0,end - 10);
+            console.log(JSON.parse(final))
+            res.json(JSON.parse(final))
+
+            }).catch((err) => { 
+                console.log( err )})
 };
 
 exports.uploadMems = (req, res, next) => {

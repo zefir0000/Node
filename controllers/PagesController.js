@@ -1,5 +1,6 @@
 const dbConfig = require('../config/dbConfig')
 const knex = require('knex')(dbConfig);
+const axios = require('axios');
 
 exports.home = (req, res) => {
     res.render('home', {
@@ -55,9 +56,25 @@ exports.market = (req, res) => {
     knex.from('Market')
     .where('name', 'like', '%' + name + '%')
     .then(function(markets) {
+        axios.get(markets[0].raiting )
+        .then(response => {
+
+        var products = response.data;
+        var begin = products.indexOf('<script type="application/ld+json" data-business-unit-json-ld>')
+        var string = (products.substring(begin + 62));
+        var end = string.indexOf('</script>');
+        var trustpilot = JSON.parse(string.substring(0,end -10));
+        var result = Object.assign({}, {markets}, {trustpilot});
+        console.log(trustpilot, 'trustpilotssssssssssssss')
+
         res.statusCode = 200;
-        res.json(markets)
-    });
+        res.json(result)
+
+            }).catch((err) => { 
+                console.log( err )})
+        
+    }).catch((err) => { 
+        console.log( err )});
 };
 
 // market Admin
@@ -93,7 +110,7 @@ exports.news = (req, res) => {
     if(!title) { title = "" }
 
     knex.from('News')
-    .limit(100)
+    .limit(1)
     .where('title', 'like', '%' + title + '%')
     .then(function(newses) {
         res.statusCode = 200;

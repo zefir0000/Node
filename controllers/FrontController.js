@@ -15,6 +15,15 @@ exports.getNews = (req, res) => {
             // res.render('pages/News', { newses })
         });
 };
+exports.getNewsById = (req, res) => {
+    var newsId = (req.url.substring(req.url.indexOf('getNewsById/') + 12));
+    knex.from('News')
+         .where('newsId', newsId)
+        .then(function (newses) {
+            res.json(newses[0])
+            res.statusCode = 200;
+        });
+};
 
 exports.getTopTen = (req, res) => {
     knex.min('ProductVariant.price as price')

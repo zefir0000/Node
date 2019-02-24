@@ -17,14 +17,16 @@ router.get('/', PagesController.home);
 router.get('/contact', PagesController.contact);
 
 // front
-router.get('/getNews', FrontCotroller.getNews)
-router.get('/getTopTen', FrontCotroller.getTopTen)
+router.get('/getNews', FrontCotroller.getNews) // front
+router.get('/getNewsById/:newsId', FrontCotroller.getNewsById) // front
+router.get('/getTopTen', FrontCotroller.getTopTen) // front
 
 // Products
-router.get('/getProductBaseRelated', DBController.getProductVariantByBaseId)
-router.get('/getProductBase', DBController.getProductBase)
+router.get('/getProductBaseRelated', DBController.getProductVariantByBaseId) // front
+router.get('/getProductBase', DBController.getProductBase) // front 
+
 // Market
-router.get('/market', PagesController.market)
+router.get('/market', PagesController.market) // front
       .get('/getMarket', PagesController.getMarket)
       .post('/marketAdd', 
         errorsHandler.catchAsync(MarketController.createMarket))
@@ -41,7 +43,7 @@ router.get('/productBase', PagesController.productBase)
       .post('/delProductBase/:productBaseId', ProductBaseController.deleteProductBase)  
 
 // News
-router.get('/news', PagesController.news)
+router.get('/news', PagesController.news) 
       .post('/newsAdd', 
         errorsHandler.catchAsync(NewsController.createNews))
       .get('/editNews/:newsId', PagesController.editNews)
@@ -62,7 +64,7 @@ router.get('/mems', PagesController.mems)
         errorsHandler.catchAsync(UploadController.uploadMems))
       .post('/delMem/:memId', UploadController.deleteMem)  
 
-router.get('/trustpilot', UploadController.trustpilot)
+router.get('/trustpilot/:market', UploadController.trustpilot)
 
 
 module.exports = router;
