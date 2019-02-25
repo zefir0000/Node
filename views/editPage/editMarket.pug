@@ -7,9 +7,9 @@ html
 
             .lightbox
                 .lightbox__content
-                    form.lightbox__form(action="/market" method="GET")
+                    form.lightbox__form(action="/getMarket" method="GET")
                         button.btn(@click="") X
-                    h1.lightbox__header Add Market
+                    h1.lightbox__header Edit Market
                     form.lightbox__form(action="/editMarket/"+ market[0].marketId method="POST")
    
                         .lightbox__form-control
@@ -32,7 +32,7 @@ html
                            
                         .lightbox__form-control
                             label.lightbox__label Description
-                            input.lightbox__input(placeholder="Write something about your company" type="text" name="description" value=market[0].description)
+                            textarea.lightbox__input(placeholder="Write something about your company" rows="10" name="description")=market[0].description
                            
                         .lightbox__form-control
                             label.lightbox__label Contact to support

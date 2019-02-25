@@ -61,41 +61,40 @@ html
                 section.search
                         h1.search__header
                         button.btn.btn--primary(@click="formLightbox = true") Add market
-                        form.search__form(action='/market' method="GET" role="search" type="search")
+                        form.search__form(action='/getMarket' method="GET" role="search" type="search")
                             input.search__input(placeholder="Find market" type="text" name="name")
                             .actions_inline
                                 button.btn.btn--primary(@click="return q.value") search
 
                 table.table__style
-                            thead
-                                tr
-                                    th.name_column Name
-                                    th.link_column Home Page link
-                                    th.logo_column Logo
-                                    th.trustpilot_column TrustPilot
-                                    th.description_column description
-                                    th.support_column support contact
-                                    th.adress_column adress
-                                    th.action_column action
-
-                                    
+                            
                             for market in markets
-                              table.table__style
-                                tr 
-                                    th.name_column= market.name
-                                    th.link_column= market.link
-                                    th.logo_column= market.logo
-                                    th.trustpilot_column= market.raiting
-                                    th.description_column= market.description
-                                    th.support_column= market.support
-                                    th.adress_column= market.adress
-                                    th.action_column
+                             table.table__style
+                                tr
+                                tr
+                                td(colspan="2")
+                                    h1= market.name 
+                                    
+                                tr
+                                    td(rowspan="2")= market.description
+                                        hr
+                                        p=market.link
+                                        p=market.support
+                                        p=market.adress
+                                        p=raiting
+                                    td 
+                                      img(src=market.logo, height='150')
+
+                                tr
+                                    td 
                                         form(action='/delMarket/'+ market.marketId method="POST" )
                                             .actions
                                                 button.btn.btn--primary(@click="") del
-                                        form(action='/editMarket/'+ market.marketId method="GET" )
+                                        form(action='/editMarket/' + market.marketId method="GET" )
                                             .actions
                                                 button.btn.btn--primary(@click="") edit
+                                hr
+
                  
                 footer.app-footer
 

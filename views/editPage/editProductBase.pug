@@ -33,17 +33,17 @@ html
                         .lightbox__form-control
                             label.lightbox__label set top ten
                             select(name='topTen' value=productBase[0].topTen)
-                                option(value=null) Is not in top ten
-                                option(value = 0) position 1
-                                option(value = 1) position 2
-                                option(value = 2) position 3
-                                option(value = 3) position 4
-                                option(value = 4) position 5
-                                option(value = 5) position 6
-                                option(value = 6) position 7
-                                option(value = 7) position 8
-                                option(value = 8) position 9
-                                option(value = 9) position 10
+                                option(value=null selected=productBase[0].topTen == null) Is not in top ten
+                                option(value = 0 selected=productBase[0].topTen == 0) position 1
+                                option(value = 1 selected=productBase[0].topTen == 1) position 2
+                                option(value = 2 selected=productBase[0].topTen == 2) position 3
+                                option(value = 3 selected=productBase[0].topTen == 3) position 4
+                                option(value = 4 selected=productBase[0].topTen == 4) position 5
+                                option(value = 5 selected=productBase[0].topTen == 5) position 6
+                                option(value = 6 selected=productBase[0].topTen == 6) position 7
+                                option(value = 7 selected=productBase[0].topTen == 7) position 8
+                                option(value = 8 selected=productBase[0].topTen == 8) position 9
+                                option(value = 9 selected=productBase[0].topTen == 9) position 10
 
                         .lightbox__actions
                             button.btn.btn--primary Accept

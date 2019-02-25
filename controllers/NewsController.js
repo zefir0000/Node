@@ -9,6 +9,7 @@ exports.getNews = (req, res) => {
 
     knex.from('News')
         .where('title', 'like', '%' + title + '%')
+        .orderBy('updatedDate')
         .then(function (newses) {
             res.statusCode = 200;
             res.render('pages/News', { newses })

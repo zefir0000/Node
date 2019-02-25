@@ -23,11 +23,17 @@ exports.upload = (req, res) => {
 // productBase Admin
 exports.productBase = (req, res) => {
     var title = require('url').parse(req.url,true).query.name;
+    var topTen = require('url').parse(req.url,true).query.topten;
+    var topTenRaw;
+    var orderBy = 'name';
+    if(!topTen) { toptenraw = '', orderBy ='name' } else { topTenRaw = 'topTen >= 0', orderBy = 'topTen' }
     if(!title) { title = "" }
-
+console.log(topTen)
         knex.from('ProductBase')
     .limit(100)
     .where('title', 'like', '%' + title + '%')
+    .andWhereRaw(topTenRaw)
+    .orderBy(orderBy)
     .then(function(productsBase) {
         res.statusCode = 200;
         res.render('pages/productBase', { 
@@ -46,9 +52,10 @@ exports.editProductBase = (req, res) => {
         res.render('editPage/editProductBase', { 
             productBase, 
             formMessage: req.flash('form')
-        })
+        }).catch((err) => { console.log(err); return err });
     });
 };
+// font get market
 exports.market = (req, res) => {
     var name = require('url').parse(req.url,true).query.name;
     if(!name) {name = ""}
@@ -65,7 +72,6 @@ exports.market = (req, res) => {
         var end = string.indexOf('</script>');
         var trustpilot = JSON.parse(string.substring(0,end -10));
         var result = Object.assign({}, {markets}, {trustpilot});
-        console.log(trustpilot, 'trustpilotssssssssssssss')
 
         res.statusCode = 200;
         res.json(result)
@@ -77,20 +83,7 @@ exports.market = (req, res) => {
         console.log( err )});
 };
 
-// market Admin
-exports.getMarket = (req, res) => {
-    var name = require('url').parse(req.url,true).query.name;
-    if(!name) {name = ""}
-    knex.from('Market')
-    .where('name', 'like', '%' + name + '%')
-    .then(function(markets) {
-        res.statusCode = 200;
-        res.render('pages/market', { 
-            markets, 
-            formMessage: req.flash('form')
-        })
-    });
-};
+
 
 exports.editMarket = (req, res) => {
     var marketId = (req.url.substring(req.url.indexOf('editMarket/') + 11));

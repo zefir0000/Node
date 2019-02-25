@@ -8,6 +8,7 @@ exports.getNews = (req, res) => {
     // var title = require('url').parse(req.url, true).query.name;
     // if (!title) { title = "" }
     knex.from('News')
+    .limit(20)
         // .where('title', 'like', '%' + title + '%')
         .then(function (newses) {
             res.json(newses)
@@ -93,7 +94,6 @@ exports.getMems = (req, res) => {
         .then(function (mems) {
             let lengthMem = mems.length - 1
             randomMem = random(0,lengthMem)
-            console.log(mems[randomMem])
             res.json(mems[randomMem])
             res.statusCode = 200;
         });

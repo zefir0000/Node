@@ -52,7 +52,9 @@ html
                     h1.search__header
                     button.btn.btn--primary(@click="formLightbox = true") Add produc Base
                     form.search__form(action='/productBase' method="GET" role="search" type="search")
-                        input.search__input(placeholder="What games you want buy" type="text" name="name")
+                        input.search__input(placeholder="What games you want buy" type="text" name="name") 
+                        |  Only TopTen
+                        input(type="checkbox" name="topten")
                         .actions_inline
                             button.btn.btn--primary(@click="return q.value") search
                 table.table__style
@@ -63,7 +65,7 @@ html
                                 tr
                                 tr
                                 td(colspan="2")= product.title 
-                                    h1= product.topTen
+                                    h1= ++product.topTen
                                 tr
                                     td(rowspan="2")= product.description
                                     td 
@@ -77,6 +79,7 @@ html
                                         form(action='/editProductBase/' + product.productBaseId method="GET" )
                                             .actions
                                                 button.btn.btn--primary(@click="") edit
+                                hr
                                   
                 footer.app-footer
 
