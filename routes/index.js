@@ -24,7 +24,6 @@ router.get('/getTopTen', FrontCotroller.getTopTen) // front
 router.post('/addLike/:newsId', NewsController.addLike) // front
       .post('/addUnlike/:newsId', NewsController.addUnlike) // front
 
-
 // Products front
 router.get('/getProductBaseRelated', DBController.getProductVariantByBaseId) // front
 router.get('/getProductBase', DBController.getProductBase) // front 
@@ -72,6 +71,5 @@ router.get('/mems', PagesController.mems)
 
 // backend 
 router.get('/trustpilot/:market', UploadController.trustpilot)
-
 
 module.exports = router;
