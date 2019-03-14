@@ -1,0 +1,45 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" />
+    <link rel="stylesheet" href="/css/main.css" />
+</head>
+
+<body>
+    <div class="home dog-app">
+        <header class="app-header">
+            <nav class="app-nav">
+                <ul class="app-nav__list">
+                    <li class="app-nav__list-item"><a class="app-nav__link app-nav__link--is-active" href="/productBase">product base</a></li>
+                    <li class="app-nav__list-item"><a class="app-nav__link" href="/upload"> upload file xml</a></li>
+                    <li class="app-nav__list-item"><a class="app-nav__link" href="/news"> news</a></li>
+                    <li class="app-nav__list-item"><a class="app-nav__link" href="/getMarket"> markets</a></li>
+                    <li class="app-nav__list-item"><a class="app-nav__link" href="#"> contact</a></li>
+                </ul>
+            </nav>
+        </header>
+        <div class="wrapper">
+            <section class="slogan">
+                <h1 class="slogan__header">funkcja</h1>
+                <p class="slogan__text">opis funkcji</p>
+                <div class="actions"><button class="btn btn--primary" @click="formLightbox = true">Assign your movie</button><button class="btn btn--shadow">Donate us</button></div>
+            </section>
+            <footer class="app-footer">Design by Slawomir :)</footer>
+        </div>
+        <div class="lightbox" v-show="formLightbox == true" style="display: none;">
+            <div class="lightbox__content">
+                <h2 class="lightbox__header">Join us!</h2>
+                <form class="lightbox__form" action="/applications" method="POST">
+                    <div class="lightbox__form-control"><label class="lightbox__label">What's your name?</label><input class="lightbox__input" placeholder="John Doe" type="text" name="name" value="" /></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">What's your email?</label><input class="lightbox__input" placeholder="example@example.com" type="text" name="phone" value="" /></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">Leave link to your video</label><textarea class="lightbox__input" placeholder="https://www.youtube.com/watch?v=Ir3_-Pv-6mU&amp;t=13s" rows="1" name="message" value=""></textarea></div>
+                    <div class="lightbox__actions"><button class="btn btn--primary">Accept</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue" type="text/javascript"></script>
+    <script src="/js/app.js"></script>
+</body>
+
+</html>

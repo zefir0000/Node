@@ -5,8 +5,8 @@ const ProductsFromFile = bookshelf.Model.extend({
 });
 
 module.exports.createProductVariant = (product) => {
-
     var createDate = new Date(Date.now()).toLocaleString();
+
     return new ProductsFromFile({
         productBaseId: product.productBaseId,
         title: product.title,
@@ -28,6 +28,7 @@ module.exports.createProductVariant = (product) => {
 
 module.exports.updateProductVariant = (product) => {
     var updateDate = new Date(Date.now()).toLocaleString();
+    
     return new ProductsFromFile({
         productBaseId: product.productBaseId,
         link: product.link,

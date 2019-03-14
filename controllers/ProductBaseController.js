@@ -4,8 +4,7 @@ const productBaseModel = require('../models/product/productBase')
 const { check, validationResult } = require('express-validator/check');
 
 exports.getProductBase = (req, res) => {
-    var name = require('url').parse(req.url, true).query.name;
-    if (!name) { name = "" }
+    var name = req.query.name || "";
 
     knex.from('ProductBase')
         .where('title', 'like', '%' + name + '%')
@@ -35,7 +34,7 @@ exports.createProductBase = async (req, res, next) => {
     }
 };
 exports.updateProductBase = async (req, res) => {
-    var productBaseId = (req.url.substring(req.url.indexOf('editProductBase/') + 18));
+    var productBaseId = req.params.productBaseId
     var topTen = req.body.topTen;
     
     if (req.body.topTen === "null") { topTen = null} else {

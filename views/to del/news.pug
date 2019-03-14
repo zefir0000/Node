@@ -54,24 +54,7 @@ html
                 table.table__style
                             thead
                                     
-                            for news in newses
-                              table.table__style
-                                tr
-                                tr
-                                td(colspan="2")= news.title 
-                                    p=" like = " + news.likes + " unlikes = " + news.unlikes
-                                tr
-                                    td(rowspan="2")= news.news
-                                    td 
-                                      img(src=news.imageLink, height='200')
-                                tr
-                                    td 
-                                        form(action='/delNews/'+ news.newsId method="POST" )
-                                            .actions
-                                                button.btn.btn--primary(@click="") del
-                                        form(action='/editNews/'+ news.newsId method="GET" )
-                                            .actions
-                                                button.btn.btn--primary(@click="") edit
+                            
                                   
                 footer.app-footer
 

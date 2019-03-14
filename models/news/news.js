@@ -5,9 +5,8 @@ const News = bookshelf.Model.extend({
 });
 
 module.exports.createNews = (news) => {
-    console.log('model', news)
-
     var createDate = new Date(Date.now()).toLocaleString();
+    
     return new News({
         title: news.title,
         imageLink: news.imageLink,
@@ -24,7 +23,6 @@ module.exports.createNews = (news) => {
         });
 }
 module.exports.updateNews = (news) => {
-    console.log('news', news)
     updateDate = new Date(Date.now()).toLocaleString();
 
     return new News({

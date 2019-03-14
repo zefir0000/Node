@@ -8,33 +8,31 @@ const UploadMemFile = bookshelf.Model.extend({
 });
 
 module.exports.uploadFile = (uploadFile) => {
-    return new UploadFile({
 
+    return new UploadFile({
         name: uploadFile.name,
         mimetype: uploadFile.mimetype,
-    }).save(null, { method: 'insert'}).then(function(){
-        console.log('Upload file ', uploadFile.name);        
-    })
-    .catch((err) => { 
-        console.log('Upload file: ', uploadFile.name, ' somthing went wrong!: ', err )
+
+    }).save(null, { method: 'insert' }).then(function () {
+        console.log('Upload file ', uploadFile.name);
+    }).catch((err) => {
+        console.log('Upload file: ', uploadFile.name, ' somthing went wrong!: ', err)
     });
 };
 
 module.exports.uploadMemFile = (uploadFile) => {
     createDate = new Date(Date.now()).toLocaleString();
-    console.log(uploadFile)
-    return new UploadMemFile({
 
+    return new UploadMemFile({
         patchFile: uploadFile.patchFile,
         mimetype: uploadFile.mimetype,
         createdDate: createDate,
 
-    }).save(null, { method: 'insert'}).then(function(){
-        console.log('Upload file ', uploadFile.name);        
-    })
-    .catch((err) => { 
-        console.log('Upload file: ', uploadFile.name, ' somthing went wrong!: ', err )
+    }).save(null, { method: 'insert' }).then(function () {
+        console.log('Upload file ', uploadFile.name);
+    }).catch((err) => {
+        console.log('Upload file: ', uploadFile.name, ' somthing went wrong!: ', err)
     });
 };
 
-        
+

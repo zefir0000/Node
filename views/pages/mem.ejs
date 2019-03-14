@@ -1,0 +1,56 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" />
+    <link rel="stylesheet" href="/css/mems.css" />
+</head>
+
+<body>
+    <div class="home dog-app">
+        <header class="app-header">
+            <nav class="app-nav">
+                <ul class="app-nav__list">
+                    <li class="app-nav__list-item"><a class="app-nav__link" href="/productBase">product base</a></li>
+                    <li class="app-nav__list-item"><a class="app-nav__link" href="/upload"> upload file xml</a></li>
+                    <li class="app-nav__list-item"><a class="app-nav__link" href="/getMarket"> markets</a></li>
+                    <li class="app-nav__list-item"><a class="app-nav__link" href="/news"> news</a></li>
+                    <li class="app-nav__list-item"><a class="app-nav__link app-nav__link--is-active" href="/mems"> mems</a></li>
+                    <li class="app-nav__list-item"><a class="app-nav__link" href="/contact"> contact</a></li>
+                </ul>
+            </nav>
+        </header>
+        <div class="lightbox" v-show="formLightbox == true" style="display: none;">
+            <div class="lightbox__content">
+                <h2 class="lightbox__header">Upload your mem files</h2>
+                <form class="lightbox__form" action="/uploadMem" method="POST" enctype="multipart/form-data">
+                    <div class="lightbox__form-control"><label class="lightbox__label">Files to Upload!</label><input class="lightbox__input" type="file" name="sampleFile" /></div>
+                    <div class="lightbox__actions"><button class="btn btn--primary">Accept</button></div>
+                </form>
+            </div>
+        </div>
+        <div class="wrapper">
+                <section class="slogan">
+                    <div class="actions"><button class="btn btn--primary" @click="formLightbox = true">upload mem files</button></div>
+                </section>
+                <table class="table__style">  
+                    for mem in mems
+                        tr 
+                            th.name_column= mem.patchFile
+                        tr
+                            th 
+                              img(src= mem.patchFile, height='250')
+                        tr
+                            th.name_column= mem.createdDate
+                        tr
+                            th.action_column
+                                form(action='/delMem/'+ mem.memId method="POST" )
+                                    .actions
+                                        button.btn.btn--primary(@click="") del</table>
+            <footer class="app-footer"></footer>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue" type="text/javascript"></script>
+    <script src="/js/app.js"></script>
+</body>
+
+</html>

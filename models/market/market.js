@@ -22,7 +22,6 @@ module.exports.createMarket = (market) => {
 };
 
 module.exports.updateMarket = (market) => {
-    console.log(market)
     updateDate = new Date(Date.now()).toLocaleString();
 
     return new Market({
