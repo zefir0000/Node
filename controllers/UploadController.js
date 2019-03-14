@@ -14,7 +14,7 @@ exports.upload = (req, res, next) => {
         sampleFile.mv(uploadPath, function(err) {
             if (err)
             return next();
-            // upload products to DB
+            // upload products to DBservices
             ProductController.uploadProducts(uploadPath);
 
             // upload info about file to DB
@@ -70,7 +70,7 @@ res.redirect('upload/');
 
 exports.trustpilot = (req, res, next) => {
 
-    axios.get('https://trustpilot.com/review/eneba.com')
+    axios.get('https://trustpilot.com/review/g2a.com')
         .then(response => {
 
         var products = response.data;

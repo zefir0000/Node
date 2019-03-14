@@ -13,7 +13,7 @@ exports.getProductVariantByBaseId = (req, res) => {
             res.statusCode = 200;
             var result = Object.assign({}, {ProductBase}, {RelatedProducts});
             res.json(result)
-        })  
+        }).catch((err) => { console.log(err); return err });
     });
 };
 
@@ -35,7 +35,7 @@ exports.getProductBase = (req, res) => {
         .then(function(SQLProducts){
             res.statusCode = 200;
             res.json(SQLProducts)
-    });
+    }).catch((err) => { console.log(err); return err });
 };
 
 exports.market = (req, res) => { 
@@ -45,5 +45,5 @@ exports.market = (req, res) => {
         .then(function(market){
             res.statusCode = 200;
             res.json(market)
-    });
+    }).catch((err) => { console.log(err); return err });;
 };
