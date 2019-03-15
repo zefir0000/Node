@@ -2,6 +2,11 @@ const dbConfig = require('../config/dbConfig')
 const knex = require('knex')(dbConfig);
 const axios = require('axios');
 
+exports.createUser = (req, res) => {
+    console.log('dupa', req.body)
+    res.json(req.body);
+};
+
 exports.home = (req, res) => {
     res.render('home', {
         formMessage: req.flash('form')
@@ -67,7 +72,6 @@ exports.market = (req, res) => {
                     var end = string.indexOf('</script>');
                     var trustpilot = JSON.parse(string.substring(0, end - 10));
                     var result = Object.assign({}, { markets }, { trustpilot });
-
                     res.statusCode = 200;
                     res.json(result)
                 }).catch((err) => {

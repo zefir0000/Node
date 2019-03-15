@@ -70,4 +70,6 @@ router.get('/mems', PagesController.mems)
 // backend 
 router.get('/trustpilot/:market', UploadController.trustpilot)
 
+router.post('/createUser', PagesController.createUser)
+
 module.exports = router;

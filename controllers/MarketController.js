@@ -11,6 +11,8 @@ exports.getMarket = (req, res) => {
         .where('name', 'like', '%' + name + '%')
         .then(function (markets) {
             res.statusCode = 200;
+            console.log(markets)
+
             res.render('pages/market', { markets })
         });
 };
