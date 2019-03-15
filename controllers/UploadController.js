@@ -8,37 +8,34 @@ const axios = require('axios');
 const fs = require('fs');
 
 exports.upload = (req, res, next) => {
-    console.log('1')
 
-        let sampleFile = req.files.sampleFile;
-        let uploadPath = 'uploading/' + new Date + "-" + sampleFile.name;
+    let sampleFile = req.files.sampleFile;
+    let uploadPath = 'uploading/' + new Date + "-" + sampleFile.name;
 
-        sampleFile.mv(uploadPath, function(err) {
-            console.log('2', uploadPath)
+    sampleFile.mv(uploadPath, function (err) {
 
-            if (err){
-                console.log('err', err);
-                return next();
-            }
-            // upload products to DB
-            if(req.files.sampleFile.mimetype === 'text/xml'){
-                ProductController.uploadProducts(uploadPath);
-                console.log('3')
+        if (err) {
+            console.log('err', err);
+            return next();
+        }
+        // upload products to DB
+        if (req.files.sampleFile.mimetype === 'text/xml') {
+            ProductController.uploadProducts(uploadPath);
 
-            } else if(req.files.sampleFile.mimetype !== 'application/vnd.ms-excel') {
-                console.log('4')
+        } else if (req.files.sampleFile.mimetype === 'application/vnd.ms-excel' || req.files.sampleFile.mimetype === 'text/csv') {
+            console.log('4')
 
-                ProductController.uploadProductsFromCSV(uploadPath);
-            } else {
-                console.log('ERROR Something went wrong')
-            }
+            ProductController.uploadProductsFromCSV(uploadPath);
+        } else {
+            console.log('ERROR Something went wrong')
+        }
 
-            // upload info about file to DB
-            UploadFile.uploadFile({
-                'name': req.files.sampleFile.name,
-                'mimetype': req.files.sampleFile.mimetype
-            });
+        // upload info about file to DB
+        UploadFile.uploadFile({
+            'name': req.files.sampleFile.name,
+            'mimetype': req.files.sampleFile.mimetype
         });
+    });
 
     req.flash('form', sampleFile.name, ', file uploaded!');
     res.redirect('upload/');
@@ -51,9 +48,11 @@ exports.validationUploadFile = (req, res, next) => {
         req.flash('form', 'File not exist');
         return res.redirect('upload/');
     }
-    
-    if (req.files.sampleFile.mimetype !== 'text/xml' && req.files.sampleFile.mimetype !== 'application/vnd.ms-excel') {
 
+    if (req.files.sampleFile.mimetype !== 'text/xml' 
+        && req.files.sampleFile.mimetype !== 'application/vnd.ms-excel' 
+        && req.files.sampleFile.mimetype !== 'text/csv') {
+        console.log(req.files)
         res.status(400);
         req.flash('form', req.files.sampleFile.name + ' is not xml/csv file ');
         return res.redirect('upload/');
@@ -71,18 +70,18 @@ exports.uploadProductsFromG2A = (req, res, next) => {
     var quantityPages = 6;
 
     do {
-          g2aProducts.get('https://sandboxapi.g2a.com/v1/products?page=' + quantityPages)
+        g2aProducts.get('https://sandboxapi.g2a.com/v1/products?page=' + quantityPages)
             .then(response => {
-            var products = response.data.docs;
-            ProductController.uploadProductsFromG2AToDB(products)
-            });
+                var products = response.data.docs;
+                ProductController.uploadProductsFromG2AToDB(products)
+            })
 
         quantityPages--;
     } while (quantityPages > 0)
 
-req.flash('form','Product uploading!');
-res.redirect('upload/');
-    
+    req.flash('form', 'Product uploading!');
+    res.redirect('upload/');
+
 };
 
 exports.trustpilot = (req, res, next) => {
@@ -90,16 +89,17 @@ exports.trustpilot = (req, res, next) => {
     axios.get('https://trustpilot.com/review/eneba.com')
         .then(response => {
 
-        var products = response.data;
-        var begin = products.indexOf('<script type="application/ld+json" data-business-unit-json-ld>')
-        var string = (products.substring(begin + 62));
-        var end = string.indexOf('</script>');
-        var final = string.substring(0,end - 10);
+            var products = response.data;
+            var begin = products.indexOf('<script type="application/ld+json" data-business-unit-json-ld>')
+            var string = (products.substring(begin + 62));
+            var end = string.indexOf('</script>');
+            var final = string.substring(0, end - 10);
             console.log(JSON.parse(final))
             res.json(JSON.parse(final))
 
-            }).catch((err) => { 
-                console.log( err )})
+        }).catch((err) => {
+            console.log(err)
+        })
 };
 
 exports.uploadMems = (req, res, next) => {
@@ -107,9 +107,9 @@ exports.uploadMems = (req, res, next) => {
     let sampleFile = req.files.sampleFile;
     let patch = ('uploadMems/' + sampleFile.name).replace(/ /g, "-")
     let uploadPath = 'public/' + patch;
-    sampleFile.mv(uploadPath, function(err) {
+    sampleFile.mv(uploadPath, function (err) {
         if (err)
-        return next();
+            return next();
 
         // upload info about file to DB
         UploadFile.uploadMemFile({
@@ -125,18 +125,18 @@ exports.uploadMems = (req, res, next) => {
 
 exports.validationMemFile = (req, res, next) => {
 
-if (Object.keys(req.files).length == 0) {
-    res.status(400);
-    req.flash('form', 'File not exist');
-    return res.redirect('mems');
-}
-var mime = req.files.sampleFile.mimetype;
-if (!(mime === "image/jpeg" || mime === "image/png"|| mime === "image/gif"|| mime === "image/x-ms-bmp")) {
-    res.status(400);
-    req.flash('form', req.files.sampleFile.name + ' is not image file (jpg/jepg/bmp/png/gif)');
-    return res.redirect('mems');
-}
-next();
+    if (Object.keys(req.files).length == 0) {
+        res.status(400);
+        req.flash('form', 'File not exist');
+        return res.redirect('mems');
+    }
+    var mime = req.files.sampleFile.mimetype;
+    if (!(mime === "image/jpeg" || mime === "image/png" || mime === "image/gif" || mime === "image/x-ms-bmp")) {
+        res.status(400);
+        req.flash('form', req.files.sampleFile.name + ' is not image file (jpg/jepg/bmp/png/gif)');
+        return res.redirect('mems');
+    }
+    next();
 };
 
 exports.deleteMem = (req, res) => {
@@ -147,9 +147,9 @@ exports.deleteMem = (req, res) => {
             console.log(path)
             fs.unlink(Buffer.from(path), (err) => {
                 if (err) {
-                console.log('fail deleted ', mems[0].patchFile, err)
-            } else { console.log('successfully deleted ', mems[0].patchFile) }
-              });
+                    console.log('fail deleted ', mems[0].patchFile, err)
+                } else { console.log('successfully deleted ', mems[0].patchFile) }
+            });
 
             res.statusCode = 204;
             knex.from('Mems')

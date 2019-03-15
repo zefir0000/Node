@@ -5,7 +5,6 @@ const { check, validationResult } = require('express-validator/check');
 
 exports.getProductBase = (req, res) => {
     var name = req.query.name || "";
-
     knex.from('ProductBase')
         .where('title', 'like', '%' + name + '%')
         .then(function (ProductsBase) {

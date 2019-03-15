@@ -30,8 +30,8 @@ exports.productBase = (req, res) => {
     var title = req.query.name || "";
     var topTen = req.query.topten;
     var topTenRaw;
-    var orderBy = 'name';
-    if (!topTen) { toptenraw = '', orderBy = 'name' } else { topTenRaw = 'topTen >= 0', orderBy = 'topTen' }
+    var orderBy = 'title';
+    if (!topTen) { topTenRaw = '', orderBy = 'title' } else { topTenRaw = 'topTen >= 0', orderBy = 'topTen' }
     knex.from('ProductBase')
         .limit(100)
         .where('title', 'like', '%' + title + '%')

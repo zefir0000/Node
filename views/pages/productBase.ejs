@@ -46,34 +46,33 @@
                     <div class="actions_inline"><button class="btn btn--primary" @click="return q.value">search</button></div>
                 </form>
             </section>
-            <% product.forEach(function(productBase) { %>
+            <% productsBase.forEach(function(product) { %>
                 <table class="table__style">
-                        <tr></tr>
-                        <tr>
-                            <td colspan="2">
-                                <%= product.title %>
-                                    <h1>
-                                        <%= product.topTen + 1 %>
-                                    </h1>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <%= product.description %>
-                            </td>
-                            <td><img src= product.image  >style="height:'150'"></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p>
-                                    <form method="POST" action='/delProductBase/' + product.productBaseId><button class="btn btn--primary">del</button></form>
-                                </p>
-                                <p>
-                                    <form method="GET" action='/editProductBase/' + product.productBaseId><button class="btn btn--primary">edit</button></form>
-                                </p>
-                            </td>
-                        </tr>
-                </table>
+                        <thead>
+                            <table class="table__style">
+                                <tr></tr>
+                                <tr></tr>
+                                <td colspan="2"><%= product.title %>
+                                    <h1><%= product.topTen %></h1>
+                                </td>
+                                <tr>
+                                    <td rowspan="2"><%= product.description %></td>
+                                    <td> <img src=<%= product.image %> style='height:150' /></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <form action="/delProductBase/"  + product.productBaseId method="POST">
+                                            <div class="actions"><button class="btn btn--primary" @click="">del</button></div>
+                                        </form>
+                                        <form action="/editProductBase/"  + product.productBaseId method="GET">
+                                            <div class="actions"><button class="btn btn--primary" @click="">edit</button></div>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <hr/>
+                            </table>
+                        </thead>
+                    </table>
                 <% }); %>
                     <footer class="app-footer"></footer>
         </div>

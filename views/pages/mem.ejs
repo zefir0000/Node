@@ -33,6 +33,7 @@
             <section class="slogan">
                 <div class="actions"><button class="btn btn--primary" @click="formLightbox = true">upload mem files</button></div>
             </section>
+            
             <% mems.forEach(function(mem) { %>
                 <table class="table__style">
                     <tr>
@@ -41,7 +42,7 @@
                         </th>
                     </tr>
                     <tr>
-                        <th><img src="mem.patchFile" style="height:'250'"></th>
+                        <th><img src=<%= mem.patchFile %> style="height:250"></th>
                     </tr>
                     <tr>
                         <th class="name_column">

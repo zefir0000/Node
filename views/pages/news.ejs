@@ -19,8 +19,8 @@
                 </ul>
             </nav>
         </header>
-        <div class="lightbox" v-show="formLightbox == true" style="display: inline;">
-            <div class="lightbox__content"><button class="btn" @click="formLightbox = false">X</button>
+        <div class="lightbox" v-show="formLightbox == true" >
+            <div class="lightbox__content"><button class="btn" onClick = <%"close()"%>>X</button>
                 <h1 class="lightbox__header">Add News</h1>
                 <form class="lightbox__form" action="/newsAdd" method="POST">
                     <div class="lightbox__form-control"><label class="lightbox__label">News title</label><input class="lightbox__input"
@@ -44,7 +44,6 @@
             <% newses.forEach(function(news) { %>
                 <table class="table__style">
                     <thead>
-                        for news in newses table.table__style
                         <tr></tr>
                         <tr>
                             <td colspan="2">
@@ -60,7 +59,8 @@
                                 <%= news.news %>
                             </td>
                             <td>
-                                <img src=news.patchFile style="height:250"></td>
+                                <img src=<%= news.patchFile %> style="height:250"></td>
+
                             </td>
                         </tr>
                         <tr>
@@ -86,3 +86,11 @@
 </body>
 
 </html>
+
+<script>
+    var lightbox
+    function close() {
+        lightbox = flase;
+    }
+
+</script>
