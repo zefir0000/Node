@@ -10,7 +10,8 @@
         <header class="app-header">
             <nav class="app-nav">
                 <ul class="app-nav__list">
-                    <li class="app-nav__list-item"><a class="app-nav__link app-nav__link--is-active" href="/productBase">product base</a></li>
+                    <li class="app-nav__list-item"><a class="app-nav__link app-nav__link--is-active" href="/productBase">product
+                            base</a></li>
                     <li class="app-nav__list-item"><a class="app-nav__link" href="/upload"> upload file xml</a></li>
                     <li class="app-nav__list-item"><a class="app-nav__link" href="/news"> news</a></li>
                     <li class="app-nav__list-item"><a class="app-nav__link" href="/getMarket"> markets</a></li>
@@ -23,46 +24,58 @@
             <div class="lightbox__content"><button class="btn" @click="formLightbox = false">X</button>
                 <h1 class="lightbox__header">Add Market</h1>
                 <form class="lightbox__form" action="/productBaseAdd" method="POST">
-                    <div class="lightbox__form-control"><label class="lightbox__label">Product Base Title</label><input class="lightbox__input" placeholder="Title" type="text" name="title" value="" /></div>
-                    <div class="lightbox__form-control"><label class="lightbox__label">Link to image</label><input class="lightbox__input" placeholder="www.image.image.jpg" type="text" name="imageLink" value="" /></div>
-                    <div class="lightbox__form-control"><label class="lightbox__label">Description</label><input class="lightbox__input" placeholder="Product description" type="text" name="description" /></div>
-                    <div class="lightbox__form-control"><label class="lightbox__label">Platform</label><input class="lightbox__input" placeholder="Steam/origin" type="text" name="platform" /></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">Product Base Title</label><input class="lightbox__input"
+                            placeholder="Title" type="text" name="title" value="" /></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">Link to image</label><input class="lightbox__input"
+                            placeholder="www.image.image.jpg" type="text" name="imageLink" value="" /></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">Description</label><input class="lightbox__input"
+                            placeholder="Product description" type="text" name="description" /></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">Platform</label><input class="lightbox__input"
+                            placeholder="Steam/origin" type="text" name="platform" /></div>
                     <div class="lightbox__actions"><button class="btn btn--primary">Accept</button></div>
                 </form>
             </div>
         </div>
         <div class="wrapper">
             <section class="search">
-                <h1 class="search__header"></h1><button class="btn btn--primary" @click="formLightbox = true">Add produc Base</button>
-                <form class="search__form" action="/productBase" method="GET" role="search" type="search"><input class="search__input" placeholder="What games you want buy" type="text" name="name" /> Only TopTen<input type="checkbox" name="topten" />
+                <h1 class="search__header"></h1><button class="btn btn--primary" @click="formLightbox = true">Add produc
+                    Base</button>
+                <form class="search__form" action="/productBase" method="GET" role="search" type="search"><input class="search__input"
+                        placeholder="What games you want buy" type="text" name="name" /> Only TopTen<input type="checkbox" name="topten"
+                    />
                     <div class="actions_inline"><button class="btn btn--primary" @click="return q.value">search</button></div>
                 </form>
             </section>
-            <table class="table__style">
-                <thead>
-                        for product in productsBase
-                    table.table__style
-                    tr
-                    tr
-                    td(colspan="2")= product.title 
-                        h1= ++product.topTen
-                    tr
-                        td(rowspan="2")= product.description
-                        td 
-                          img(src=product.image, height='150')
-
-                    tr
-                        td 
-                            form(action='/delProductBase/'+ product.productBaseId method="POST" )
-                                .actions
-                                    button.btn.btn--primary(@click="") del
-                            form(action='/editProductBase/' + product.productBaseId method="GET" )
-                                .actions
-                                    button.btn.btn--primary(@click="") edit
-                    hr
-                </thead>
-            </table>
-            <footer class="app-footer"></footer>
+            <% product.forEach(function(productBase) { %>
+                <table class="table__style">
+                        <tr></tr>
+                        <tr>
+                            <td colspan="2">
+                                <%= product.title %>
+                                    <h1>
+                                        <%= product.topTen + 1 %>
+                                    </h1>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <%= product.description %>
+                            </td>
+                            <td><img src= product.image  >style="height:'150'"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>
+                                    <form method="POST" action='/delProductBase/' + product.productBaseId><button class="btn btn--primary">del</button></form>
+                                </p>
+                                <p>
+                                    <form method="GET" action='/editProductBase/' + product.productBaseId><button class="btn btn--primary">edit</button></form>
+                                </p>
+                            </td>
+                        </tr>
+                </table>
+                <% }); %>
+                    <footer class="app-footer"></footer>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue" type="text/javascript"></script>

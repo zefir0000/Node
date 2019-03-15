@@ -23,31 +23,41 @@
             <div class="lightbox__content">
                 <h2 class="lightbox__header">Upload your mem files</h2>
                 <form class="lightbox__form" action="/uploadMem" method="POST" enctype="multipart/form-data">
-                    <div class="lightbox__form-control"><label class="lightbox__label">Files to Upload!</label><input class="lightbox__input" type="file" name="sampleFile" /></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">Files to Upload!</label><input class="lightbox__input"
+                            type="file" name="sampleFile" /></div>
                     <div class="lightbox__actions"><button class="btn btn--primary">Accept</button></div>
                 </form>
             </div>
         </div>
         <div class="wrapper">
-                <section class="slogan">
-                    <div class="actions"><button class="btn btn--primary" @click="formLightbox = true">upload mem files</button></div>
-                </section>
-                <table class="table__style"> 
-                    
-                    for mem in mems
-                        tr 
-                            th.name_column= mem.patchFile
-                        tr
-                            th 
-                              img(src= mem.patchFile, height='250')
-                        tr
-                            th.name_column= mem.createdDate
-                        tr
-                            th.action_column
-                                form(action='/delMem/'+ mem.memId method="POST" )
-                                    .actions
-                                        button.btn.btn--primary(@click="") del</table>
-            <footer class="app-footer"></footer>
+            <section class="slogan">
+                <div class="actions"><button class="btn btn--primary" @click="formLightbox = true">upload mem files</button></div>
+            </section>
+            <% mems.forEach(function(mem) { %>
+                <table class="table__style">
+                    <tr>
+                        <th class="name_column">
+                            <%= mem.patchFile %>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th><img src="mem.patchFile" style="height:'250'"></th>
+                    </tr>
+                    <tr>
+                        <th class="name_column">
+                            <%= mem.createdDate %>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="action_column">
+                            <p>
+                                <form method="POST" action='/delMarket/' + mem.memId><button class="btn btn--primary">del</button></form>
+                            </p>
+                        </th>
+                    </tr>
+                </table>
+                <% }); %>
+                    <footer class="app-footer"></footer>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue" type="text/javascript"></script>
