@@ -2,20 +2,36 @@ const { check, validationResult } = require('express-validator/check');
 const UploadFile = require('../models/uploadfile');
 const ProductController = require('./ProductController');
 const dbConfig = require('../config/dbConfig')
+const UploadToDB = require('./UploadToDB')
 const knex = require('knex')(dbConfig);
 const axios = require('axios');
 const fs = require('fs');
 
 exports.upload = (req, res, next) => {
+    console.log('1')
 
         let sampleFile = req.files.sampleFile;
         let uploadPath = 'uploading/' + new Date + "-" + sampleFile.name;
 
         sampleFile.mv(uploadPath, function(err) {
-            if (err)
-            return next();
+            console.log('2', uploadPath)
+
+            if (err){
+                console.log('err', err);
+                return next();
+            }
             // upload products to DB
-            ProductController.uploadProducts(uploadPath);
+            if(req.files.sampleFile.mimetype === 'text/xml'){
+                ProductController.uploadProducts(uploadPath);
+                console.log('3')
+
+            } else if(req.files.sampleFile.mimetype !== 'application/vnd.ms-excel') {
+                console.log('4')
+
+                ProductController.uploadProductsFromCSV(uploadPath);
+            } else {
+                console.log('ERROR Something went wrong')
+            }
 
             // upload info about file to DB
             UploadFile.uploadFile({
@@ -36,9 +52,10 @@ exports.validationUploadFile = (req, res, next) => {
         return res.redirect('upload/');
     }
     
-    if (req.files.sampleFile.mimetype !== 'text/xml') {
+    if (req.files.sampleFile.mimetype !== 'text/xml' && req.files.sampleFile.mimetype !== 'application/vnd.ms-excel') {
+
         res.status(400);
-        req.flash('form', req.files.sampleFile.name + ' is not xml file');
+        req.flash('form', req.files.sampleFile.name + ' is not xml/csv file ');
         return res.redirect('upload/');
     }
     next();
@@ -57,7 +74,7 @@ exports.uploadProductsFromG2A = (req, res, next) => {
           g2aProducts.get('https://sandboxapi.g2a.com/v1/products?page=' + quantityPages)
             .then(response => {
             var products = response.data.docs;
-            UploadToDB.uploadProductsFromG2AToDB(products)
+            ProductController.uploadProductsFromG2AToDB(products)
             });
 
         quantityPages--;

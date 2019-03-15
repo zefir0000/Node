@@ -58,6 +58,8 @@ router.get('/upload', PagesController.upload)
       .post('/upload',
             UploadController.validationUploadFile,
             errorsHandler.catchAsync(UploadController.upload))
+      .get('/uploadG2AProducts',
+            errorsHandler.catchAsync(UploadController.uploadProductsFromG2A))
 
 // Mems
 router.get('/mems', PagesController.mems)
