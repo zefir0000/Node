@@ -25,6 +25,7 @@ function getProductVariant(title, shop) {
 
 exports.uploadProductsEneba = async (uploadPath, params) => {
     // convert xml to json
+    console.log(uploadPath, 'controller')
     var xml = fs.readFileSync(uploadPath, 'utf8');
     var json = convertXmlToJson.xml2json(xml, { compact: true, spaces: 0 });
 

@@ -38,7 +38,9 @@ exports.upload = (req, res, next) => {
             axios.get(`https://www.eneba.com/rss/products.xml`).then((response) => {
                     
                 new Promise((resolve, reject) => {
-                    let uploadPath = 'uploading/' + new Date + "-" + "eneba_eur.xml";
+                    let date = 123
+                    let uploadPath = 'uploading/' + date + "-" + "eneba_eur.xml";
+                    console.log(uploadPath, 'uploadpath')
                     fs.writeFile(uploadPath, response.data, () => {
                         console.log('Saved!');
                         resolve(uploadPath)
@@ -52,7 +54,7 @@ exports.upload = (req, res, next) => {
             axios.get(`https://www.hrkgame.com/en/hotdeals/cvs-feed/?key=F546F-DFRWE-DS3FV&cur=EUR`, {
                     //authority: "adm.cdkeys.com"
                 }).then((response) => {
-                    let uploadPath = 'uploading/' + new Date + "-" + "hrkgames_eur";
+                    let uploadPath = 'uploading/' + '1233' + "-" + "hrkgames_eur";
                     fs.writeFile(uploadPath, response.data, function () {
                         console.log('Saved!');
                     });
@@ -64,7 +66,7 @@ exports.upload = (req, res, next) => {
                 axios.get(`https://adm.cdkeys.com/feeds/cdkeys_affiliate_feed_eur.txt`, {
                     authority: "adm.cdkeys.com"
                 }).then((response) => {
-                    let uploadPath = 'uploading/' + new Date + "-" + "cdkeys_eur";
+                    let uploadPath = 'uploading/cdkeys_eur';
                     fs.writeFile(uploadPath, response.data, function (err) {
                         if (err) throw err;
                         console.log('Saved!');
