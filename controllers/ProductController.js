@@ -119,9 +119,9 @@ exports.uploadProductsFromG2AToDB = async (products) => {
 
 }
 
-exports.uploadProductsHRK = async (uploadPath, params) => {
+exports.uploadProductsHRK = async (data, params) => {
     // convert csv to json
-    convertCsvToJson({ delimiter: [';'] }).fromFile(uploadPath).then((data) => {
+    convertCsvToJson({ delimiter: [';'] }).fromFile(data).then((data) => {
       
         UploadService.uploadProductsHRKGames(data, params.market, params.currency).then((data) => {
             console.log('Quantity products uploaded: ', data)
@@ -129,13 +129,13 @@ exports.uploadProductsHRK = async (uploadPath, params) => {
     })
 }
 
-exports.uploadProductsCDkeys = async (uploadPath, params) => {
+exports.uploadProductsCDkeys = async (data, params) => {
     new Promise(function (resolve, reject) {
-        fs.readFile(uploadPath, 'utf8', function (err, txtProducts) {
+        //fs.readFile(uploadPath, 'utf8', function (err, txtProducts) {
             var products = []
             var regex = /"[^"]*"/g;
             var delreg = /"/g
-            var arrayFieldProducts = txtProducts.match(regex);
+            var arrayFieldProducts = data.match(regex);
 
             let i = arrayFieldProducts.length / 9
             while (i > 0) {
@@ -155,7 +155,7 @@ exports.uploadProductsCDkeys = async (uploadPath, params) => {
                 products.push(item)
             }
             resolve(products)
-        })
+        //})
 
     }).then((data) => {
         

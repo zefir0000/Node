@@ -54,11 +54,11 @@ exports.upload = (req, res, next) => {
             axios.get(`https://www.hrkgame.com/en/hotdeals/cvs-feed/?key=F546F-DFRWE-DS3FV&cur=EUR`, {
                     //authority: "adm.cdkeys.com"
                 }).then((response) => {
-                    let uploadPath = 'uploading/' + '1233' + "-" + "hrkgames_eur";
-                    fs.writeFile(uploadPath, response.data, function () {
-                        console.log('Saved!');
-                    });
-                    ProductController.uploadProductsHRK(uploadPath, req.body);
+                    // let uploadPath = 'uploading/' + '1233' + "-" + "hrkgames_eur";
+                    // fs.writeFile(uploadPath, response.data, function () {
+                    //     console.log('Saved!');
+                    // });
+                    ProductController.uploadProductsHRK(response.data, req.body);
                 })
                 break;
 
@@ -66,12 +66,12 @@ exports.upload = (req, res, next) => {
                 axios.get(`https://adm.cdkeys.com/feeds/cdkeys_affiliate_feed_eur.txt`, {
                     authority: "adm.cdkeys.com"
                 }).then((response) => {
-                    let uploadPath = 'uploading/cdkeys_eur';
-                    fs.writeFile(uploadPath, response.data, function (err) {
-                        if (err) throw err;
-                        console.log('Saved!');
-                    });
-                    ProductController.uploadProductsCDkeys(uploadPath, req.body);
+                    // let uploadPath = 'uploading/cdkeys_eur';
+                    // fs.writeFile(uploadPath, response.data, function (err) {
+                    //     if (err) throw err;
+                    //     console.log('Saved!');
+                    // });
+                    ProductController.uploadProductsCDkeys(response.data, req.body);
                 })
 
                 break;
