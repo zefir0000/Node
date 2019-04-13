@@ -1,0 +1,97 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" />
+    <link rel="stylesheet" href="/css/main.css" />
+</head>
+
+<body>
+    <div class="home dog-app">
+        <header class="app-header">
+            <nav class="app-nav">
+                <ul class="app-nav__list">
+                    <li class="app-nav__list-item"><a class="app-nav__link" href="/productBase">product base</a></li>
+                    <li class="app-nav__list-item"><a class="app-nav__link" href="/upload"> upload file xml</a></li>
+                    <li class="app-nav__list-item"><a class="app-nav__link" href="/getMarket"> markets</a></li>
+                    <li class="app-nav__list-item"><a class="app-nav__link app-nav__link--is-active" href="/news"> news</a></li>
+                    <li class="app-nav__list-item"><a class="app-nav__link" href="/mems"> mems</a></li>
+                    <li class="app-nav__list-item"><a class="app-nav__link" href="/deals"> deals</a></li>
+                    <li class="app-nav__list-item"><a class="app-nav__link" href="#"> contact</a></li>
+                </ul>
+            </nav>
+        </header>
+        <div class="lightbox" v-show=<%= formLightbox %> >
+            <div class="lightbox__content"><button class="btn" >>X</button>
+                <h1 class="lightbox__header">Add News</h1>
+                <form class="lightbox__form" action="/newsAdd" method="POST">
+                    <div class="lightbox__form-control"><label class="lightbox__label">News title</label><input class="lightbox__input"
+                            placeholder="Title" type="text" name="title" value="" /></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">Link to image</label><input class="lightbox__input"
+                            placeholder="www.image.image.jpg" type="text" name="imageLink" value="" /></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">News</label><input class="lightbox__input"
+                            placeholder="News" rows="4" type="text" name="news" /></div>
+                    <div class="lightbox__actions"><button class="btn btn--primary">Accept</button></div>
+                </form>
+            </div>
+        </div>
+        <div class="wrapper">
+            <section class="search">
+                <h1 class="search__header"></h1><button class="btn btn--primary" @click="formLightbox = true">Add news</button>
+                <form class="search__form" action="/getNews" method="GET" role="search" type="search"><input class="search__input"
+                        placeholder="News title" type="text" name="name" />
+                    <div class="actions_inline"><button class="btn btn--primary" @click="return q.value">search</button></div>
+                </form>
+            </section>
+            <% newses.forEach(function(news) { %>
+                <table class="table__style">
+                    <thead>
+                        <tr></tr>
+                        <tr>
+                            <td colspan="2">
+                                <%= news.title %>
+                                    <p>
+                                        like = <%= news.title %> 
+                                        unlike =<%= news.unlike %>
+                                    </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <%= news.news %>
+                            </td>
+                            <td>
+                                <img src=<%= news.patchFile %> style="height:250"></td>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <td>
+                                    <p>
+                                        <form method="POST" action='/delNews/' + news.newsId><button class="btn btn--primary">del</button></form>
+                                    </p>
+                                    <p>
+                                        <form method="GET" action='/editNews/' + news.newsId><button class="btn btn--primary">edit</button></form>
+                                    </p>
+                                </td>
+                            </td>
+                        </tr>
+                    </thead>
+                    <% }); %>
+                </table>
+                <footer class="app-footer"></footer>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue" type="text/javascript"></script>
+    <script src="/js/app.js"></script>
+</body>
+
+</html>
+
+<script>
+    const formLightbox = false
+    function close() {
+        formLightbox = false;
+    }
+
+</script>

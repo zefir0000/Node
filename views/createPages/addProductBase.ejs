@@ -1,0 +1,31 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" />
+    <link rel="stylesheet" href="/css/market.css" />
+</head>
+
+<body>
+    <div class="home dog-app">
+        <div class="lightbox">
+            <div class="lightbox__content">
+                <form class="lightbox__form" action="/productBase" method="GET"><button class="btn" @click="">X</button></form>
+                <h1 class="lightbox__header">Add Product base</h1>
+                <form class="lightbox__form" action='/addproductBase/' method="POST">
+                    <div class="lightbox__form-control"><label class="lightbox__label">Product title</label><input class="lightbox__input" type="text" name="title" ></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">Image</label><input class="lightbox__input" placeholder="www.image.image.jpg" type="text" name="image" ></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">Description</label>
+                        <textarea class="lightbox__input"
+                            placeholder="" rows="10" name="description"></textarea></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">platforma/brand</label><input class="lightbox__input" placeholder="steam/origin" type="text" name="platform" ></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">set top ten</label><select name="topTen"></select></div>
+                    <div class="lightbox__actions"><button class="btn btn--primary">Accept</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue" type="text/javascript"></script>
+    <script src="/js/app.js"></script>
+</body>
+
+</html>

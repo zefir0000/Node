@@ -15,6 +15,12 @@ exports.getMarket = (req, res) => {
         });
 };
 
+exports.addMarketPage = (req, res) => {
+    res.render('createPages/addMarket', {
+        formMessage: req.flash('form')
+    });
+};
+
 exports.createMarket = async (req, res, next) => {
     var market = await marketModel.createMarket({
         'name': req.body.name,
@@ -31,10 +37,10 @@ exports.createMarket = async (req, res, next) => {
 
     if (market.sqlMessage == undefined) {
         req.flash('form', 'Added market! ' + req.body.name + '');
-        res.redirect('market');
+        res.redirect('../getmarket');
     } else {
         req.flash('form', 'Something went wrong with: ' + market.sqlMessage);
-        res.redirect('market');
+        res.redirect('../getmarket');
     }
 };
 
@@ -54,11 +60,25 @@ exports.updateMarket = async (req, res) => {
 
     if (market.sqlMessage == undefined) {
         req.flash('form', 'Edited market! ' + marketId + '');
-        res.redirect('../market');
+        res.redirect('../getmarket');
     } else {
         req.flash('form', 'Something went wrong with: ' + market.sqlMessage);
-        res.redirect('../market');
+        console.log(market.sqlMessage)
+        res.redirect('../getmarket');
     }
+};
+
+exports.editMarketPage = (req, res) => {
+    knex.from('Market')
+        .where('marketId', req.params.marketId)
+        .then(function (market) {
+            res.statusCode = 200;
+
+            res.render('editPage/editMarket', {
+                market,
+                formMessage: req.flash('form')
+            })
+        });
 };
 
 exports.deleteMarket = (req, res) => {

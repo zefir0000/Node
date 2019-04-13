@@ -1,0 +1,39 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" />
+    <link rel="stylesheet" href="/css/market.css" />
+</head>
+
+<body>
+    <div class="home dog-app">
+        <div class="lightbox">
+            <div class="lightbox__content">
+                <form class="lightbox__form" action="/getMarket" method="GET"><button class="btn" @click="">X</button></form>
+                <h1 class="lightbox__header">Edit Market</h1>
+                <form class="lightbox__form" action='/editMarket/<%= market[0].marketId %>' method="POST">
+                    <div class="lightbox__form-control"><label class="lightbox__label">Market name </label>
+
+                        <input class="lightbox__input" type="text" name="name" placeholder="<%= market[0].name %>" value='<%= market[0].name %>'></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">Home Page link</label>
+                        <input class="lightbox__input" placeholder="" type="text" name="linkMarket" value='<%= market[0].link %>'></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">Link to logo</label>
+                        <input class="lightbox__input" placeholder='<%= market[0].logo %>' type="text" name="logo" value='< %=market[0].logo %>'></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">TrustPilot link</label>
+                        <input class="lightbox__input" placeholder='<%= market[0].raiting %>' type="text" name="raiting" value='<%= market[0].raiting %>'></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">Description</label>
+                        <textarea class="lightbox__input" rows="10" name="description"><%= market[0].description %></textarea></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">Contact to support</label>
+                        <input class="lightbox__input" placeholder='<%= market[0].support %>' type="text" name="support" value='<%= market[0].support %>'></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">Adress</label><input class="lightbox__input"
+                            placeholder='<%= market[0].adress %>' type="text" name="adress" value='<%= market[0].adress %>'></div>
+                    <div class="lightbox__actions"><button class="btn btn--primary">Accept</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue" type="text/javascript"></script>
+    <script src="/js/app.js"></script>
+</body>
+
+</html>

@@ -5,8 +5,8 @@ const Product = bookshelf.Model.extend({
 });
 
 module.exports.createProductBase = (product) => {
-
     var createDate = new Date(Date.now()).toLocaleString();
+
     return new Product({
         title: product.title,
         image: product.image,
@@ -16,14 +16,14 @@ module.exports.createProductBase = (product) => {
         createdDate: createDate
 
     }).save(null, { method: 'insert' }).then(function () {
-        console.log('Added product base with title: ', product.title);
+        //console.log('Added product base with title: ', product.title);
     })
         .catch((err) => {
             console.log('Added product base: ', product.title, ' somthing went wrong!: ', err)
         });
 }
+
 module.exports.updateProductBase = (product) => {
-    console.log('update', product)
     updateDate = new Date(Date.now()).toLocaleString();
 
     return new Product({
@@ -40,7 +40,6 @@ module.exports.updateProductBase = (product) => {
 };
 
 module.exports.delTopTenProductBase = (product) => {
-    console.log('update', product)
     updateDate = new Date(Date.now()).toLocaleString();
 
     return new Product({

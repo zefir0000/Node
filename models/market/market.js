@@ -22,7 +22,6 @@ module.exports.createMarket = (market) => {
 };
 
 module.exports.updateMarket = (market) => {
-    console.log(market)
     updateDate = new Date(Date.now()).toLocaleString();
 
     return new Market({
@@ -35,6 +34,17 @@ module.exports.updateMarket = (market) => {
         adress: market.adress,
         updatedDate: updateDate
     }).where('marketId', market.marketId)
+        .save(null, { method: "update" }, { patch: true })
+        .catch((err) => { console.log(err); return err });
+};
+
+module.exports.updateTrustpilotMarket = (trustpilot) => {
+    updateDate = new Date(Date.now()).toLocaleString();
+    return new Market({
+        TPraiting: trustpilot.ratingValue,
+        TPreviewCount: trustpilot.reviewCount,
+        updatedDate: updateDate
+    }).where('marketId', trustpilot.marketId)
         .save(null, { method: "update" }, { patch: true })
         .catch((err) => { console.log(err); return err });
 };

@@ -2,29 +2,94 @@ const { check, validationResult } = require('express-validator/check');
 const UploadFile = require('../models/uploadfile');
 const ProductController = require('./ProductController');
 const dbConfig = require('../config/dbConfig')
+const UploadFileService = require('../services/UploadFileService')
 const knex = require('knex')(dbConfig);
 const axios = require('axios');
 const fs = require('fs');
 
-exports.upload = (req, res, next) => {
+const trustpilot = require('../services/TrustpilotService')
 
-        let sampleFile = req.files.sampleFile;
-        let uploadPath = 'uploading/' + new Date + "-" + sampleFile.name;
+// uploading products file 
 
-        sampleFile.mv(uploadPath, function(err) {
-            if (err)
-            return next();
-            // upload products to DB
-            ProductController.uploadProducts(uploadPath);
-
-            // upload info about file to DB
-            UploadFile.uploadFile({
-                'name': req.files.sampleFile.name,
-                'mimetype': req.files.sampleFile.mimetype
-            });
+exports.uploadPage = (req, res) => {
+    knex.from('Market')
+        .then(function (markets) {
+            res.statusCode = 200;
+            res.render('pages/upload', {
+                markets,
+                formMessage: req.flash('form')
+            })
         });
+};
 
-    req.flash('form', sampleFile.name, ', file uploaded!');
+exports.upload = (req, res, next) => {
+    // console.log(req.body)
+
+    // let sampleFile = req.files.sampleFile;
+    // let uploadPath = 'uploading/' + new Date + "-" + sampleFile.name;
+
+    // sampleFile.mv(uploadPath, function (err) {
+        switch (req.body.market) {
+            case "G2A.com":
+                //uploadProductsFromG2A()
+                break;
+
+            case "Eneba":
+            axios.get(`https://www.eneba.com/rss/products.xml`).then((response) => {
+                    
+                new Promise((resolve, reject) => {
+                    let uploadPath = 'uploading/' + new Date + "-" + "eneba_eur.xml";
+                    fs.writeFile(uploadPath, response.data, (err) => {
+                        if (err) throw err;
+                        console.log('Saved!');
+                        resolve(uploadPath)
+                    })}).then((uploadPath) => {
+                        ProductController.uploadProductsEneba(uploadPath, req.body);
+                    });
+                })
+                break;
+
+            case "HRK Games":
+            axios.get(`https://www.hrkgame.com/en/hotdeals/cvs-feed/?key=F546F-DFRWE-DS3FV&cur=EUR`, {
+                    //authority: "adm.cdkeys.com"
+                }).then((response) => {
+                    let uploadPath = 'uploading/' + new Date + "-" + "hrkgames_eur";
+                    fs.writeFile(uploadPath, response.data, function (err) {
+                        if (err) throw err;
+                        console.log('Saved!');
+                    });
+                    ProductController.uploadProductsHRK(uploadPath, req.body);
+                })
+                break;
+
+            case "cdkeys.com":
+                axios.get(`https://adm.cdkeys.com/feeds/cdkeys_affiliate_feed_eur.txt`, {
+                    authority: "adm.cdkeys.com"
+                }).then((response) => {
+                    let uploadPath = 'uploading/' + new Date + "-" + "cdkeys_eur";
+                    fs.writeFile(uploadPath, response.data, function (err) {
+                        if (err) throw err;
+                        console.log('Saved!');
+                    });
+                    ProductController.uploadProductsCDkeys(uploadPath, req.body);
+                })
+
+                break;
+        }
+
+        // if (err) {
+        //     console.log('err', err);
+        //     return next();
+        // }
+
+        // upload info about file to DB
+        // UploadFile.uploadFile({
+        //     'name': req.files.sampleFile.name,
+        //     'mimetype': req.files.sampleFile.mimetype
+        // });
+    
+
+    //req.flash('form', sampleFile.name, ', file uploaded!');
     res.redirect('upload/');
 };
 
@@ -35,10 +100,13 @@ exports.validationUploadFile = (req, res, next) => {
         req.flash('form', 'File not exist');
         return res.redirect('upload/');
     }
-    
-    if (req.files.sampleFile.mimetype !== 'text/xml') {
+
+    if (req.files.sampleFile.mimetype !== 'text/xml'
+        && req.files.sampleFile.mimetype !== 'application/vnd.ms-excel'
+        && req.files.sampleFile.mimetype !== 'text/csv'
+        && req.files.sampleFile.mimetype !== 'text/txt') {
         res.status(400);
-        req.flash('form', req.files.sampleFile.name + ' is not xml file');
+        req.flash('form', req.files.sampleFile.name + ' is not xml/csv/txt file ');
         return res.redirect('upload/');
     }
     next();
@@ -54,35 +122,30 @@ exports.uploadProductsFromG2A = (req, res, next) => {
     var quantityPages = 6;
 
     do {
-          g2aProducts.get('https://sandboxapi.g2a.com/v1/products?page=' + quantityPages)
+        g2aProducts.get('https://sandboxapi.g2a.com/v1/products?page=' + quantityPages)
             .then(response => {
-            var products = response.data.docs;
-            UploadToDB.uploadProductsFromG2AToDB(products)
-            });
+                var products = response.data.docs;
+                ProductController.uploadProductsFromG2AToDB(products)
+            })
 
         quantityPages--;
     } while (quantityPages > 0)
 
-req.flash('form','Product uploading!');
-res.redirect('upload/');
-    
+    req.flash('form', 'Product uploading!');
+    res.redirect('upload/');
+
 };
 
-exports.trustpilot = (req, res, next) => {
-
-    axios.get('https://trustpilot.com/review/eneba.com')
-        .then(response => {
-
-        var products = response.data;
-        var begin = products.indexOf('<script type="application/ld+json" data-business-unit-json-ld>')
-        var string = (products.substring(begin + 62));
-        var end = string.indexOf('</script>');
-        var final = string.substring(0,end - 10);
-            console.log(JSON.parse(final))
-            res.json(JSON.parse(final))
-
-            }).catch((err) => { 
-                console.log( err )})
+// uploading mems file 
+exports.memsPage = (req, res) => {
+    knex.from('Mems')
+        .then(function (mems) {
+            res.statusCode = 200;
+            res.render('pages/mem', {
+                mems,
+                formMessage: req.flash('form')
+            })
+        });
 };
 
 exports.uploadMems = (req, res, next) => {
@@ -90,9 +153,9 @@ exports.uploadMems = (req, res, next) => {
     let sampleFile = req.files.sampleFile;
     let patch = ('uploadMems/' + sampleFile.name).replace(/ /g, "-")
     let uploadPath = 'public/' + patch;
-    sampleFile.mv(uploadPath, function(err) {
+    sampleFile.mv(uploadPath, function (err) {
         if (err)
-        return next();
+            return next();
 
         // upload info about file to DB
         UploadFile.uploadMemFile({
@@ -108,18 +171,18 @@ exports.uploadMems = (req, res, next) => {
 
 exports.validationMemFile = (req, res, next) => {
 
-if (Object.keys(req.files).length == 0) {
-    res.status(400);
-    req.flash('form', 'File not exist');
-    return res.redirect('mems');
-}
-var mime = req.files.sampleFile.mimetype;
-if (!(mime === "image/jpeg" || mime === "image/png"|| mime === "image/gif"|| mime === "image/x-ms-bmp")) {
-    res.status(400);
-    req.flash('form', req.files.sampleFile.name + ' is not image file (jpg/jepg/bmp/png/gif)');
-    return res.redirect('mems');
-}
-next();
+    if (Object.keys(req.files).length == 0) {
+        res.status(400);
+        req.flash('form', 'File not exist');
+        return res.redirect('mems');
+    }
+    var mime = req.files.sampleFile.mimetype;
+    if (!(mime === "image/jpeg" || mime === "image/png" || mime === "image/gif" || mime === "image/x-ms-bmp")) {
+        res.status(400);
+        req.flash('form', req.files.sampleFile.name + ' is not image file (jpg/jepg/bmp/png/gif)');
+        return res.redirect('mems');
+    }
+    next();
 };
 
 exports.deleteMem = (req, res) => {
@@ -127,12 +190,11 @@ exports.deleteMem = (req, res) => {
         .where('memId', req.params.memId)
         .then(function (mems) {
             path = 'public/' + mems[0].patchFile
-            console.log(path)
             fs.unlink(Buffer.from(path), (err) => {
                 if (err) {
-                console.log('fail deleted ', mems[0].patchFile, err)
-            } else { console.log('successfully deleted ', mems[0].patchFile) }
-              });
+                    console.log('fail deleted ', mems[0].patchFile, err)
+                } else { console.log('successfully deleted ', mems[0].patchFile) }
+            });
 
             res.statusCode = 204;
             knex.from('Mems')
@@ -144,4 +206,10 @@ exports.deleteMem = (req, res) => {
                     res.redirect('../mems')
                 });
         });
+};
+
+// inne smieci
+exports.trustpilot = (req, res, next) => {
+
+    trustpilot.updateTrustpilot()
 };

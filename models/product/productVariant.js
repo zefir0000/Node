@@ -5,8 +5,8 @@ const ProductsFromFile = bookshelf.Model.extend({
 });
 
 module.exports.createProductVariant = (product) => {
-
     var createDate = new Date(Date.now()).toLocaleString();
+    
     return new ProductsFromFile({
         productBaseId: product.productBaseId,
         title: product.title,
@@ -19,7 +19,7 @@ module.exports.createProductVariant = (product) => {
         createdDate: createDate
 
     }).save(null, { method: 'insert' }).then(function () {
-        console.log('Added product variant with title: ', product.title, ' from shop: ', product.shop);
+        //console.log('Added product variant with title: ', product.title, ' from shop: ', product.shop);
     })
         .catch((err) => {
             console.log('Added product variant: ', product.title, ' somthing went wrong!: ', err)
@@ -28,6 +28,7 @@ module.exports.createProductVariant = (product) => {
 
 module.exports.updateProductVariant = (product) => {
     var updateDate = new Date(Date.now()).toLocaleString();
+    
     return new ProductsFromFile({
         productBaseId: product.productBaseId,
         link: product.link,
@@ -38,7 +39,7 @@ module.exports.updateProductVariant = (product) => {
         updatedDate: updateDate
 
     }).where('productVariantId', product.productVariantId).save(null, { method: 'update' }, { patch: true }).then(function () {
-        console.log('Update product variant with title: ', product.title, ' from shop: ', product.shop);
+        //console.log('Update product variant with title: ', product.title, ' from shop: ', product.shop);
     })
         .catch((err) => {
             console.log('Update product variant: ', product.title, ' somthing went wrong!: ', err)

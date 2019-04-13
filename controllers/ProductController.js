@@ -1,7 +1,10 @@
 const convertXmlToJson = require('xml-js');
-const { check, validationResult } = require('express-validator/check');
+const convertCsvToJson = require("csvtojson");
 const productBaseModel = require('../models/product/productBase')
 const productVariantModel = require('../models/product/productVariant')
+const UploadService = require('../services/UploadService')
+
+const fs = require('fs')
 
 const dbConfig = require('../config/dbConfig')
 const knex = require('knex')(dbConfig);
@@ -9,61 +12,66 @@ const knex = require('knex')(dbConfig);
 function getProductBase(title) {
     return knex('ProductBase').select('title', 'productBaseId')
         .where('title', title)
-        .timeout(1000, { cancel: true });
+        .timeout(10000, { cancel: true });
 };
 
 function getProductVariant(title, shop) {
     return knex('ProductVariant').select('title', 'productBaseId', 'shop', 'productVariantId', 'createdDate')
         .where('title', title)
         .where('shop', shop)
-        .timeout(1000, { cancel: true });
+        .timeout(10000, { cancel: true });
 };
 
 
-exports.uploadProducts = async (uploadPath) => {
+exports.uploadProductsEneba = async (uploadPath, params) => {
     // convert xml to json
-    var xml = require('fs').readFileSync(uploadPath, 'utf8');
+    var xml = fs.readFileSync(uploadPath, 'utf8');
     var json = convertXmlToJson.xml2json(xml, { compact: true, spaces: 0 });
 
     var string = JSON.stringify(JSON.parse(json)).replace(/"g:/g, '"');
     var products = JSON.parse(string).rss.channel;
 
-    // check productBase
+    UploadService.uploadProductsEneba(products.item, params.market, params.currency).then((data) => {
+        console.log('Quantity products uploaded: ', data)
+    })
+}
 
-    var shop = products.title._text;
-    var currency = (products.title._text).slice(-3);
-    var items = products.item;
-    var quantityItems = items.length;
+exports.uploadProductsFromG2AToDB = async (products) => {
+
+    // upload info about products to DB
+    var shop = "G2A";
+    var currency = "EUR";
+    var quantityItems = products.length;
+
     do {
-
-        let item = items[--quantityItems];
-        let priceWithCurrency = item.price._text;
-        let price = (priceWithCurrency).substring(0, priceWithCurrency.length - 4);
-
-        let availability;
-        if (item.availability._text == 'in stock')
+        let item = products[--quantityItems];
+        let link = 'https://www.g2a.com' + item.slug;
+        let price = parseFloat(item.retail_min_price)
+        let availability
+        if (item.qty > 0) {
             availability = true;
-        else (availability = false)
+        } else { availability = false };
 
-        getProductBase(item.title._text).then(function (productBase) {
+        // check productBase
+        getProductBase(item.name).then(function (productBase) {
 
-            if (JSON.stringify(productBase) == '[]') {
+            if (productBase.length > 0) {
 
                 productBaseModel.createProductBase({
-                    'title': item.title._text,
-                    'description': item.description._text,
-                    'image': item.image_link._text,
-                    'platform': item.brand._text,
+                    'title': item.name,
+                    'description': item.description,
+                    'image': item.smallImage,
+                    'platform': item.platform,
 
                 }).then(function () {
 
-                    getProductBase(item.title._text).then(function (newProductBase) {
+                    getProductBase(item.name).then(function (newProductBase) {
 
                         productVariantModel.createProductVariant({
                             'productBaseId': newProductBase[0].productBaseId,
-                            'title': item.title._text,
-                            'link': item.link._text,
-                            'productShopId': item.id._text,
+                            'title': item.name,
+                            'link': link,
+                            'productShopId': item.id,
                             'price': price,
                             'currency': currency,
                             'availability': availability,
@@ -73,15 +81,15 @@ exports.uploadProducts = async (uploadPath) => {
                 });
 
             } else {
-                getProductBase(item.title._text).then(function (existProductBase) {
-                    getProductVariant(item.title._text, shop).then(function (productVariant) {
+                getProductBase(item.name).then(function (existProductBase) {
+                    getProductVariant(item.name, shop).then(function (productVariant) {
                         if (JSON.stringify(productVariant) == '[]') {
 
                             productVariantModel.createProductVariant({
                                 'productBaseId': existProductBase[0].productBaseId,
-                                'title': item.title._text,
-                                'link': item.link._text,
-                                'productShopId': item.id._text,
+                                'title': item.name,
+                                'link': link,
+                                'productShopId': item.id,
                                 'price': price,
                                 'currency': currency,
                                 'availability': availability,
@@ -92,9 +100,9 @@ exports.uploadProducts = async (uploadPath) => {
                             productVariantModel.updateProductVariant({
                                 'productVariantId': productVariant[0].productVariantId,
                                 'productBaseId': productVariant[0].productBaseId,
-                                'title': item.title._text,
-                                'link': item.link._text,
-                                'productShopId': item.id._text,
+                                'title': item.name,
+                                'link': link,
+                                'productShopId': item.id,
                                 'price': price,
                                 'currency': currency,
                                 'availability': availability,
@@ -104,8 +112,54 @@ exports.uploadProducts = async (uploadPath) => {
                         }
                     });
                 });
-
             }
         });
     } while (quantityItems > 0);
+
+}
+
+exports.uploadProductsHRK = async (uploadPath, params) => {
+    // convert csv to json
+    convertCsvToJson({ delimiter: [';'] }).fromFile(uploadPath).then((data) => {
+      
+        UploadService.uploadProductsHRKGames(data, params.market, params.currency).then((data) => {
+            console.log('Quantity products uploaded: ', data)
+        })
+    })
+}
+
+exports.uploadProductsCDkeys = async (uploadPath, params) => {
+    new Promise(function (resolve, reject) {
+        fs.readFile(uploadPath, 'utf8', function (err, txtProducts) {
+            var products = []
+            var regex = /"[^"]*"/g;
+            var delreg = /"/g
+            var arrayFieldProducts = txtProducts.match(regex);
+
+            let i = arrayFieldProducts.length / 9
+            while (i > 0) {
+                i--
+                let num = i * 9
+                const item = {
+                    id: arrayFieldProducts[num].replace(delreg, ""),
+                    title: arrayFieldProducts[++num].replace(delreg, ""),
+                    url: arrayFieldProducts[++num].replace(delreg, ""),
+                    image: arrayFieldProducts[++num].replace(delreg, ""),
+                    price: parseFloat(arrayFieldProducts[++num].replace(delreg, "")),
+                    platform: arrayFieldProducts[++num].replace(delreg, ""),
+                    stock: arrayFieldProducts[++num].replace(delreg, ""),
+                    categoryId: arrayFieldProducts[++num].replace(delreg, ""),
+                    tags: arrayFieldProducts[++num].replace(delreg, ""),
+                }
+                products.push(item)
+            }
+            resolve(products)
+        })
+
+    }).then((data) => {
+        
+        UploadService.uploadProductsCDKeys(data, params.market, params.currency).then((data) => {
+            console.log('Quantity products uploaded: ', data)
+        })
+    })
 }

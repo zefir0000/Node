@@ -1,0 +1,30 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" />
+    <link rel="stylesheet" href="/css/market.css" />
+</head>
+
+<body>
+    <div class="home dog-app">
+        <div class="lightbox">
+            <div class="lightbox__content">
+                <form class="lightbox__form" action="/deals" method="GET"><button class="btn" @click="">X</button></form>
+                <h1 class="lightbox__header">Add Deal</h1>
+                <form class="lightbox__form" action="/addDeal/" method="POST">
+                    <div class="lightbox__form-control"><label class="lightbox__label">title</label><input class="lightbox__input" type="text" name="title" /></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">user</label><input class="lightbox__input" placeholder="User name" type="text" name="user" /></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">link</label><input class="lightbox__input" placeholder="http://" type="text" name="link" /></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">price</label><input class="lightbox__input" placeholder="1,00" type="text" name="price" /></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">curency</label><input class="lightbox__input" placeholder="Gcoin" type="text" name="currency" /></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">image</label><input class="lightbox__input" placeholder="http://" type="text" name="image" /></div>
+                    <div class="lightbox__actions"><button class="btn btn--primary">Accept</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue" type="text/javascript"></script>
+    <script src="/js/app.js"></script>
+</body>
+
+</html>

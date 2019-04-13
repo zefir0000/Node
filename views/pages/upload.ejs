@@ -1,0 +1,59 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" />
+    <link rel="stylesheet" href="/css/main.css" />
+</head>
+
+<body>
+    <div class="home dog-app">
+        <header class="app-header">
+            <nav class="app-nav">
+                <ul class="app-nav__list">
+                    <li class="app-nav__list-item"><a class="app-nav__link" href="/productBase">product base</a></li>
+                    <li class="app-nav__list-item"><a class="app-nav__link app-nav__link--is-active" href="/upload"> upload file xml</a></li>
+                    <li class="app-nav__list-item"><a class="app-nav__link" href="/getMarket"> markets</a></li>
+                    <li class="app-nav__list-item"><a class="app-nav__link" href="/news"> news</a></li>
+                    <li class="app-nav__list-item"><a class="app-nav__link" href="/mems"> mems</a></li>
+                    <li class="app-nav__list-item"><a class="app-nav__link" href="/deals"> deals</a></li>
+                    <li class="app-nav__list-item"><a class="app-nav__link" href="/contact"> contact</a></li>
+                </ul>
+            </nav>
+        </header>
+        <div class="wrapper">
+            <section class="slogan">
+                <h1 class="slogan__header">Upload XML file</h1>
+                <p class="slogan__text"><br/>schamat pliku xml dla naszego serwisu dostepny jest pod linkiem ;)</p>
+                <div class="actions"><button class="btn btn--primary" @click="formLightbox = true">upload xml files</button></div>
+                <p class="slogan__text">Update products from G2A.COm</p>
+                <form class="actions" action="/uploadG2AProducts" method="GET"><button class="btn btn--primary">Upload from G2A</button></form>
+            </section>
+            <footer class="app-footer"></footer>
+        </div>
+        
+        <div class="lightbox" v-show="formLightbox == true" style="display: none;">
+            <div class="lightbox__content">
+                <h2 class="lightbox__header">Upload your xml files</h2>
+                <form class="lightbox__form" action="/upload" method="POST" enctype="multipart/form-data">
+                    <!-- <div class="lightbox__form-control"><label class="lightbox__label">Files to Upload!</label><input class="lightbox__input" type="file" name="sampleFile" /></div> -->
+                    <div class="lightbox__form-control"><label class="lightbox__label">Select currency</label><select class="lightbox__input" type="select" name="currency" >
+                            <option value="EUR" >EUR</option>
+                            <option value="USD" >USD</option>
+                            <option value="GPB" >GPB</option>
+                    </select></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">Market</label><select class="lightbox__input" type="select" name="market" >
+                            <% markets.forEach(function(market) { %>
+                            <option value='<%= market.name %>'><%= market.name %></option>
+                            <% }); %>
+
+                    </select></div>
+                    <div class="lightbox__actions"><button class="btn btn--primary">Accept</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue" type="text/javascript"></script>
+    <script src="/js/app.js"></script>
+</body>
+
+</html>

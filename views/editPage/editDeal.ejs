@@ -1,0 +1,40 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" />
+    <link rel="stylesheet" href="/css/market.css" />
+</head>
+
+<body>
+    <div class="home dog-app">
+        <div class="lightbox">
+            <div class="lightbox__content">
+                <form class="lightbox__form" action="/deals" method="GET"><button class="btn" @click="">X</button></form>
+                <h1 class="lightbox__header">Edit Deal</h1>
+                <form class="lightbox__form" action='/editDeal/<%= deal[0].dealId %>' method="POST">
+                    <div class="lightbox__form-control"><label class="lightbox__label">Deal name </label>
+
+                        <input class="lightbox__input" type="text" name="name" placeholder="<%= deal[0].title %>" value='<%= deal[0].title %>'></div>
+                        <div class="lightbox__form-control"><label class="lightbox__label">user</label><input class="lightbox__input" placeholder="User name" type="text" name="user" value='<%= deal[0].user %>' ></div>
+
+                    <div class="lightbox__form-control"><label class="lightbox__label">Deal link</label>
+                        <input class="lightbox__input" placeholder="" type="text" name="link" value='<%= deal[0].link %>'></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">Link to image</label>
+                        <input class="lightbox__input" placeholder='<%= deal[0].image %>' type="text" name="image" value='<%= deal[0].image %>'></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">Price</label>
+                        <input class="lightbox__input" placeholder='<%= deal[0].price %>' type="text" name="price" value='<%= deal[0].price %>'></div>
+                    
+                    <div class="lightbox__form-control"><label class="lightbox__label">Currency</label>
+                        <input class="lightbox__input" placeholder='<%= deal[0].currency %>' type="text" name="support" value='<%= deal[0].currency %>'></div>
+                    <div class="lightbox__form-control"><label class="lightbox__label">upVote</label><input class="lightbox__input"
+                            placeholder='<%= deal[0].upVote %>' type="text" name="adress" value='<%= deal[0].upVote %>'></div>
+                    <div class="lightbox__actions"><button class="btn btn--primary">Accept</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue" type="text/javascript"></script>
+    <script src="/js/app.js"></script>
+</body>
+
+</html>

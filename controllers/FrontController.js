@@ -1,102 +1,124 @@
 const dbConfig = require('../config/dbConfig')
 const knex = require('knex')(dbConfig);
-const newsModel = require('../models/news/news')
 const random = require('../helper/Random');
-const { check, validationResult } = require('express-validator/check');
+const dateOperation = require('../helper/DateOperation');
+const TopTenService = require('../services/TopTenService');
+const ProductService = require('../services/ProductService');
+const DealService = require('../services/DealService');
+const UserService = require('../services/UserService');
 
-exports.getNews = (req, res) => {
-    // var title = require('url').parse(req.url, true).query.name;
-    // if (!title) { title = "" }
-    knex.from('News')
-    .limit(20)
-        // .where('title', 'like', '%' + title + '%')
-        .then(function (newses) {
-            res.json(newses)
-            res.statusCode = 200;
-            // res.render('pages/News', { newses })
-        });
-};
-exports.getNewsById = (req, res) => {
-    var newsId = (req.url.substring(req.url.indexOf('getNewsById/') + 12));
-    knex.from('News')
-         .where('newsId', newsId)
-        .then(function (newses) {
-            res.json(newses[0])
-            res.statusCode = 200;
-        });
+exports.getMems = (req, res) => {
+    knex.from('Mems').then(function (data) {
+        let lengthMem = data.length - 1
+        randomMem = random(0, lengthMem)
+        res.json(data[randomMem])
+        res.statusCode = 200;
+    });
 };
 
 exports.getTopTen = (req, res) => {
-    knex.min('ProductVariant.price as price')
-    .select('ProductVariant.title',
-    'ProductBase.productBaseId', 
-    'ProductVariant.availability', 
-    'ProductBase.image',
-    'ProductBase.platform', 
-    'ProductVariant.currency')
-    .from('ProductVariant')
-    .rightJoin('ProductBase', function() {
-        this.on('ProductVariant.productBaseId', '=', 'ProductBase.productBaseId')
+    TopTenService.getTopTen().then((data) => {
+        res.statusCode = 200
+        res.json(data)
     })
-    .whereNotNull('ProductBase.topTen').andWhere('ProductVariant.currency', "USD")
-    .groupBy('ProductVariant.title', 'ProductBase.productBaseId', 'ProductVariant.availability')
-    .orderBy([{ column: 'ProductVariant.availability', order: 'desc' }, { column: 'topTen', order: 'asc' }])    
-    .limit(10)
-    .then(function(SQLProducts){
+};
+
+exports.getProductBase = (req, res) => {
+    var name = req.query.name;
+    var currency = req.query.currency;
+    var title = name.replace(/ /g, "%")
+
+    ProductService.searchProductBase(title, currency).then((data) => {
         res.statusCode = 200;
-        console.log(SQLProducts)
-        res.json(SQLProducts)
-    });
+        res.json(data)
+    })
 };
 
-exports.createNews = async (req, res, next) => {
-    var news = await newsModel.createNews({
-        'title': req.body.title,
-        'imageLink': req.body.imageLink,
-        'news': req.body.news,
-        'likes': 0,
-        'unlikes': 0,
-    }).catch((err) => {
-        console.log(err);
-        return err
-    });
-
-    if (news == undefined) {
-        req.flash('form', 'Added News! ' + req.body.title + '');
-        res.redirect('news');
-    } else {
-        req.flash('form', 'Something went wrong with: ' + news.sqlMessage);
-        res.redirect('news');
-    }
-};
-
-exports.updateNews = async (req, res) => {
-    var newsId = (req.url.substring(req.url.indexOf('editNews/') + 9));
-    var news = await newsModel.updateNews({
-        'newsId': newsId,
-        'title': req.body.title,
-        'imageLink': req.body.imageLink,
-        'news': req.body.news,
-        'likes': req.body.likes,
-        'unlikes': req.body.unlikes,
-    }).catch((err) => { console.log(err); return err });
-    if (news.sqlMessage == undefined) {
-        req.flash('form', 'Edited product base! ' + req.body.title + '');
-        res.redirect('../news');
-    } else {
-        req.flash('form', 'Something went wrong with: ' + news.sqlMessage);
-        res.redirect('../news');
-    }
-};
-
-exports.getMems = (req, res) => {
-    knex.from('Mems')
-        .then(function (mems) {
-            let lengthMem = mems.length - 1
-            randomMem = random(0,lengthMem)
-            res.json(mems[randomMem])
+exports.getProductWithOffer = (req, res) => {
+    ProductService.getProductBaseById(req.query.id).then((productBaseData) => {
+        ProductService.getProductOfferForProductBase(req.query.id).then((productOfferData) => {
             res.statusCode = 200;
-        });
+            var result = Object.assign({ productBaseData }, { productOfferData });
+            res.json(result)
+        })
+    })
+};
+
+exports.getDeals = (req, res) => {
+    DealService.getDeals().then((deals) => {
+        res.statusCode = 200;
+        res.json(deals)
+    })
+};
+
+exports.upVote = (req, res) => {
+    DealService.upVote(req.params.dealId, req.body).then((data) => {
+        res.statusCode = 200;
+        res.json(data)
+    })
+};
+
+exports.getUser = (req, res) => {
+    UserService.getUser(req.params.userId).then((user) => {
+        res.statusCode = 200;
+        res.json(user[0])
+    })
+};
+
+exports.getUserDeals = (req, res) => {
+    DealService.getUserDeals(req.query.name).then((deals) => {
+        res.statusCode = 200;
+        res.json(deals)
+    })
+};
+
+exports.getUserByEmail = (req, res) => {
+    UserService.getUserByEmail(req.params.email).then((user) => {
+        res.statusCode = 200;
+        res.json(user[0])
+    })
+}
+
+exports.createDealByUser = async (req, res, next) => {
+    DealService.createDealByUser(req.body).then(() => {
+        res.statusCode = 201
+        res.send(response)
+
+    })
+}
+
+exports.createDealByGuest = async (req, res, next) => {
+    DealService.createDealByGuest(req.body).then((response) => {
+        res.statusCode = 201
+        res.send(response)
+
+    })
+}
+
+exports.getUsers = (req, res) => {
+    UserService.getUsers().then((users) => {
+        var length = users.length
+        for (var i = 0; i < length; i++) {
+            users[i].createdDate = dateOperation.days(users[i].createdDate)
+        }
+        res.statusCode = 200;
+        res.json(users)
+    })
+};
+
+exports.createUser = (req, res) => {
+    UserService.createUser(req.body).then(() => {
+        res.statusCode = 204;
+        res.json('OK')
+    })
+};
+
+exports.createAccount = (req, res) => {
+    // validacja server
+    UserService.createAccount(req.body).then(() => {
+        res.statusCode = 204;
+        res.json('OK')
+    })
 };
 
 
