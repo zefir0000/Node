@@ -23,11 +23,11 @@ function getProductVariant(title, shop) {
 };
 
 
-exports.uploadProductsEneba = async (uploadPath, params) => {
+exports.uploadProductsEneba = async (data, params) => {
     // convert xml to json
-    console.log(uploadPath, 'controller')
-    var xml = fs.readFileSync(uploadPath, 'utf8');
-    var json = convertXmlToJson.xml2json(xml, { compact: true, spaces: 0 });
+    //console.log(uploadPath, 'controller')
+    //var xml = fs.readFileSync(uploadPath, 'utf8');
+    var json = convertXmlToJson.xml2json(data, { compact: true, spaces: 0 });
 
     var string = JSON.stringify(JSON.parse(json)).replace(/"g:/g, '"');
     var products = JSON.parse(string).rss.channel;

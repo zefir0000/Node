@@ -37,16 +37,16 @@ exports.upload = (req, res, next) => {
             case "Eneba":
             axios.get(`https://www.eneba.com/rss/products.xml`).then((response) => {
                     
-                new Promise((resolve, reject) => {
-                    let date = 123
-                    let uploadPath = 'uploading/' + date + "-" + "eneba_eur.xml";
-                    console.log(uploadPath, 'uploadpath')
-                    fs.writeFile(uploadPath, response.data, () => {
-                        console.log('Saved!');
-                        resolve(uploadPath)
-                    })}).then((uploadPath) => {
-                        ProductController.uploadProductsEneba(uploadPath, req.body);
-                    });
+                // new Promise((resolve, reject) => {
+                //     let date = 123
+                //     let uploadPath = 'uploading/' + date + "-" + "eneba_eur.xml";
+                //     console.log(uploadPath, 'uploadpath')
+                    // fs.writeFile(uploadPath, response.data, () => {
+                    //     console.log('Saved!');
+                    //     resolve(uploadPath)
+                    // })}).then((uploadPath) => {
+                        ProductController.uploadProductsEneba(response.data, req.body);
+                   // });
                 })
                 break;
 
