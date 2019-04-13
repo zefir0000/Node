@@ -39,8 +39,7 @@ exports.upload = (req, res, next) => {
                     
                 new Promise((resolve, reject) => {
                     let uploadPath = 'uploading/' + new Date + "-" + "eneba_eur.xml";
-                    fs.writeFile(uploadPath, response.data, (err) => {
-                        if (err) throw err;
+                    fs.writeFile(uploadPath, response.data, () => {
                         console.log('Saved!');
                         resolve(uploadPath)
                     })}).then((uploadPath) => {
@@ -54,8 +53,7 @@ exports.upload = (req, res, next) => {
                     //authority: "adm.cdkeys.com"
                 }).then((response) => {
                     let uploadPath = 'uploading/' + new Date + "-" + "hrkgames_eur";
-                    fs.writeFile(uploadPath, response.data, function (err) {
-                        if (err) throw err;
+                    fs.writeFile(uploadPath, response.data, function () {
                         console.log('Saved!');
                     });
                     ProductController.uploadProductsHRK(uploadPath, req.body);
